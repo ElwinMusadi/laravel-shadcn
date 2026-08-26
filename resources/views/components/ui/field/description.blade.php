@@ -1,0 +1,3 @@
+<p {{ $attributes->class('text-sm leading-6 text-muted-foreground') }}>
+    {{ $slot }}
+</p>
