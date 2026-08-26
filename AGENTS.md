@@ -175,3 +175,14 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - After the feature tests pass, ask the user to run the complete suite with `php artisan test --compact`.
 
 </laravel-boost-guidelines>
+
+# LANGUAGE RULE
+
+All explanations, reports, summaries, plans, warnings, test reports,
+and final responses to the developer must be written in Bahasa Indonesia.
+
+Code, code identifiers, filenames, commands, API names, package names,
+framework terminology, and technical identifiers may remain in English.
+
+When reading English documentation, understand it normally,
+but communicate the result to the developer in Bahasa Indonesia.

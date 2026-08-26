@@ -15,7 +15,16 @@ export default defineConfig({
             ],
             refresh: true,
             fonts: [
-                bunny('Instrument Sans', {
+                bunny('Inter', {
+                    optimizedFallbacks: false,
+                    weights: [400, 500, 600, 700],
+                }),
+                bunny('Source Serif 4', {
+                    optimizedFallbacks: false,
+                    weights: [400, 600, 700],
+                }),
+                bunny('JetBrains Mono', {
+                    optimizedFallbacks: false,
                     weights: [400, 500, 600],
                 }),
             ],
