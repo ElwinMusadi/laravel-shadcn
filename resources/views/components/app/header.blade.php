@@ -42,5 +42,9 @@
 
             <x-ui.separator orientation="vertical" class="h-5" />
         </div>
+
+        <div class="ml-auto flex items-center gap-2">
+            <x-app.theme-toggle />
+        </div>
     </div>
 </header>
