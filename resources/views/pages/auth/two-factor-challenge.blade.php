@@ -1,14 +1,14 @@
 <x-layouts::auth :title="__('Two-factor authentication')">
     <div class="flex flex-col gap-6">
         <div
-            class="relative w-full h-auto"
+            class="relative w-full"
             x-cloak
             x-data="{
                 showRecoveryInput: @js($errors->has('recovery_code')),
                 code: '',
                 recovery_code: '',
                 focusOtp() {
-                    this.$nextTick(() => this.$refs.otp?.querySelector('input')?.focus());
+                    this.$nextTick(() => this.$refs.code?.focus());
                 },
                 init() {
                     if (! this.showRecoveryInput) {
@@ -29,72 +29,76 @@
                 },
             }"
         >
-            <div x-show="!showRecoveryInput">
+            <div x-show="!showRecoveryInput" x-transition.opacity>
                 <x-auth-header
                     :title="__('Authentication code')"
                     :description="__('Enter the authentication code provided by your authenticator application.')"
+                    id="two-factor-code-title"
                 />
             </div>
 
-            <div x-show="showRecoveryInput">
+            <div x-show="showRecoveryInput" x-transition.opacity>
                 <x-auth-header
                     :title="__('Recovery code')"
                     :description="__('Please confirm access to your account by entering one of your emergency recovery codes.')"
+                    id="two-factor-recovery-title"
                 />
             </div>
 
-            <form method="POST" action="{{ route('two-factor.login.store') }}">
+            <form method="POST" action="{{ route('two-factor.login.store') }}" class="mt-6">
                 @csrf
 
-                <div class="space-y-5 text-center">
-                    <div x-show="!showRecoveryInput">
-                        <div class="flex items-center justify-center my-5" x-ref="otp">
-                            <flux:otp
-                                x-model="code"
-                                length="6"
-                                name="code"
-                                label="OTP Code"
-                                label:sr-only
-                                class="mx-auto"
-                             />
-                        </div>
-                    </div>
+                <x-ui.field-group>
+                    <x-ui.field x-show="!showRecoveryInput" :invalid="$errors->has('code')">
+                        <x-ui.label for="code" required>{{ __('Authentication code') }}</x-ui.label>
+                        <x-ui.input
+                            id="code"
+                            name="code"
+                            type="text"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            maxlength="6"
+                            autocomplete="one-time-code"
+                            x-ref="code"
+                            x-model="code"
+                            x-bind:required="!showRecoveryInput"
+                            x-bind:disabled="showRecoveryInput"
+                            :invalid="$errors->has('code')"
+                            :aria-describedby="$errors->has('code') ? 'code-error' : null"
+                        />
+                        <x-ui.field.error id="code-error" name="code" />
+                    </x-ui.field>
 
-                    <div x-show="showRecoveryInput">
-                        <div class="my-5">
-                            <flux:input
-                                type="text"
-                                name="recovery_code"
-                                x-ref="recovery_code"
-                                x-bind:required="showRecoveryInput"
-                                autocomplete="one-time-code"
-                                x-model="recovery_code"
-                            />
-                        </div>
+                    <x-ui.field x-show="showRecoveryInput" :invalid="$errors->has('recovery_code')">
+                        <x-ui.label for="recovery_code" required>{{ __('Recovery code') }}</x-ui.label>
+                        <x-ui.input
+                            id="recovery_code"
+                            name="recovery_code"
+                            type="text"
+                            autocomplete="one-time-code"
+                            x-ref="recovery_code"
+                            x-model="recovery_code"
+                            x-bind:required="showRecoveryInput"
+                            x-bind:disabled="!showRecoveryInput"
+                            :invalid="$errors->has('recovery_code')"
+                            :aria-describedby="$errors->has('recovery_code') ? 'recovery-code-error' : null"
+                        />
+                        <x-ui.field.error id="recovery-code-error" name="recovery_code" />
+                    </x-ui.field>
 
-                        @error('recovery_code')
-                            <flux:text color="red">
-                                {{ $message }}
-                            </flux:text>
-                        @enderror
-                    </div>
-
-                    <flux:button
-                        variant="primary"
-                        type="submit"
-                        class="w-full"
-                    >
+                    <x-ui.button type="submit" class="w-full">
                         {{ __('Continue') }}
-                    </flux:button>
-                </div>
+                    </x-ui.button>
 
-                <div class="mt-5 space-x-0.5 text-sm leading-5 text-center">
-                    <span class="opacity-50">{{ __('or you can') }}</span>
-                    <div class="inline font-medium underline cursor-pointer opacity-80">
-                        <span x-show="!showRecoveryInput" @click="toggleInput()">{{ __('login using a recovery code') }}</span>
-                        <span x-show="showRecoveryInput" @click="toggleInput()">{{ __('login using an authentication code') }}</span>
-                    </div>
-                </div>
+                    <x-ui.button
+                        variant="link"
+                        type="button"
+                        class="h-auto self-center px-0 py-0 text-center"
+                        x-on:click="toggleInput()"
+                        x-text="showRecoveryInput ? @js(__('Use an authentication code instead')) : @js(__('Use a recovery code instead'))"
+                    ></x-ui.button>
+                </x-ui.field-group>
+
             </form>
         </div>
     </div>

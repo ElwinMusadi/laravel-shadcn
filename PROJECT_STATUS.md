@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 7 — Sidebar-07
+Phase 8 — Login-04 / Signup-04
 
 ## Completed
 
@@ -14,13 +14,14 @@ Phase 7 — Sidebar-07
 - Phase 5 — Application Shell
 - Phase 6 — Dashboard-01
 - Phase 7 — Sidebar-07
+- Phase 8 — Login-04 / Signup-04
 
 ## Current Architecture
 
 - Laravel, Livewire, Blade, Tailwind CSS 4, dan Alpine.js.
 - Token semantik Amber dari Phase 1 adalah sumber kebenaran visual.
 - Shell aplikasi berada di `resources/views/components/app/`; primitive tetap berada di `resources/views/components/ui/`.
-- Flux tetap terpasang untuk halaman auth/settings serta runtime toast dan appearance yang belum dimigrasikan.
+- Flux tetap terpasang untuk settings, runtime toast, serta appearance yang belum dimigrasikan.
 - Dashboard terlindungi tetap berada pada route `dashboard`, dengan komposisi spesifik di `resources/views/blocks/dashboard/` agar region navigasi shell dapat diganti pada Phase 7 tanpa membangun ulang konten dashboard.
 
 ## Component Inventory
@@ -69,12 +70,24 @@ Phase 7 — Sidebar-07
 - `x-app.navigation` mendukung grup, route name, pola route aktif, submenu `x-ui.collapsible`, `aria-current`, `aria-expanded`, dan `wire:navigate`. `x-app.workspace-switcher` menerima data workspace demo melalui `x-ui.dropdown` tanpa database.
 - `x-app.user-menu` tetap satu-satunya pemilik identitas, tautan Settings, form logout `POST`, dan CSRF; presentasinya dipindahkan ke footer sidebar. Header menjadi lokasi trigger sidebar dan shortcut `Ctrl/Cmd + B` tersedia di luar elemen editable.
 
+## Phase 8 Architecture
+
+- Referensi resmi shadcn `login-04` dan `signup-04` diterjemahkan ke Blade-native dengan satu shell `x-layouts::auth`. Shell menyusun card responsif, form content slot, brand aplikasi, dan panel visual desktop berbasis token semantik serta bentuk dekoratif lokal; tidak ada React, gambar eksternal, atau provider login palsu.
+- `x-layouts::auth.card` dan `x-layouts::auth.split` kini mendelegasikan ke shell yang sama, sehingga tidak ada shell autentikasi paralel. Halaman mobile tetap satu kolom; panel visual muncul pada breakpoint desktop.
+- Semua halaman Fortify yang tersedia memakai bahasa visual yang sama: Login, Registration, Password reset request, Password reset, Email verification, Password confirmation, Two-factor challenge, Recovery code flow, dan Passkey UI. Route, action, CSRF, redirect, limiter, request parameter, serta validasi Fortify tidak diubah.
+- Login dan password confirmation mempertahankan `x-passkey-verify` dengan route dan integrasi `@laravel/passkeys` yang sama. UI passkey registration dan recovery code management tetap berada pada Settings sehingga sengaja tidak disentuh pada Phase 8.
+- `x-auth.password-field` menyediakan input password native, autocomplete yang sesuai, toggle show/hide lokal Alpine, label terasosiasi, dan error ARIA. Semua formulir memakai primitive Phase 3 `x-ui.field`, `x-ui.field-group`, `x-ui.label`, `x-ui.input`, `x-ui.checkbox`, `x-ui.field.error`, dan `x-ui.button`.
+- Two-factor challenge mempertahankan kontrak `code` atau `recovery_code`; input nonaktif saat mode lain aktif, OTP memakai `inputmode="numeric"`, `maxlength="6"`, dan `autocomplete="one-time-code"`. Tidak ada library OTP baru.
+- Presentasi Flux telah dihapus dari halaman auth aktif, header/status auth, passkey verification, dan auth layouts. Auth layout kini memakai `@livewireScripts` untuk tetap mendukung Alpine/Livewire dan passkey flow. `@fluxAppearance` masih berasal dari partial global untuk Phase 9; Flux pada Settings, toast shell, dan komponen `passkey-registration`/recovery management tetap untuk fase migrasi masing-masing.
+- Aksesibilitas mencakup label untuk semua control, `aria-invalid` dan `aria-describedby` pada error, `role="alert"` untuk error, `role="status"`/`aria-live` untuk status, fokus terlihat, tombol dengan tipe tepat, serta autocomplete password/email/OTP yang sesuai.
+
 ## Flux Migration Boundary
 
 - Dimigrasikan pada Phase 5: Flux sidebar, header, navbar, profile dropdown, menu shell, dan wrapper brand lama pada shell aplikasi.
 - Dimigrasikan pada Phase 7: region navigasi header Phase 5 digantikan sidebar desktop dan Sheet mobile Blade-native. Flux tidak menangani sidebar, navigasi mobile, collapse, atau rendering navigasi.
+- Dimigrasikan pada Phase 8: layout, halaman, form, header/status, serta passkey verification autentikasi. Halaman auth aktif tidak lagi memakai presentasi Flux.
 - Dipertahankan pada shell: `@persist('toast')`, `flux:toast`, dan `@fluxScripts`, karena settings Livewire masih memanggil `Flux::toast` dan masih memakai kontrol Flux.
-- Dipertahankan di luar shell: `@fluxAppearance` untuk Phase 9, halaman auth untuk Phase 8, serta penggantian runtime/dependensi Flux final untuk Phase 12.
+- Dipertahankan di luar shell: `@fluxAppearance` untuk Phase 9, Settings termasuk recovery code/passkey management, serta penggantian runtime/dependensi Flux final untuk Phase 12.
 - Tidak ada dependency Flux yang dihapus pada fase ini.
 
 ## Latest Validation
@@ -86,6 +99,7 @@ Phase 7 — Sidebar-07
 - Phase 5: `vendor/bin/pint --dirty --format agent`, full Pest suite (65 tests / 402 assertions), `npm run build`, dan `git diff --check` lulus. Audit shell, Flux, auth/settings regression, aksesibilitas markup, token semantik, `wire:navigate`, dark mode, dan teknologi terlarang juga lulus.
 - Phase 6: `vendor/bin/pint --dirty --format agent`, full Pest suite (66 tests / 424 assertions), `npm run build`, dan `git diff --check` lulus. Audit struktur dashboard, komponen, token, responsivitas, aksesibilitas, dependency, teknologi terlarang, dan scope Sidebar-07 juga lulus.
 - Phase 7: `vendor/bin/pint --dirty --format agent`, full Pest suite (67 tests / 451 assertions), `npm run build`, dan `git diff --check` lulus. Audit struktur sidebar, desktop/icon mode, Sheet mobile, kontrak data tunggal, route aktif/nested, aksesibilitas markup, keyboard shortcut, `wire:navigate`, token semantik, dark mode, Flux, teknologi terlarang, dan regresi Dashboard-01 lulus.
+- Phase 8: baseline test autentikasi lulus (18 tests / 41 assertions). Test autentikasi setelah migrasi mencakup rendering login, registration, password reset, email verification, password confirmation, two-factor, passkey route, autocomplete, status, dan asosiasi error ARIA (20 tests / 79 assertions). `vendor/bin/pint --dirty --format agent`, full suite (69 tests / 489 assertions), `npm run build`, `git diff --check`, serta audit Flux auth, token semantik, dan teknologi terlarang lulus.
 
 ## Browser Testing
 
@@ -94,8 +108,8 @@ Phase 7 — Sidebar-07
 
 ## Known Risks
 
-- Browser E2E belum tersedia untuk memverifikasi pembaruan chart ketika kontrol rentang waktu dioperasikan dan perilaku assistive technology secara nyata.
-- Auth, settings, appearance, dan toast masih memakai Flux pada batas yang telah dicatat untuk migrasi Phase 8, 9, dan 12.
+- Browser E2E belum tersedia untuk memverifikasi pembaruan chart ketika kontrol rentang waktu dioperasikan dan perilaku assistive technology secara nyata, serta interaksi responsif auth, password visibility, two-factor, passkey, fokus, dan screen reader.
+- Settings, appearance, dan toast masih memakai Flux pada batas yang telah dicatat untuk migrasi Phase 9 dan 12. Halaman auth aktif tidak lagi memakai presentasi Flux.
 - Avatar fallback untuk gambar yang gagal memuat menggunakan handler error HTML minimal.
 - Tabs memakai Alpine lokal untuk state aktif dan navigasi keyboard; tidak diikat ke state Livewire atau route aplikasi.
 - Dialog, Sheet, Dropdown, Popover, Tooltip, Collapsible, dan Command belum memiliki browser E2E otomatis. Khusus Dialog/Sheet, focus trap ringan telah diimplementasikan tetapi tetap perlu verifikasi browser asistif pada fase testing/accessibility khusus.
@@ -103,4 +117,4 @@ Phase 7 — Sidebar-07
 
 ## Next Phase
 
-Phase 8 — Login-04 / Signup-04.
+Phase 9 — Theme Controller / Appearance.

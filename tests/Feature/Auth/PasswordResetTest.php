@@ -12,7 +12,20 @@ beforeEach(function () {
 test('reset password link screen can be rendered', function () {
     $response = $this->get(route('password.request'));
 
-    $response->assertOk();
+    $response
+        ->assertOk()
+        ->assertSee('Forgot password')
+        ->assertSee('action="'.route('password.email').'"', false)
+        ->assertSee('autocomplete="email"', false);
+});
+
+test('password reset link status is announced', function () {
+    $response = $this->withSession(['status' => 'passwords.sent'])->get(route('password.request'));
+
+    $response
+        ->assertSee('passwords.sent')
+        ->assertSee('role="status"', false)
+        ->assertSee('aria-live="polite"', false);
 });
 
 test('reset password link can be requested', function () {
@@ -35,7 +48,11 @@ test('reset password screen can be rendered', function () {
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
         $response = $this->get(route('password.reset', $notification->token));
 
-        $response->assertOk();
+        $response
+            ->assertOk()
+            ->assertSee('action="'.route('password.update').'"', false)
+            ->assertSee('autocomplete="email"', false)
+            ->assertSee('autocomplete="new-password"', false);
 
         return true;
     });

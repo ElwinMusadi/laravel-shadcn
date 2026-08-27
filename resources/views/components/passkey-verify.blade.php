@@ -45,31 +45,25 @@
     }"
 >
     <template x-if="supported">
-        <div>
-            <div class="grid gap-2">
-                <flux:button
+        <div class="flex flex-col gap-6">
+            <div class="flex flex-col gap-2">
+                <x-ui.button
                     variant="outline"
-                    icon="finger-print"
+                    type="button"
                     class="w-full"
                     x-on:click="verify()"
                     x-bind:disabled="loading"
                 >
                     <span x-show="!loading">{{ $label }}</span>
                     <span x-show="loading" x-cloak>{{ $loadingLabel }}</span>
-                </flux:button>
-                <p x-show="error" x-text="error" x-cloak
-                   class="text-sm text-center text-red-600 dark:text-red-400"></p>
+                </x-ui.button>
+                <p role="alert" aria-live="assertive" x-show="error" x-text="error" x-cloak class="text-center text-sm font-medium text-destructive"></p>
             </div>
 
-            <div class="relative my-6">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-zinc-200 dark:border-zinc-700"></div>
-                </div>
-                <div class="relative flex justify-center text-xs uppercase">
-                    <span class="px-2 text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-900">
-                        {{ $separator }}
-                    </span>
-                </div>
+            <div class="flex items-center gap-3" aria-label="{{ $separator }}">
+                <div class="h-px flex-1 bg-border"></div>
+                <span class="text-xs uppercase tracking-wide text-muted-foreground">{{ $separator }}</span>
+                <div class="h-px flex-1 bg-border"></div>
             </div>
         </div>
     </template>

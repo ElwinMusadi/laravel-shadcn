@@ -2,58 +2,53 @@
     <div class="flex flex-col gap-6">
         <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+        <x-auth-session-status :status="session('status')" />
 
         <x-passkey-verify />
 
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
             @csrf
 
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autofocus
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
+            <x-ui.field-group>
+                <x-ui.field :invalid="$errors->has('email')">
+                    <x-ui.label for="email" required>{{ __('Email address') }}</x-ui.label>
+                    <x-ui.input
+                        id="email"
+                        name="email"
+                        :value="old('email')"
+                        type="email"
+                        required
+                        autofocus
+                        autocomplete="email"
+                        placeholder="email@example.com"
+                        :invalid="$errors->has('email')"
+                        :aria-describedby="$errors->has('email') ? 'email-error' : null"
+                    />
+                    <x-ui.field.error id="email-error" name="email" />
+                </x-ui.field>
 
-            <!-- Password -->
-            <div class="relative">
-                <flux:input
-                    name="password"
-                    :label="__('Password')"
-                    type="password"
-                    required
-                    autocomplete="current-password"
-                    :placeholder="__('Password')"
-                    viewable
+                <x-auth.password-field
+                    id="password"
+                    :invalid="$errors->has('password')"
+                    :error="$errors->first('password')"
+                    :help-url="Route::has('password.request') ? route('password.request') : null"
+                    :help-label="__('Forgot your password?')"
                 />
 
-                @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                        {{ __('Forgot your password?') }}
-                    </flux:link>
-                @endif
-            </div>
+                <x-ui.field orientation="horizontal" class="items-center gap-3">
+                    <x-ui.checkbox id="remember" name="remember" value="1" :checked="old('remember')" />
+                    <x-ui.label for="remember" class="cursor-pointer">{{ __('Remember me') }}</x-ui.label>
+                </x-ui.field>
 
-            <!-- Remember Me -->
-            <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
-
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
+                <x-ui.button type="submit" class="w-full" data-test="login-button">
                     {{ __('Log in') }}
-                </flux:button>
-            </div>
+                </x-ui.button>
+            </x-ui.field-group>
         </form>
 
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
+        <p class="text-center text-sm text-muted-foreground">
             <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
-        </div>
+            <a href="{{ route('register') }}" class="font-medium text-primary underline-offset-4 hover:underline">{{ __('Sign up') }}</a>
+        </p>
     </div>
 </x-layouts::auth>

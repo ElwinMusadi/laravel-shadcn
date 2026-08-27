@@ -2,53 +2,48 @@
     <div class="flex flex-col gap-6">
         <x-auth-header :title="__('Reset password')" :description="__('Please enter your new password below')" />
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+        <x-auth-session-status :status="session('status')" />
 
         <form method="POST" action="{{ route('password.update') }}" class="flex flex-col gap-6">
             @csrf
-            <!-- Token -->
             <input type="hidden" name="token" value="{{ request()->route('token') }}">
 
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                value="{{ request('email') }}"
-                :label="__('Email')"
-                type="email"
-                required
-                autocomplete="email"
-            />
+            <x-ui.field-group>
+                <x-ui.field :invalid="$errors->has('email')">
+                    <x-ui.label for="email" required>{{ __('Email address') }}</x-ui.label>
+                    <x-ui.input
+                        id="email"
+                        name="email"
+                        :value="old('email', request('email'))"
+                        type="email"
+                        required
+                        autocomplete="email"
+                        :invalid="$errors->has('email')"
+                        :aria-describedby="$errors->has('email') ? 'email-error' : null"
+                    />
+                    <x-ui.field.error id="email-error" name="email" />
+                </x-ui.field>
 
-            <!-- Password -->
-            <flux:input
-                name="password"
-                :label="__('Password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Password')"
-                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
-                viewable
-            />
+                <x-auth.password-field
+                    id="password"
+                    autocomplete="new-password"
+                    :invalid="$errors->has('password')"
+                    :error="$errors->first('password')"
+                />
 
-            <!-- Confirm Password -->
-            <flux:input
-                name="password_confirmation"
-                :label="__('Confirm password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Confirm password')"
-                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
-                viewable
-            />
+                <x-auth.password-field
+                    id="password_confirmation"
+                    name="password_confirmation"
+                    :label="__('Confirm password')"
+                    autocomplete="new-password"
+                    :invalid="$errors->has('password_confirmation')"
+                    :error="$errors->first('password_confirmation')"
+                />
 
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full" data-test="reset-password-button">
+                <x-ui.button type="submit" class="w-full" data-test="reset-password-button">
                     {{ __('Reset password') }}
-                </flux:button>
-            </div>
+                </x-ui.button>
+            </x-ui.field-group>
         </form>
     </div>
 </x-layouts::auth>

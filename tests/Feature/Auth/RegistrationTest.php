@@ -9,7 +9,14 @@ beforeEach(function () {
 test('registration screen can be rendered', function () {
     $response = $this->get(route('register'));
 
-    $response->assertOk();
+    $response
+        ->assertOk()
+        ->assertSee('Create an account')
+        ->assertSee('action="'.route('register.store').'"', false)
+        ->assertSee('for="name"', false)
+        ->assertSee('autocomplete="name"', false)
+        ->assertSee('autocomplete="email"', false)
+        ->assertSee('autocomplete="new-password"', false);
 });
 
 test('new users can register', function () {

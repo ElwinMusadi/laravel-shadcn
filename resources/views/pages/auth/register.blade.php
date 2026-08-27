@@ -2,68 +2,69 @@
     <div class="flex flex-col gap-6">
         <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+        <x-auth-session-status :status="session('status')" />
 
         <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
             @csrf
-            <!-- Name -->
-            <flux:input
-                name="name"
-                :label="__('Name')"
-                :value="old('name')"
-                type="text"
-                required
-                autofocus
-                autocomplete="name"
-                :placeholder="__('Full name')"
-            />
+            <x-ui.field-group>
+                <x-ui.field :invalid="$errors->has('name')">
+                    <x-ui.label for="name" required>{{ __('Name') }}</x-ui.label>
+                    <x-ui.input
+                        id="name"
+                        name="name"
+                        :value="old('name')"
+                        required
+                        autofocus
+                        autocomplete="name"
+                        :placeholder="__('Full name')"
+                        :invalid="$errors->has('name')"
+                        :aria-describedby="$errors->has('name') ? 'name-error' : null"
+                    />
+                    <x-ui.field.error id="name-error" name="name" />
+                </x-ui.field>
 
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
+                <x-ui.field :invalid="$errors->has('email')">
+                    <x-ui.label for="email" required>{{ __('Email address') }}</x-ui.label>
+                    <x-ui.input
+                        id="email"
+                        name="email"
+                        :value="old('email')"
+                        type="email"
+                        required
+                        autocomplete="email"
+                        placeholder="email@example.com"
+                        :invalid="$errors->has('email')"
+                        :aria-describedby="$errors->has('email') ? 'email-error' : null"
+                    />
+                    <x-ui.field.error id="email-error" name="email" />
+                </x-ui.field>
 
-            <!-- Password -->
-            <flux:input
-                name="password"
-                :label="__('Password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Password')"
-                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
-                viewable
-            />
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <x-auth.password-field
+                        id="password"
+                        autocomplete="new-password"
+                        :invalid="$errors->has('password')"
+                        :error="$errors->first('password')"
+                    />
+                    <x-auth.password-field
+                        id="password_confirmation"
+                        name="password_confirmation"
+                        :label="__('Confirm password')"
+                        autocomplete="new-password"
+                        :invalid="$errors->has('password_confirmation')"
+                        :error="$errors->first('password_confirmation')"
+                    />
+                </div>
 
-            <!-- Confirm Password -->
-            <flux:input
-                name="password_confirmation"
-                :label="__('Confirm password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Confirm password')"
-                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
-                viewable
-            />
-
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full" data-test="register-user-button">
+                <x-ui.button type="submit" class="w-full" data-test="register-user-button">
                     {{ __('Create account') }}
-                </flux:button>
-            </div>
+                </x-ui.button>
+            </x-ui.field-group>
         </form>
 
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
+        <p class="text-center text-sm text-muted-foreground">
             <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
-        </div>
+            <a href="{{ route('login') }}" class="font-medium text-primary underline-offset-4 hover:underline">{{ __('Log in') }}</a>
+        </p>
     </div>
 </x-layouts::auth>
