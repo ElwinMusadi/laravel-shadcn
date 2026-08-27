@@ -344,6 +344,212 @@ test('tabs render declarative active state and keyboard interaction semantics', 
         ->assertSee('disabled', false);
 });
 
+test('dialog renders focus-safe modal composition and preserves caller attributes', function () {
+    $view = $this->blade(<<<'BLADE'
+        <x-ui.dialog id="profile-dialog" x-data="{ callerState: true }" wire:ignore.self>
+            <x-ui.dialog.trigger wire:click="prepareProfile" x-on:click="callerState = false">Open profile</x-ui.dialog.trigger>
+            <x-ui.dialog.content data-dialog="profile">
+                <x-ui.dialog.close />
+                <x-ui.dialog.header>
+                    <x-ui.dialog.title>Update profile</x-ui.dialog.title>
+                    <x-ui.dialog.description>Update your public information.</x-ui.dialog.description>
+                </x-ui.dialog.header>
+                <x-ui.dialog.footer><x-ui.button>Save</x-ui.button></x-ui.dialog.footer>
+            </x-ui.dialog.content>
+        </x-ui.dialog>
+        BLADE);
+
+    $view
+        ->assertSee('id="profile-dialog"', false)
+        ->assertSee('x-data="{ callerState: true }"', false)
+        ->assertSee('wire:ignore.self', false)
+        ->assertSee('wire:click="prepareProfile"', false)
+        ->assertSee('x-on:click="callerState = false"', false)
+        ->assertSee('role="dialog"', false)
+        ->assertSee('aria-modal="true"', false)
+        ->assertSee(':aria-labelledby="`${dialogId}-title`"', false)
+        ->assertSee(':aria-describedby="`${dialogId}-description`"', false)
+        ->assertSee('x-init=', false)
+        ->assertSee('@keydown.escape.stop.prevent', false)
+        ->assertSee('@keydown.tab=', false)
+        ->assertSee('bg-card', false)
+        ->assertSee('text-card-foreground', false)
+        ->assertSee('max-h-[calc(100dvh-2rem)]', false);
+});
+
+test('sheet renders directional modal panels with focus and responsive safeguards', function () {
+    $view = $this->blade(<<<'BLADE'
+        <x-ui.sheet id="left-sheet">
+            <x-ui.sheet.trigger>Open left sheet</x-ui.sheet.trigger>
+            <x-ui.sheet.content side="left">
+                <x-ui.sheet.header>
+                    <x-ui.sheet.title>Left panel</x-ui.sheet.title>
+                    <x-ui.sheet.description>Supplementary content.</x-ui.sheet.description>
+                </x-ui.sheet.header>
+            </x-ui.sheet.content>
+        </x-ui.sheet>
+        <x-ui.sheet id="bottom-sheet">
+            <x-ui.sheet.trigger variant="outline">Open bottom sheet</x-ui.sheet.trigger>
+            <x-ui.sheet.content side="bottom"><x-ui.sheet.title>Bottom panel</x-ui.sheet.title></x-ui.sheet.content>
+        </x-ui.sheet>
+        BLADE);
+
+    $view
+        ->assertSee('role="dialog"', false)
+        ->assertSee(':aria-labelledby="`${sheetId}-title`"', false)
+        ->assertSee('aria-modal="true"', false)
+        ->assertSee('@keydown.escape.stop.prevent', false)
+        ->assertSee('@keydown.tab=', false)
+        ->assertSee('left-0', false)
+        ->assertSee('bottom-0', false)
+        ->assertSee('max-w-[calc(100vw-2rem)]', false)
+        ->assertSee('max-h-[calc(100dvh-2rem)]', false)
+        ->assertSee('bg-card', false);
+});
+
+test('dropdown renders native link and button items with keyboard navigation', function () {
+    $view = $this->blade(<<<'BLADE'
+        <x-ui.dropdown id="account-menu" x-data="{ callerOpen: false }">
+            <x-ui.dropdown.trigger wire:click="trackMenu">Account</x-ui.dropdown.trigger>
+            <x-ui.dropdown.content align="start" data-menu="account">
+                <x-ui.dropdown.group>
+                    <x-ui.dropdown.label>Account</x-ui.dropdown.label>
+                    <x-ui.dropdown.item href="/profile">Profile</x-ui.dropdown.item>
+                    <x-ui.dropdown.item wire:click="openBilling">Billing</x-ui.dropdown.item>
+                </x-ui.dropdown.group>
+                <x-ui.dropdown.separator />
+                <x-ui.dropdown.item disabled>Unavailable</x-ui.dropdown.item>
+            </x-ui.dropdown.content>
+        </x-ui.dropdown>
+        BLADE);
+
+    $view
+        ->assertSee('x-data="{ callerOpen: false }"', false)
+        ->assertSee('wire:click="trackMenu"', false)
+        ->assertSee('wire:click="openBilling"', false)
+        ->assertSee('role="menu"', false)
+        ->assertSee('role="menuitem"', false)
+        ->assertSee('href="/profile"', false)
+        ->assertSee('aria-disabled="true"', false)
+        ->assertSee('role="separator"', false)
+        ->assertSee('@keydown.down.prevent', false)
+        ->assertSee('@keydown.up.prevent', false)
+        ->assertSee('@keydown.home.prevent', false)
+        ->assertSee('@keydown.end.prevent', false)
+        ->assertSee('@keydown.escape.stop.prevent', false)
+        ->assertSee('bg-popover', false)
+        ->assertSee('text-popover-foreground', false);
+});
+
+test('popover renders an anchored interactive surface with dismissal controls', function () {
+    $view = $this->blade(<<<'BLADE'
+        <x-ui.popover id="help-popover" wire:ignore>
+            <x-ui.popover.trigger x-on:click="helpOpened = true">Help</x-ui.popover.trigger>
+            <x-ui.popover.content align="end" label="Help information" data-popover="help">
+                <x-ui.input autofocus wire:model="help.query" />
+            </x-ui.popover.content>
+        </x-ui.popover>
+        BLADE);
+
+    $view
+        ->assertSee('wire:ignore', false)
+        ->assertSee('x-on:click="helpOpened = true"', false)
+        ->assertSee('role="dialog"', false)
+        ->assertSee('aria-modal="false"', false)
+        ->assertSee('aria-label="Help information"', false)
+        ->assertSee('@click.outside="open = false"', false)
+        ->assertSee('@keydown.escape.stop.prevent', false)
+        ->assertSee('right-0', false)
+        ->assertSee('max-w-[calc(100vw-2rem)]', false)
+        ->assertSee('wire:model="help.query"', false)
+        ->assertSee('bg-popover', false);
+});
+
+test('tooltip renders focus and hover behavior for enabled and disabled button triggers', function () {
+    $view = $this->blade(<<<'BLADE'
+        <x-ui.tooltip id="help-tooltip">
+            <x-ui.tooltip.trigger aria-label="Help" wire:click="showHelp">?</x-ui.tooltip.trigger>
+            <x-ui.tooltip.content>Open the help center.</x-ui.tooltip.content>
+        </x-ui.tooltip>
+        <x-ui.tooltip id="disabled-tooltip">
+            <x-ui.tooltip.trigger disabled aria-label="Unavailable">?</x-ui.tooltip.trigger>
+            <x-ui.tooltip.content>This action is unavailable.</x-ui.tooltip.content>
+        </x-ui.tooltip>
+        BLADE);
+
+    $view
+        ->assertSee('wire:click="showHelp"', false)
+        ->assertSee('@mouseenter="open = true"', false)
+        ->assertSee('@mouseleave="open = false"', false)
+        ->assertSee('@focusin="open = true"', false)
+        ->assertSee('@focusout="open = false"', false)
+        ->assertSee('x-bind:aria-describedby="`${tooltipId}-description`"', false)
+        ->assertSee('role="tooltip"', false)
+        ->assertSee('class="sr-only"', false)
+        ->assertSee('disabled="disabled"', false)
+        ->assertSee('bg-foreground', false)
+        ->assertSee('text-background', false);
+});
+
+test('collapsible renders default state and linked trigger content semantics', function () {
+    $view = $this->blade(<<<'BLADE'
+        <x-ui.collapsible id="details" default-open x-data="{ callerState: true }" wire:ignore>
+            <x-ui.collapsible.trigger wire:click="trackDetails">Details</x-ui.collapsible.trigger>
+            <x-ui.collapsible.content data-content="details">More information.</x-ui.collapsible.content>
+        </x-ui.collapsible>
+        BLADE);
+
+    $view
+        ->assertSee('x-data="{ callerState: true }"', false)
+        ->assertSee('wire:ignore', false)
+        ->assertSee('open: true', false)
+        ->assertSee('wire:click="trackDetails"', false)
+        ->assertSee('x-bind:id="`${collapsibleId}-trigger`"', false)
+        ->assertSee('x-bind:aria-expanded="open"', false)
+        ->assertSee('x-bind:aria-controls="`${collapsibleId}-content`"', false)
+        ->assertSee('role="region"', false)
+        ->assertSee(':aria-labelledby="`${collapsibleId}-trigger`"', false)
+        ->assertSee('x-show="open"', false)
+        ->assertSee('x-transition.opacity', false);
+});
+
+test('command renders client-side search, grouped results, keyboard selection, and empty state', function () {
+    $view = $this->blade(<<<'BLADE'
+        <x-ui.command id="app-command" x-data="{ callerState: true }" wire:ignore>
+            <x-ui.command.input placeholder="Search commands" wire:model.live="query" />
+            <x-ui.command.empty>No command found.</x-ui.command.empty>
+            <x-ui.command.list>
+                <x-ui.command.group heading="Actions">
+                    <x-ui.command.item value="Create project" keywords="new workspace" wire:click="createProject">Create project</x-ui.command.item>
+                    <x-ui.command.item value="Profile" href="/profile">Profile</x-ui.command.item>
+                    <x-ui.command.item value="Disabled" disabled>Disabled command</x-ui.command.item>
+                </x-ui.command.group>
+            </x-ui.command.list>
+        </x-ui.command>
+        BLADE);
+
+    $view
+        ->assertSee('x-data="{ callerState: true }"', false)
+        ->assertSee('wire:ignore', false)
+        ->assertSee("query: ''", false)
+        ->assertSee('x-model="query"', false)
+        ->assertSee('wire:model.live="query"', false)
+        ->assertSee('x-ref="list"', false)
+        ->assertSee('role="list"', false)
+        ->assertSee('data-command-item', false)
+        ->assertSee('data-command-value="create project new workspace"', false)
+        ->assertSee('wire:click="createProject"', false)
+        ->assertSee('href="/profile"', false)
+        ->assertSee('data-disabled', false)
+        ->assertSee('role="status"', false)
+        ->assertSee('@keydown.down.prevent', false)
+        ->assertSee('@keydown.up.prevent', false)
+        ->assertSee('@keydown.enter.prevent', false)
+        ->assertSee('@keydown.escape=', false)
+        ->assertSee('data-[active=true]:bg-accent', false)
+        ->assertSee('bg-popover', false);
+});
+
 test('authenticated users can visit the internal component showcase', function () {
     $user = User::factory()->create();
 
@@ -351,10 +557,16 @@ test('authenticated users can visit the internal component showcase', function (
 
     $response
         ->assertOk()
-        ->assertSee('Core UI Components')
+        ->assertSee('UI Components')
         ->assertSee('Button')
         ->assertSee('Avatar, Skeleton, dan Typography')
         ->assertSee('Forms')
         ->assertSee('Data')
-        ->assertSee('Navigation');
+        ->assertSee('Navigation')
+        ->assertSee('Dialog')
+        ->assertSee('Sheet')
+        ->assertSee('Dropdown Menu')
+        ->assertSee('Popover & Tooltip')
+        ->assertSee('Collapsible')
+        ->assertSee('Command');
 });
