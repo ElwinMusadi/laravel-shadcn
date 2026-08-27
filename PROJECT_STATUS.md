@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 9 — Theme Controller / Appearance
+Phase 10 — UI Playground
 
 ## Completed
 
@@ -16,6 +16,7 @@ Phase 9 — Theme Controller / Appearance
 - Phase 7 — Sidebar-07
 - Phase 8 — Login-04 / Signup-04
 - Phase 9 — Theme Controller / Appearance
+- Phase 10 — UI Playground
 
 ## Current Architecture
 
@@ -24,6 +25,7 @@ Phase 9 — Theme Controller / Appearance
 - Shell aplikasi berada di `resources/views/components/app/`; primitive tetap berada di `resources/views/components/ui/`.
 - Flux tetap terpasang untuk Settings selain appearance, runtime toast, passkey registration, dan recovery-code management.
 - Dashboard terlindungi tetap berada pada route `dashboard`, dengan komposisi spesifik di `resources/views/blocks/dashboard/` agar region navigasi shell dapat diganti pada Phase 7 tanpa membangun ulang konten dashboard.
+- UI Playground kanonis berada pada route authenticated + verified `ui.playground` (`/ui`) dengan halaman kategori di bawah `/ui/*`. Seluruh surface memakai `x-layouts::app`, komponen produksi, token semantik, serta data statis lokal.
 
 ## Component Inventory
 
@@ -91,6 +93,16 @@ Phase 9 — Theme Controller / Appearance
 - Landing page, shell aplikasi, dan auth layout tidak lagi memaksa class `dark`, sehingga seluruh route utama, halaman authentication, sidebar, dan Dashboard-01 mengikuti root yang sama. Listener Livewire tunggal menggunakan lifecycle `livewire:navigating` dan `onSwap` untuk menerapkan ulang root sebelum script halaman baru berjalan; listener tidak diduplikasi. Token Amber Phase 1, chart tokens, dan arsitektur semantic-token tidak diubah.
 - Ownership appearance telah dipindahkan dari Flux. Inversi QR setup 2FA sekarang mengikuti class `dark` pada root melalui varian Tailwind. `@fluxScripts`, `@persist('toast')`, `flux:toast`, Settings security, passkey registration, dan recovery-code management tetap dipertahankan.
 
+## Phase 10 Architecture
+
+- `ui.playground` (`/ui`) adalah titik masuk kanonis UI Playground. Halaman kategori Foundations, Components, Forms, Data Display, Navigation, Interaction, Application, Blocks, dan Authentication memakai route named sendiri di bawah middleware `auth` dan `verified`; route lama `ui.components` berevolusi menjadi halaman Components pada `/ui/components`, sehingga tidak ada showcase paralel.
+- `x-playground.layout` membungkus `x-layouts::app`, sehingga Playground mewarisi Shell, Header, Sidebar-07, Page Header, Theme Toggle, landmark, responsivitas, serta perilaku `wire:navigate` yang sama dengan aplikasi. Navigasi internal hanya memuat satu tautan UI Playground di sidebar aplikasi dan daftar kategori khusus pada konten Playground.
+- Foundations menampilkan seluruh token semantic theme (termasuk chart dan sidebar), font configured, `radius-sm` hingga `radius-xl`, dan shadow scale aktual. Tidak ada raw color, font, radius, shadow, atau token baru; Light dan Dark berasal dari controller root yang sudah ada dan tidak memiliki mode ketiga.
+- Semua preview merender `x-ui.*`, `x-app.*`, `x-auth.password-field`, atau `Dashboard-01` aktual. Forms, table, pagination, command, dan menu memakai data contoh deterministik di Blade tanpa query database, API, state server, atau business logic baru.
+- Interactive demos memakai implementasi Alpine lokal yang ada untuk Dialog, Sheet empat sisi, Dropdown, Popover, Tooltip, Collapsible, dan Command. API notes dan contoh Blade singkat merujuk pada atribut yang benar-benar didukung setiap component.
+- Blocks menampilkan `Dashboard-01` langsung. Sidebar-07 sudah merupakan shell yang mengelilingi halaman dan tidak di-embed berulang; Login-04 dan Signup-04 direferensikan melalui route Fortify dan shell auth aktual agar tidak membuat document/shell bersarang atau menjalankan operasi auth dari Playground.
+- Accessibility Playground mencakup satu H1 dari Page Header, heading section berurutan, landmark navigation, link kategori dengan `aria-current`, preview button berlabel, table caption, serta komponen interaktif existing yang sudah menyediakan keyboard/focus semantics. Browser E2E tetap menjadi debt Phase 11.
+
 ## Flux Migration Boundary
 
 - Dimigrasikan pada Phase 5: Flux sidebar, header, navbar, profile dropdown, menu shell, dan wrapper brand lama pada shell aplikasi.
@@ -112,10 +124,11 @@ Phase 9 — Theme Controller / Appearance
 - Phase 7: `vendor/bin/pint --dirty --format agent`, full Pest suite (67 tests / 451 assertions), `npm run build`, dan `git diff --check` lulus. Audit struktur sidebar, desktop/icon mode, Sheet mobile, kontrak data tunggal, route aktif/nested, aksesibilitas markup, keyboard shortcut, `wire:navigate`, token semantik, dark mode, Flux, teknologi terlarang, dan regresi Dashboard-01 lulus.
 - Phase 8: baseline test autentikasi lulus (18 tests / 41 assertions). Test autentikasi setelah migrasi mencakup rendering login, registration, password reset, email verification, password confirmation, two-factor, passkey route, autocomplete, status, dan asosiasi error ARIA (20 tests / 79 assertions). `vendor/bin/pint --dirty --format agent`, full suite (69 tests / 489 assertions), `npm run build`, `git diff --check`, serta audit Flux auth, token semantik, dan teknologi terlarang lulus.
 - Phase 9: `vendor/bin/pint --dirty --format agent`, test Blade terfokus (2 tests / 16 assertions), test runtime Node bawaan (10 tests), full Pest suite (71 tests / 505 assertions), `npm run build`, dan `git diff --check` lulus. Audit default/stored/invalid theme, toggle, persistence, root class, header, Settings, Flux appearance, token, Livewire navigation contract, dan teknologi terlarang lulus.
+- Phase 10: `vendor/bin/pint --dirty --format agent`, test terfokus Playground/shell/components (41 tests / 326 assertions), full Pest suite (81 tests / 528 assertions), `npm run build`, dan `git diff --check` lulus. Audit route/access policy, semua halaman kategori, komposisi component aktual, token semantic, Light/Dark root integration, dependency, Flux boundary, dan teknologi terlarang juga lulus.
 
 ## Browser Testing
 
-- Project tidak memasang `pestphp/pest-plugin-browser`; browser E2E belum dijalankan hingga Phase 9. Validasi browser berikutnya perlu mencakup first paint Light default, stored Light/Dark, toggle, persistensi reload dan `wire:navigate`, fallback localStorage, serta aksesibilitas keyboard dan screen reader.
+- Project tidak memasang `pestphp/pest-plugin-browser`; browser E2E belum dijalankan hingga Phase 10. Phase 11 perlu mencakup first paint Light default, stored Light/Dark, toggle, persistensi reload dan `wire:navigate`, fallback localStorage, responsivitas Playground, dialog, sheet, dropdown, popover, tooltip, collapsible, command, sidebar, serta aksesibilitas keyboard dan screen reader.
 - Test terfokus memverifikasi markup Alpine, state default, hubungan ARIA, handler keyboard, token semantik, komposisi, forwarding atribut Livewire, shell, navigasi aktif, breadcrumb, serta kontrak form logout.
 
 ## Known Risks
@@ -126,7 +139,8 @@ Phase 9 — Theme Controller / Appearance
 - Tabs memakai Alpine lokal untuk state aktif dan navigasi keyboard; tidak diikat ke state Livewire atau route aplikasi.
 - Dialog, Sheet, Dropdown, Popover, Tooltip, Collapsible, dan Command belum memiliki browser E2E otomatis. Khusus Dialog/Sheet, focus trap ringan telah diimplementasikan tetapi tetap perlu verifikasi browser asistif pada fase testing/accessibility khusus.
 - Popover menggunakan anchor CSS minimal dan belum melakukan collision detection dinamis terhadap semua tepi viewport; konten dibatasi terhadap lebar viewport.
+- Playground memiliki validasi server-rendered dan build, tetapi interaksi browser untuk seluruh demo serta evaluasi screen reader nyata tetap menunggu Phase 11 karena browser E2E sengaja tidak dipasang pada fase ini.
 
 ## Next Phase
 
-Phase 10 — UI Playground.
+Phase 11 — Testing and Accessibility.

@@ -40,12 +40,12 @@ test('authenticated users receive the Blade native sidebar application shell', f
 test('sidebar navigation renders grouped named routes and expands an active nested route', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(route('ui.components'));
+    $response = $this->actingAs($user)->get(route('ui.playground'));
 
     $response
         ->assertSee('data-test="sidebar-navigation-item-dashboard"', false)
-        ->assertSee('href="'.route('ui.components').'"', false)
-        ->assertSee('data-test="sidebar-navigation-item-ui-components"', false)
+        ->assertSee('href="'.route('ui.playground').'"', false)
+        ->assertSee('data-test="sidebar-navigation-item-ui-playground"', false)
         ->assertSee('data-test="sidebar-navigation-group-library"', false)
         ->assertSee('x-data="{ open: true', false)
         ->assertSee('aria-current="page"', false)

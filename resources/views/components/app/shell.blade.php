@@ -32,10 +32,10 @@
                     'icon' => 'L',
                     'children' => [
                         [
-                            'key' => 'ui-components',
-                            'label' => __('UI Components'),
-                            'route' => 'ui.components',
-                            'active' => ['ui.components'],
+                            'key' => 'ui-playground',
+                            'label' => __('UI Playground'),
+                            'route' => 'ui.playground',
+                            'active' => ['ui.playground', 'ui.playground.*', 'ui.components'],
                         ],
                     ],
                 ],

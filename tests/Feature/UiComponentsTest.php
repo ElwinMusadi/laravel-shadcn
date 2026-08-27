@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\User;
-
 test('button renders variants, sizes, and caller attributes', function () {
     $view = $this->blade(<<<'BLADE'
         <x-ui.button variant="destructive" size="lg" type="submit" name="action" value="delete" form="delete-user" wire:click="deleteUser" wire:loading.attr="disabled" wire:target="deleteUser" x-on:click="open = true" x-bind:disabled="isBusy">
@@ -550,25 +548,4 @@ test('command renders client-side search, grouped results, keyboard selection, a
         ->assertSee('@keydown.escape=', false)
         ->assertSee('data-[active=true]:bg-accent', false)
         ->assertSee('bg-popover', false);
-});
-
-test('authenticated users can visit the internal component showcase', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(route('ui.components'));
-
-    $response
-        ->assertOk()
-        ->assertSee('UI Components')
-        ->assertSee('Button')
-        ->assertSee('Avatar, Skeleton, dan Typography')
-        ->assertSee('Forms')
-        ->assertSee('Data')
-        ->assertSee('Navigation')
-        ->assertSee('Dialog')
-        ->assertSee('Sheet')
-        ->assertSee('Dropdown Menu')
-        ->assertSee('Popover & Tooltip')
-        ->assertSee('Collapsible')
-        ->assertSee('Command');
 });
