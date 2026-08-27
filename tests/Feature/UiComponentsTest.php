@@ -416,6 +416,7 @@ test('dropdown renders native link and button items with keyboard navigation', f
                     <x-ui.dropdown.label>Account</x-ui.dropdown.label>
                     <x-ui.dropdown.item href="/profile">Profile</x-ui.dropdown.item>
                     <x-ui.dropdown.item wire:click="openBilling">Billing</x-ui.dropdown.item>
+                    <x-ui.dropdown.item type="submit">Log out</x-ui.dropdown.item>
                 </x-ui.dropdown.group>
                 <x-ui.dropdown.separator />
                 <x-ui.dropdown.item disabled>Unavailable</x-ui.dropdown.item>
@@ -427,6 +428,7 @@ test('dropdown renders native link and button items with keyboard navigation', f
         ->assertSee('x-data="{ callerOpen: false }"', false)
         ->assertSee('wire:click="trackMenu"', false)
         ->assertSee('wire:click="openBilling"', false)
+        ->assertSee('type="submit"', false)
         ->assertSee('role="menu"', false)
         ->assertSee('role="menuitem"', false)
         ->assertSee('href="/profile"', false)

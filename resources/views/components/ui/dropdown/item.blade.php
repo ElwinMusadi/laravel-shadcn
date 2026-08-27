@@ -1,10 +1,11 @@
 @props([
     'href' => null,
     'disabled' => false,
+    'type' => 'button',
 ])
 
 @php
-    $itemAttributes = $attributes->except('href');
+    $itemAttributes = $attributes->except(['href', 'type']);
     $itemClasses = 'flex w-full cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground hover:bg-accent hover:text-accent-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50';
 @endphp
 
@@ -28,7 +29,7 @@
     </span>
 @else
     <button
-        type="button"
+        type="{{ $type }}"
         role="menuitem"
         tabindex="-1"
         @click="open = false"

@@ -1,5 +1,8 @@
-<x-layouts::app.sidebar :title="$title ?? null">
-    <flux:main>
-        {{ $slot }}
-    </flux:main>
-</x-layouts::app.sidebar>
+<x-app.shell
+    :title="$title ?? null"
+    :description="$description ?? null"
+    :breadcrumbs="$breadcrumbs ?? []"
+    :show-page-header="$showPageHeader ?? false"
+>
+    {{ $slot }}
+</x-app.shell>
