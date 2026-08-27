@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 6 — Dashboard-01
+Phase 7 — Sidebar-07
 
 ## Completed
 
@@ -13,6 +13,7 @@ Phase 6 — Dashboard-01
 - Phase 4 — Advanced Interaction Components
 - Phase 5 — Application Shell
 - Phase 6 — Dashboard-01
+- Phase 7 — Sidebar-07
 
 ## Current Architecture
 
@@ -29,7 +30,7 @@ Phase 6 — Dashboard-01
 - Data: Table dan Pagination.
 - Navigation: Breadcrumb dan Tabs.
 - Advanced Interaction: Dialog, Sheet, Dropdown Menu, Popover, Tooltip, Collapsible, dan Command.
-- Application Shell: Shell, Brand, Header, Navigation, User Menu, dan Page Header.
+- Application Shell: Shell, Brand, Header, Sidebar, Workspace Switcher, Navigation, User Menu, dan Page Header.
 - Dashboard-01: dashboard composition, section cards, chart SVG dengan kontrol Alpine lokal, dan data table demo dengan Dropdown actions.
 
 ## Phase 4 Architecture
@@ -57,9 +58,21 @@ Phase 6 — Dashboard-01
 - Grid kartu beradaptasi dari satu menjadi dua lalu empat kolom, chart memakai lebar container, dan tabel dapat digulir horizontal pada layar sempit.
 - Chart memiliki title, description, dan daftar nilai `sr-only`; controls, dropdown, landmark section, heading hierarchy, serta table memakai markup semantik dan fokus dari primitive yang ada.
 
+## Phase 7 Architecture
+
+- Referensi resmi shadcn `sidebar-07` diterjemahkan sebagai sidebar Blade-native dengan header, content yang dapat digulir, footer, grup navigasi, mode ikon, trigger, dan Sheet seluler. React/TSX, Radix, hook, context, dan paket sidebar tidak ditambahkan.
+- `x-app.shell` adalah satu sumber data navigasi dan workspace. Data yang sama diteruskan ke `x-app.sidebar` desktop dan `x-app.sidebar` dalam `x-ui.sheet` seluler; data tidak diduplikasi menurut breakpoint.
+- State Alpine tetap lokal di shell: `sidebarExpanded` untuk desktop `expanded` atau `collapsed`. State `open` Sheet tetap berada di `x-ui.sheet`, sehingga desktop collapse dan mobile drawer adalah state terpisah. State tidak dipersistenkan agar tidak menimbulkan flicker layout atau risiko pada navigasi Livewire.
+- Lebar sidebar berada pada `--app-sidebar-expanded` dan `--app-sidebar-collapsed` di shell. Layout flex menyesuaikan main content melalui CSS tanpa perhitungan JavaScript.
+- Sidebar desktop memakai token `sidebar-*`, label visual disembunyikan pada mode ikon dengan `aria-label` dan `title` tetap tersedia. Klik item bercabang ketika collapsed akan memperluas sidebar sebelum membuka submenu.
+- Mobile memakai `x-ui.sheet` untuk dialog, Escape, close control, focus awal, focus trap ringan, dan pengembalian fokus. Sidebar mobile selalu menampilkan label lengkap serta footer user menu.
+- `x-app.navigation` mendukung grup, route name, pola route aktif, submenu `x-ui.collapsible`, `aria-current`, `aria-expanded`, dan `wire:navigate`. `x-app.workspace-switcher` menerima data workspace demo melalui `x-ui.dropdown` tanpa database.
+- `x-app.user-menu` tetap satu-satunya pemilik identitas, tautan Settings, form logout `POST`, dan CSRF; presentasinya dipindahkan ke footer sidebar. Header menjadi lokasi trigger sidebar dan shortcut `Ctrl/Cmd + B` tersedia di luar elemen editable.
+
 ## Flux Migration Boundary
 
 - Dimigrasikan pada Phase 5: Flux sidebar, header, navbar, profile dropdown, menu shell, dan wrapper brand lama pada shell aplikasi.
+- Dimigrasikan pada Phase 7: region navigasi header Phase 5 digantikan sidebar desktop dan Sheet mobile Blade-native. Flux tidak menangani sidebar, navigasi mobile, collapse, atau rendering navigasi.
 - Dipertahankan pada shell: `@persist('toast')`, `flux:toast`, dan `@fluxScripts`, karena settings Livewire masih memanggil `Flux::toast` dan masih memakai kontrol Flux.
 - Dipertahankan di luar shell: `@fluxAppearance` untuk Phase 9, halaman auth untuk Phase 8, serta penggantian runtime/dependensi Flux final untuk Phase 12.
 - Tidak ada dependency Flux yang dihapus pada fase ini.
@@ -72,6 +85,7 @@ Phase 6 — Dashboard-01
 - Phase 4: `vendor/bin/pint --dirty --format agent`, full Pest suite (61 tests / 371 assertions), `npm run build`, dan `git diff --check` lulus. Audit token semantik, dark mode, Alpine lokal, Livewire attribute forwarding, responsivitas, kompatibilitas Flux, dan teknologi terlarang juga lulus.
 - Phase 5: `vendor/bin/pint --dirty --format agent`, full Pest suite (65 tests / 402 assertions), `npm run build`, dan `git diff --check` lulus. Audit shell, Flux, auth/settings regression, aksesibilitas markup, token semantik, `wire:navigate`, dark mode, dan teknologi terlarang juga lulus.
 - Phase 6: `vendor/bin/pint --dirty --format agent`, full Pest suite (66 tests / 424 assertions), `npm run build`, dan `git diff --check` lulus. Audit struktur dashboard, komponen, token, responsivitas, aksesibilitas, dependency, teknologi terlarang, dan scope Sidebar-07 juga lulus.
+- Phase 7: `vendor/bin/pint --dirty --format agent`, full Pest suite (67 tests / 451 assertions), `npm run build`, dan `git diff --check` lulus. Audit struktur sidebar, desktop/icon mode, Sheet mobile, kontrak data tunggal, route aktif/nested, aksesibilitas markup, keyboard shortcut, `wire:navigate`, token semantik, dark mode, Flux, teknologi terlarang, dan regresi Dashboard-01 lulus.
 
 ## Browser Testing
 
@@ -80,7 +94,6 @@ Phase 6 — Dashboard-01
 
 ## Known Risks
 
-- Sidebar-07 belum diimplementasikan; Phase 6 sengaja hanya memakai navigation region dari shell Phase 5 agar Phase 7 dapat menggantinya.
 - Browser E2E belum tersedia untuk memverifikasi pembaruan chart ketika kontrol rentang waktu dioperasikan dan perilaku assistive technology secara nyata.
 - Auth, settings, appearance, dan toast masih memakai Flux pada batas yang telah dicatat untuk migrasi Phase 8, 9, dan 12.
 - Avatar fallback untuk gambar yang gagal memuat menggunakan handler error HTML minimal.
@@ -90,4 +103,4 @@ Phase 6 — Dashboard-01
 
 ## Next Phase
 
-Phase 7 — Sidebar-07.
+Phase 8 — Login-04 / Signup-04.

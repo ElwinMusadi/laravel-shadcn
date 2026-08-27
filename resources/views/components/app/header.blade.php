@@ -1,5 +1,10 @@
+@props([
+    'navigation' => [],
+    'workspaces' => [],
+])
+
 <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80" data-test="application-header">
-    <div class="mx-auto flex min-h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
+    <div class="flex min-h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
         <div class="lg:hidden">
             <x-ui.sheet id="application-navigation">
                 <x-ui.sheet.trigger variant="ghost" size="sm" aria-label="{{ __('Open navigation') }}" data-test="application-navigation-trigger">
@@ -15,22 +20,27 @@
                         <x-ui.sheet.description class="sr-only">{{ __('Application navigation') }}</x-ui.sheet.description>
                     </x-ui.sheet.header>
 
-                    <div class="flex flex-1 flex-col gap-6 p-4">
-                        <x-app.brand />
-                        <x-app.navigation />
-                    </div>
+                    <x-app.sidebar :navigation="$navigation" :workspaces="$workspaces" mobile />
                 </x-ui.sheet.content>
             </x-ui.sheet>
         </div>
 
-        <x-app.brand />
+        <x-app.brand class="lg:hidden" />
 
-        <div class="hidden lg:block">
-            <x-app.navigation />
-        </div>
+        <div class="hidden items-center gap-3 lg:flex">
+            <x-ui.button
+                variant="ghost"
+                size="icon"
+                x-bind:aria-label="sidebarExpanded ? 'Collapse sidebar' : 'Expand sidebar'"
+                x-bind:title="sidebarExpanded ? 'Collapse sidebar' : 'Expand sidebar'"
+                @click="sidebarExpanded = ! sidebarExpanded"
+                data-test="application-sidebar-trigger"
+            >
+                <span aria-hidden="true" x-text="sidebarExpanded ? '‹' : '›'"></span>
+                <span class="sr-only">{{ __('Toggle sidebar') }}</span>
+            </x-ui.button>
 
-        <div class="ms-auto">
-            <x-app.user-menu />
+            <x-ui.separator orientation="vertical" class="h-5" />
         </div>
     </div>
 </header>
