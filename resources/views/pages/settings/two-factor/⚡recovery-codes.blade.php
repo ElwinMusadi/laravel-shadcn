@@ -45,56 +45,49 @@ new class extends Component {
     }
 }; ?>
 
-<div
-    class="py-6 space-y-6 border shadow-sm rounded-xl border-zinc-200 dark:border-white/10"
+<x-ui.card
+    class="space-y-6 py-6"
     wire:cloak
     x-data="{ showRecoveryCodes: false }"
 >
     <div class="px-6 space-y-2">
         <div class="flex items-center gap-2">
-            <flux:icon.lock-closed variant="outline" class="size-4"/>
-            <flux:heading size="lg" level="3">{{ __('2FA recovery codes') }}</flux:heading>
+            <span class="flex size-6 items-center justify-center rounded-md bg-muted text-xs font-semibold text-muted-foreground" aria-hidden="true">2</span>
+            <x-ui.heading variant="subsection">{{ __('2FA recovery codes') }}</x-ui.heading>
         </div>
-        <flux:text variant="subtle">
+        <p class="text-sm leading-6 text-muted-foreground">
             {{ __('Recovery codes let you regain access if you lose your 2FA device. Store them in a secure password manager.') }}
-        </flux:text>
+        </p>
     </div>
 
     <div class="px-6">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <flux:button
+            <x-ui.button
                 x-show="!showRecoveryCodes"
-                icon="eye"
-                icon:variant="outline"
-                variant="primary"
                 @click="showRecoveryCodes = true;"
-                aria-expanded="false"
+                x-bind:aria-expanded="showRecoveryCodes.toString()"
                 aria-controls="recovery-codes-section"
             >
                 {{ __('View recovery codes') }}
-            </flux:button>
+            </x-ui.button>
 
-            <flux:button
+            <x-ui.button
                 x-show="showRecoveryCodes"
-                icon="eye-slash"
-                icon:variant="outline"
-                variant="primary"
                 @click="showRecoveryCodes = false"
-                aria-expanded="true"
+                x-bind:aria-expanded="showRecoveryCodes.toString()"
                 aria-controls="recovery-codes-section"
             >
                 {{ __('Hide recovery codes') }}
-            </flux:button>
+            </x-ui.button>
 
             @if (filled($recoveryCodes))
-                <flux:button
+                <x-ui.button
                     x-show="showRecoveryCodes"
-                    icon="arrow-path"
-                    variant="filled"
+                    variant="outline"
                     wire:click="regenerateRecoveryCodes"
                 >
                     {{ __('Regenerate codes') }}
-                </flux:button>
+                </x-ui.button>
             @endif
         </div>
 
@@ -107,7 +100,7 @@ new class extends Component {
         >
             <div class="mt-3 space-y-3">
                 @error('recoveryCodes')
-                    <flux:callout variant="danger" icon="x-circle" heading="{{$message}}"/>
+                    <x-ui.alert variant="destructive">{{ $message }}</x-ui.alert>
                 @enderror
 
                 @if (filled($recoveryCodes))
@@ -120,17 +113,18 @@ new class extends Component {
                             <div
                                 role="listitem"
                                 class="select-text"
+                                wire:key="recovery-code-{{ $loop->index }}"
                                 wire:loading.class="opacity-50 animate-pulse"
                             >
                                 {{ $code }}
                             </div>
                         @endforeach
                     </div>
-                    <flux:text variant="subtle" class="text-xs">
+                    <p class="text-xs leading-5 text-muted-foreground">
                         {{ __('Each recovery code can be used once to access your account and will be removed after use. If you need more, click Regenerate codes above.') }}
-                    </flux:text>
+                    </p>
                 @endif
             </div>
         </div>
     </div>
-</div>
+</x-ui.card>

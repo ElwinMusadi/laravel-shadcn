@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 11 — Testing, Browser Validation & Accessibility
+Phase 12 — Final Flux Migration & Cleanup
 
 ## Completed
 
@@ -18,13 +18,14 @@ Phase 11 — Testing, Browser Validation & Accessibility
 - Phase 9 — Theme Controller / Appearance
 - Phase 10 — UI Playground
 - Phase 11 — Testing, Browser Validation & Accessibility
+- Phase 12 — Final Flux Migration & Cleanup
 
 ## Current Architecture
 
 - Laravel, Livewire, Blade, Tailwind CSS 4, dan Alpine.js.
 - Token semantik Amber dari Phase 1 adalah sumber kebenaran visual.
 - Shell aplikasi berada di `resources/views/components/app/`; primitive tetap berada di `resources/views/components/ui/`.
-- Flux tetap terpasang untuk Settings selain appearance, runtime toast, passkey registration, dan recovery-code management.
+- Tidak ada runtime dependency Flux. Toast, Settings Security, passkey registration, recovery-code management, dan dialog konfirmasi memakai komponen Blade/Alpine milik proyek.
 - Dashboard terlindungi tetap berada pada route `dashboard`, dengan komposisi spesifik di `resources/views/blocks/dashboard/` agar region navigasi shell dapat diganti pada Phase 7 tanpa membangun ulang konten dashboard.
 - UI Playground kanonis berada pada route authenticated + verified `ui.playground` (`/ui`) dengan halaman kategori di bawah `/ui/*`. Seluruh surface memakai `x-layouts::app`, komponen produksi, token semantik, serta data statis lokal.
 
@@ -117,9 +118,10 @@ Phase 11 — Testing, Browser Validation & Accessibility
 - Dimigrasikan pada Phase 7: region navigasi header Phase 5 digantikan sidebar desktop dan Sheet mobile Blade-native. Flux tidak menangani sidebar, navigasi mobile, collapse, atau rendering navigasi.
 - Dimigrasikan pada Phase 8: layout, halaman, form, header/status, serta passkey verification autentikasi. Halaman auth aktif tidak lagi memakai presentasi Flux.
 - Dimigrasikan pada Phase 9: bootstrap dan controller appearance, toggle header, pilihan Appearance Settings, serta dependency QR setup 2FA terhadap state appearance Flux.
-- Dipertahankan pada shell: `@persist('toast')`, `flux:toast`, dan `@fluxScripts`, karena settings Livewire masih memanggil `Flux::toast` dan masih memakai kontrol Flux.
-- Dipertahankan di luar shell: Settings selain appearance, recovery code/passkey management, toast runtime, serta penggantian runtime/dependensi Flux final untuk Phase 12.
-- Tidak ada dependency Flux yang dihapus pada fase ini.
+- Phase 12 mengganti sisa surface Settings (Profile, Security, 2FA, passkey, recovery code, dan hapus akun) dengan `x-ui.*`, Blade native, dan Alpine lokal tanpa mengubah action, route, validasi, atau kontrak Fortify.
+- Toast project-owned berada pada `x-app.toast`: event Livewire `toast` dengan `variant` (`success`, `info`, `warning`, `error`) dan `text` diterima oleh live region persistent, dapat ditutup dengan keyboard, serta auto-dismiss setelah lima detik.
+- `x-ui.dialog` sekarang menerima event buka lokal untuk dialog yang dipicu action Livewire dan memancarkan `dialog-closed`, sehingga reset state keamanan tetap dijalankan saat pengguna menutup overlay.
+- `livewire/flux` beserta CSS, source path Tailwind, directive, view ikon/navlist yang tidak lagi dipakai, serta skill Boost terkait telah dihapus. `@laravel/passkeys`, Livewire, Fortify, Alpine, dan tema Light/Dark tetap dipertahankan.
 
 ## Latest Validation
 
@@ -134,11 +136,12 @@ Phase 11 — Testing, Browser Validation & Accessibility
 - Phase 9: `vendor/bin/pint --dirty --format agent`, test Blade terfokus (2 tests / 16 assertions), test runtime Node bawaan (10 tests), full Pest suite (71 tests / 505 assertions), `npm run build`, dan `git diff --check` lulus. Audit default/stored/invalid theme, toggle, persistence, root class, header, Settings, Flux appearance, token, Livewire navigation contract, dan teknologi terlarang lulus.
 - Phase 10: `vendor/bin/pint --dirty --format agent`, test terfokus Playground/shell/components (41 tests / 326 assertions), full Pest suite (81 tests / 528 assertions), `npm run build`, dan `git diff --check` lulus. Audit route/access policy, semua halaman kategori, komposisi component aktual, token semantic, Light/Dark root integration, dependency, Flux boundary, dan teknologi terlarang juga lulus.
 - Phase 11: `vendor/bin/pint --dirty --format agent`, Unit+Feature suite (81 tests / 529 assertions), Browser suite Playwright Chromium (13 tests / 97 assertions), `npm run build`, dan `git diff --check` lulus. Audit browser mencakup JavaScript errors pada flow representatif, interaksi keyboard/focus, responsivitas desktop/tablet/mobile, route protection/auth login, dan axe level critical/serious pada mode terang.
+- Phase 12: `vendor/bin/pint --dirty --format agent`, Unit+Feature suite (81 tests / 532 assertions), Browser suite Playwright Chromium (15 tests / 123 assertions), dan `npm run build` lulus. `composer audit` dan `npm audit --omit=dev` tidak menemukan advisory. Audit mencakup toast success/error/dismiss, Security Settings, passkey runtime, recovery codes, dialog hapus akun, tema, navigasi Livewire, dependency, dan referensi runtime Flux nol.
 
 ## Browser Testing
 
 - `pestphp/pest-plugin-browser` dan Playwright Chromium telah dipasang sebagai development dependency. Extension PHP `sockets` juga diaktifkan pada CLI lokal karena merupakan requirement package Browser; perubahan ini berada di konfigurasi PHP lokal, bukan repository.
-- `vendor/bin/pest tests/Browser --compact` lulus (13 tests / 97 assertions). Test membuktikan first paint Light default meskipun browser memprefer Dark, persisted Light/Dark, fallback storage invalid, dan navigasi `wire:navigate` tanpa full document replacement melalui event klik native.
+- `vendor/bin/pest tests/Browser --compact` lulus (15 tests / 123 assertions). Selain cakupan Phase 11, test memverifikasi toast success/error dan dismiss, update Profile, validasi Password, navigasi Settings `wire:navigate` dengan Dark persistence, runtime `@laravel/passkeys`, recovery code, dan dialog konfirmasi hapus akun.
 - Audit runtime Browser tidak menemukan JavaScript error pada flow representatif yang diuji. Tidak ada API aplikasi eksternal atau network call baru yang ditambahkan; semua data Playground/Dashboard tetap lokal dan deterministik.
 - Axe Browser dijalankan pada level critical/serious mode terang. Pada mode gelap, axe 4.10 memunculkan false positive pada custom property `oklch` walaupun Chromium menerapkan token foreground/background dark yang benar; audit dark didukung oleh state root, screenshot Chromium, dan inspeksi visual, bukan klaim WCAG formal.
 
@@ -147,7 +150,7 @@ Phase 11 — Testing, Browser Validation & Accessibility
 - Browser E2E tersedia, tetapi verifikasi assistive technology nyata (screen reader), alur passkey/WebAuthn yang memerlukan device credential, dan 2FA yang memerlukan secret/recovery code tetap memerlukan pemeriksaan manual. Ini bukan klaim kepatuhan WCAG formal.
 - Back/forward history pada navigasi SPA belum diautomasi karena driver Pest Browser pada Windows dapat memblokir klik programatik `wire:navigate`; navigasi maju sendiri telah diverifikasi melalui event klik native dan marker halaman yang tetap ada.
 - Trigger navigasi mobile memakai ukuran `sm` (`h-8`, 32px) dan icon control shell memakai `size-9` (36px), di bawah rekomendasi touch target 44px. Hal ini dicatat dari audit Phase 11 dan tidak diubah karena akan menjadi perubahan desain lintas komponen.
-- Settings selain appearance dan toast masih memakai Flux pada batas yang telah dicatat untuk migrasi Phase 12. Halaman auth aktif dan ownership appearance tidak lagi memakai presentasi Flux.
+- Browser tidak menjalankan upacara WebAuthn nyata atau memindai QR 2FA; test hanya memverifikasi kontrol, runtime, error-safe UI, dan alur yang aman dijalankan di Chromium headless.
 - Avatar fallback untuk gambar yang gagal memuat menggunakan handler error HTML minimal.
 - Tabs memakai Alpine lokal untuk state aktif dan navigasi keyboard; tidak diikat ke state Livewire atau route aplikasi.
 - Dialog, Sheet, Dropdown, Popover, Tooltip, Collapsible, Command, dan Tabs telah memiliki Browser coverage representatif. Focus trap ringan Dialog/Sheet tetap perlu verifikasi dengan screen reader nyata.
@@ -156,4 +159,4 @@ Phase 11 — Testing, Browser Validation & Accessibility
 
 ## Next Phase
 
-Phase 12 — Final Flux Migration (belum dikerjakan).
+Phase 13 — Documentation.

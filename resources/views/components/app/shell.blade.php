@@ -121,12 +121,8 @@
             </div>
         </div>
 
-        @persist('toast')
-            <flux:toast.group>
-                <flux:toast />
-            </flux:toast.group>
-        @endpersist
+        <x-app.toast />
 
-        @fluxScripts
+        @livewireScripts
     </body>
 </html>

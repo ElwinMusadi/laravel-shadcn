@@ -54,11 +54,12 @@ test('Amber theme exposes the required semantic design tokens', function () {
     }
 });
 
-test('application stylesheet retains the Flux compatibility layer', function () {
+test('application stylesheet uses project-owned theme and component styles', function () {
     $stylesheet = file_get_contents(resource_path('css/app.css'));
 
     expect($stylesheet)
-        ->toContain("@import '../../vendor/livewire/flux/dist/flux.css';")
         ->toContain("@import './theme.css';")
-        ->toContain('@custom-variant dark (&:is(.dark *));');
+        ->toContain('@custom-variant dark (&:is(.dark *));')
+        ->not->toContain('livewire/flux')
+        ->not->toContain('data-flux');
 });

@@ -91,7 +91,12 @@ test('password can be updated', function () {
         ->set('password_confirmation', 'new-password')
         ->call('updatePassword');
 
-    $response->assertHasNoErrors();
+    $response
+        ->assertHasNoErrors()
+        ->assertDispatched('toast', function ($event, $params) {
+            return ($params['variant'] ?? null) === 'success'
+                && ($params['text'] ?? null) === 'Password updated.';
+        });
 
     expect(Hash::check('new-password', $user->refresh()->password))->toBeTrue();
 });

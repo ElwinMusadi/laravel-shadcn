@@ -19,7 +19,12 @@ test('profile information can be updated', function () {
         ->set('email', 'test@example.com')
         ->call('updateProfileInformation');
 
-    $response->assertHasNoErrors();
+    $response
+        ->assertHasNoErrors()
+        ->assertDispatched('toast', function ($event, $params) {
+            return ($params['variant'] ?? null) === 'success'
+                && ($params['text'] ?? null) === 'Profile updated.';
+        });
 
     $user->refresh();
 

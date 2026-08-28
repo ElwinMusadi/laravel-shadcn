@@ -28,6 +28,7 @@
 
     <div class="relative" x-data="{ visible: false }">
         <x-ui.input
+            {{ $attributes }}
             :id="$id"
             :name="$name"
             type="password"
