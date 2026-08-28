@@ -13,13 +13,13 @@
             <x-ui.card.header><x-ui.card.title>Application composition</x-ui.card.title><x-ui.card.description>Gunakan shell sebagai layout route authenticated; jangan mengembed shell kembali dalam halaman atau blok.</x-ui.card.description></x-ui.card.header>
             <x-ui.card.content>
                 <pre class="overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm text-foreground"><code class="font-mono">@verbatim
-<x-layouts::app
+&lt;x-layouts::app
     :title="$title"
     :breadcrumbs="$breadcrumbs"
     :show-page-header="true"
->
+&gt;
     …
-</x-layouts::app>
+&lt;/x-layouts::app&gt;
 @endverbatim</code></pre>
             </x-ui.card.content>
         </x-ui.card>

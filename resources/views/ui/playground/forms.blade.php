@@ -59,11 +59,11 @@
         </x-ui.card>
 
         <pre class="overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm text-foreground"><code class="font-mono">@verbatim
-<x-ui.field :invalid="$errors->has('email')">
-    <x-ui.label for="email" required>Email</x-ui.label>
-    <x-ui.input id="email" type="email" :invalid="$errors->has('email')" />
-    <x-ui.field.error name="email" />
-</x-ui.field>
+&lt;x-ui.field :invalid="$errors-&gt;has('email')"&gt;
+    &lt;x-ui.label for="email" required&gt;Email&lt;/x-ui.label&gt;
+    &lt;x-ui.input id="email" type="email" :invalid="$errors-&gt;has('email')" /&gt;
+    &lt;x-ui.field.error name="email" /&gt;
+&lt;/x-ui.field&gt;
 @endverbatim</code></pre>
     </section>
 

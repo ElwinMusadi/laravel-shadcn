@@ -11,7 +11,7 @@
     x-bind:aria-expanded="open"
     aria-haspopup="dialog"
     @click="trigger = $el; open = !open"
-    @keydown.down.prevent="trigger = $el; open = true; $nextTick(() => $refs.content.querySelector('[autofocus], a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])')?.focus())"
+    @keydown.down.prevent="trigger = $el; open = true; $nextTick(() => $refs.content.querySelector('[autofocus], a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex=&quot;-1&quot;])')?.focus())"
     @keydown.escape.prevent="open = false"
     {{ $attributes }}
 >

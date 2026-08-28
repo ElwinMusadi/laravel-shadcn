@@ -79,10 +79,10 @@
             </x-ui.command.list>
         </x-ui.command>
         <pre class="overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm text-foreground"><code class="font-mono">@verbatim
-<x-ui.command id="project-command">
-    <x-ui.command.input />
-    <x-ui.command.list>…</x-ui.command.list>
-</x-ui.command>
+&lt;x-ui.command id="project-command"&gt;
+    &lt;x-ui.command.input /&gt;
+    &lt;x-ui.command.list&gt;…&lt;/x-ui.command.list&gt;
+&lt;/x-ui.command&gt;
 @endverbatim</code></pre>
     </section>
 </x-playground.layout>

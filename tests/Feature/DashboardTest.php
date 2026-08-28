@@ -24,6 +24,7 @@ test('authenticated users can visit the dashboard', function () {
         ->assertSee('dashboard-chart-description', false)
         ->assertSee('data-chart-point', false)
         ->assertSee('data-test="dashboard-chart-data"', false)
+        ->assertSee('Selected time range')
         ->assertSee('data-test="dashboard-data-table"', false)
         ->assertSee('<table', false)
         ->assertSee('Project brief')

@@ -32,10 +32,10 @@
             </x-ui.card.content>
         </x-ui.card>
         <pre class="overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm text-foreground"><code class="font-mono">@verbatim
-<x-ui.tabs id="settings-tabs" default="profile">
-    <x-ui.tabs.list>…</x-ui.tabs.list>
-    <x-ui.tabs.content value="profile">…</x-ui.tabs.content>
-</x-ui.tabs>
+&lt;x-ui.tabs id="settings-tabs" default="profile"&gt;
+    &lt;x-ui.tabs.list&gt;…&lt;/x-ui.tabs.list&gt;
+    &lt;x-ui.tabs.content value="profile"&gt;…&lt;/x-ui.tabs.content&gt;
+&lt;/x-ui.tabs&gt;
 @endverbatim</code></pre>
     </section>
 </x-playground.layout>

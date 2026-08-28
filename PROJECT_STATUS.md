@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 10 — UI Playground
+Phase 11 — Testing, Browser Validation & Accessibility
 
 ## Completed
 
@@ -17,6 +17,7 @@ Phase 10 — UI Playground
 - Phase 8 — Login-04 / Signup-04
 - Phase 9 — Theme Controller / Appearance
 - Phase 10 — UI Playground
+- Phase 11 — Testing, Browser Validation & Accessibility
 
 ## Current Architecture
 
@@ -103,6 +104,13 @@ Phase 10 — UI Playground
 - Blocks menampilkan `Dashboard-01` langsung. Sidebar-07 sudah merupakan shell yang mengelilingi halaman dan tidak di-embed berulang; Login-04 dan Signup-04 direferensikan melalui route Fortify dan shell auth aktual agar tidak membuat document/shell bersarang atau menjalankan operasi auth dari Playground.
 - Accessibility Playground mencakup satu H1 dari Page Header, heading section berurutan, landmark navigation, link kategori dengan `aria-current`, preview button berlabel, table caption, serta komponen interaktif existing yang sudah menyediakan keyboard/focus semantics. Browser E2E tetap menjadi debt Phase 11.
 
+## Phase 11 Architecture
+
+- Browser integration memakai `pestphp/pest-plugin-browser` 4.3.1 dan Playwright Chromium. Test berada di `tests/Browser/`, memakai `RefreshDatabase`, factory user deterministik, serta viewport desktop, tablet, dan mobile.
+- Cakupan Browser memverifikasi default Light, Dark eksplisit, reload/localStorage invalid, toggle, navigasi `wire:navigate`, sidebar desktop/mobile, Dashboard-01, kategori Playground, Dialog, Sheet, Dropdown, Popover, Tooltip, Collapsible, Command, Tabs, kontrol form native, guest route protection, login, invalid login, dan route email-verification Fortify.
+- Validasi browser menemukan dan memperbaiki ekspresi Alpine dengan selector ber-quote yang tidak valid pada Dropdown dan Popover; navigasi keyboard menggunakan `Array.from(...)` agar aman pada ekspresi Blade/Alpine. Contoh kode Playground kini di-escape sehingga tidak lagi diinterpretasi sebagai elemen Alpine aktif.
+- Semantik alternatif chart diperbaiki menjadi pasangan `dt`/`dd`; token `destructive` dan `sidebar-primary-foreground` disetel ulang untuk memenuhi audit contrast mode terang tanpa menambah token atau mengubah struktur visual.
+
 ## Flux Migration Boundary
 
 - Dimigrasikan pada Phase 5: Flux sidebar, header, navbar, profile dropdown, menu shell, dan wrapper brand lama pada shell aplikasi.
@@ -125,22 +133,27 @@ Phase 10 — UI Playground
 - Phase 8: baseline test autentikasi lulus (18 tests / 41 assertions). Test autentikasi setelah migrasi mencakup rendering login, registration, password reset, email verification, password confirmation, two-factor, passkey route, autocomplete, status, dan asosiasi error ARIA (20 tests / 79 assertions). `vendor/bin/pint --dirty --format agent`, full suite (69 tests / 489 assertions), `npm run build`, `git diff --check`, serta audit Flux auth, token semantik, dan teknologi terlarang lulus.
 - Phase 9: `vendor/bin/pint --dirty --format agent`, test Blade terfokus (2 tests / 16 assertions), test runtime Node bawaan (10 tests), full Pest suite (71 tests / 505 assertions), `npm run build`, dan `git diff --check` lulus. Audit default/stored/invalid theme, toggle, persistence, root class, header, Settings, Flux appearance, token, Livewire navigation contract, dan teknologi terlarang lulus.
 - Phase 10: `vendor/bin/pint --dirty --format agent`, test terfokus Playground/shell/components (41 tests / 326 assertions), full Pest suite (81 tests / 528 assertions), `npm run build`, dan `git diff --check` lulus. Audit route/access policy, semua halaman kategori, komposisi component aktual, token semantic, Light/Dark root integration, dependency, Flux boundary, dan teknologi terlarang juga lulus.
+- Phase 11: `vendor/bin/pint --dirty --format agent`, Unit+Feature suite (81 tests / 529 assertions), Browser suite Playwright Chromium (13 tests / 97 assertions), `npm run build`, dan `git diff --check` lulus. Audit browser mencakup JavaScript errors pada flow representatif, interaksi keyboard/focus, responsivitas desktop/tablet/mobile, route protection/auth login, dan axe level critical/serious pada mode terang.
 
 ## Browser Testing
 
-- Project tidak memasang `pestphp/pest-plugin-browser`; browser E2E belum dijalankan hingga Phase 10. Phase 11 perlu mencakup first paint Light default, stored Light/Dark, toggle, persistensi reload dan `wire:navigate`, fallback localStorage, responsivitas Playground, dialog, sheet, dropdown, popover, tooltip, collapsible, command, sidebar, serta aksesibilitas keyboard dan screen reader.
-- Test terfokus memverifikasi markup Alpine, state default, hubungan ARIA, handler keyboard, token semantik, komposisi, forwarding atribut Livewire, shell, navigasi aktif, breadcrumb, serta kontrak form logout.
+- `pestphp/pest-plugin-browser` dan Playwright Chromium telah dipasang sebagai development dependency. Extension PHP `sockets` juga diaktifkan pada CLI lokal karena merupakan requirement package Browser; perubahan ini berada di konfigurasi PHP lokal, bukan repository.
+- `vendor/bin/pest tests/Browser --compact` lulus (13 tests / 97 assertions). Test membuktikan first paint Light default meskipun browser memprefer Dark, persisted Light/Dark, fallback storage invalid, dan navigasi `wire:navigate` tanpa full document replacement melalui event klik native.
+- Audit runtime Browser tidak menemukan JavaScript error pada flow representatif yang diuji. Tidak ada API aplikasi eksternal atau network call baru yang ditambahkan; semua data Playground/Dashboard tetap lokal dan deterministik.
+- Axe Browser dijalankan pada level critical/serious mode terang. Pada mode gelap, axe 4.10 memunculkan false positive pada custom property `oklch` walaupun Chromium menerapkan token foreground/background dark yang benar; audit dark didukung oleh state root, screenshot Chromium, dan inspeksi visual, bukan klaim WCAG formal.
 
 ## Known Risks
 
-- Browser E2E belum tersedia untuk memverifikasi pembaruan chart ketika kontrol rentang waktu dioperasikan dan perilaku assistive technology secara nyata, serta interaksi responsif auth, password visibility, two-factor, passkey, fokus, dan screen reader.
+- Browser E2E tersedia, tetapi verifikasi assistive technology nyata (screen reader), alur passkey/WebAuthn yang memerlukan device credential, dan 2FA yang memerlukan secret/recovery code tetap memerlukan pemeriksaan manual. Ini bukan klaim kepatuhan WCAG formal.
+- Back/forward history pada navigasi SPA belum diautomasi karena driver Pest Browser pada Windows dapat memblokir klik programatik `wire:navigate`; navigasi maju sendiri telah diverifikasi melalui event klik native dan marker halaman yang tetap ada.
+- Trigger navigasi mobile memakai ukuran `sm` (`h-8`, 32px) dan icon control shell memakai `size-9` (36px), di bawah rekomendasi touch target 44px. Hal ini dicatat dari audit Phase 11 dan tidak diubah karena akan menjadi perubahan desain lintas komponen.
 - Settings selain appearance dan toast masih memakai Flux pada batas yang telah dicatat untuk migrasi Phase 12. Halaman auth aktif dan ownership appearance tidak lagi memakai presentasi Flux.
 - Avatar fallback untuk gambar yang gagal memuat menggunakan handler error HTML minimal.
 - Tabs memakai Alpine lokal untuk state aktif dan navigasi keyboard; tidak diikat ke state Livewire atau route aplikasi.
-- Dialog, Sheet, Dropdown, Popover, Tooltip, Collapsible, dan Command belum memiliki browser E2E otomatis. Khusus Dialog/Sheet, focus trap ringan telah diimplementasikan tetapi tetap perlu verifikasi browser asistif pada fase testing/accessibility khusus.
+- Dialog, Sheet, Dropdown, Popover, Tooltip, Collapsible, Command, dan Tabs telah memiliki Browser coverage representatif. Focus trap ringan Dialog/Sheet tetap perlu verifikasi dengan screen reader nyata.
 - Popover menggunakan anchor CSS minimal dan belum melakukan collision detection dinamis terhadap semua tepi viewport; konten dibatasi terhadap lebar viewport.
-- Playground memiliki validasi server-rendered dan build, tetapi interaksi browser untuk seluruh demo serta evaluasi screen reader nyata tetap menunggu Phase 11 karena browser E2E sengaja tidak dipasang pada fase ini.
+- Pest Browser pada Windows kadang menyisakan state server Playwright ketika proses test dihentikan paksa; hapus hanya file cache `vendor/pestphp/pest-plugin-browser/.temp/playwright-server.json` setelah memastikan proses runner terkait sudah berhenti sebelum menjalankan ulang.
 
 ## Next Phase
 
-Phase 11 — Testing and Accessibility.
+Phase 12 — Final Flux Migration (belum dikerjakan).

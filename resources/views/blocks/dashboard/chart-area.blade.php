@@ -118,12 +118,15 @@
                     </div>
                 @endforeach
 
-                <div class="sr-only" aria-live="polite" data-test="dashboard-chart-data">
-                    @foreach ($chartSeries as $range => $series)
-                        <dl x-show="activeRange === '{{ $range }}'">
-                            <dt>{{ $series['label'] }}</dt>
-                            @foreach ($series['values'] as $index => $value)
+                    <div class="sr-only" aria-live="polite" data-test="dashboard-chart-data">
+                        @foreach ($chartSeries as $range => $series)
+                            <dl x-show="activeRange === '{{ $range }}'">
                                 <div>
+                                    <dt>{{ __('Selected time range') }}</dt>
+                                    <dd>{{ $series['label'] }}</dd>
+                                </div>
+                                @foreach ($series['values'] as $index => $value)
+                                    <div>
                                     <dt>{{ $series['labels'][$index] }}</dt>
                                     <dd>{{ $value }}</dd>
                                 </div>

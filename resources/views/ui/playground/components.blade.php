@@ -23,7 +23,7 @@
                     <x-ui.button disabled>Disabled</x-ui.button>
                 </div>
                 <pre class="overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm text-foreground"><code class="font-mono">@verbatim
-<x-ui.button variant="outline" size="sm">Batal</x-ui.button>
+&lt;x-ui.button variant="outline" size="sm"&gt;Batal&lt;/x-ui.button&gt;
 @endverbatim</code></pre>
             </x-ui.card.content>
         </x-ui.card>
@@ -41,11 +41,11 @@
                 <x-ui.card.footer><x-ui.button size="sm">Save changes</x-ui.button><x-ui.button variant="outline" size="sm">Cancel</x-ui.button></x-ui.card.footer>
             </x-ui.card>
             <pre class="overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm text-foreground"><code class="font-mono">@verbatim
-<x-ui.card>
-    <x-ui.card.header>…</x-ui.card.header>
-    <x-ui.card.content>…</x-ui.card.content>
-    <x-ui.card.footer>…</x-ui.card.footer>
-</x-ui.card>
+&lt;x-ui.card&gt;
+    &lt;x-ui.card.header&gt;…&lt;/x-ui.card.header&gt;
+    &lt;x-ui.card.content&gt;…&lt;/x-ui.card.content&gt;
+    &lt;x-ui.card.footer&gt;…&lt;/x-ui.card.footer&gt;
+&lt;/x-ui.card&gt;
 @endverbatim</code></pre>
         </div>
     </section>

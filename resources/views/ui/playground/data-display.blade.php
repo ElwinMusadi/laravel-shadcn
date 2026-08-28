@@ -38,10 +38,10 @@
             </x-ui.card.content>
         </x-ui.card>
         <pre class="overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm text-foreground"><code class="font-mono">@verbatim
-<x-ui.table>
-    <x-ui.table.header>…</x-ui.table.header>
-    <x-ui.table.body>…</x-ui.table.body>
-</x-ui.table>
+&lt;x-ui.table&gt;
+    &lt;x-ui.table.header&gt;…&lt;/x-ui.table.header&gt;
+    &lt;x-ui.table.body&gt;…&lt;/x-ui.table.body&gt;
+&lt;/x-ui.table&gt;
 @endverbatim</code></pre>
     </section>
 

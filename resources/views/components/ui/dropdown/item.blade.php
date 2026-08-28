@@ -15,10 +15,10 @@
         role="menuitem"
         tabindex="-1"
         @click="open = false"
-        @keydown.down.prevent="const items = [...$el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=\'true\'])')]; items[(items.indexOf($el) + 1) % items.length]?.focus()"
-        @keydown.up.prevent="const items = [...$el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=\'true\'])')]; items[(items.indexOf($el) - 1 + items.length) % items.length]?.focus()"
-        @keydown.home.prevent="$el.closest('[role=menu]').querySelector('[role=menuitem]:not([aria-disabled=\'true\'])')?.focus()"
-        @keydown.end.prevent="[...$el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=\'true\'])')].at(-1)?.focus()"
+        @keydown.down.prevent="const items = Array.from($el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=&quot;true&quot;])')); items[(items.indexOf($el) + 1) % items.length]?.focus()"
+        @keydown.up.prevent="const items = Array.from($el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=&quot;true&quot;])')); items[(items.indexOf($el) - 1 + items.length) % items.length]?.focus()"
+        @keydown.home.prevent="$el.closest('[role=menu]').querySelector('[role=menuitem]:not([aria-disabled=&quot;true&quot;])')?.focus()"
+        @keydown.end.prevent="Array.from($el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=&quot;true&quot;])')).at(-1)?.focus()"
         {{ $itemAttributes->class($itemClasses) }}
     >
         {{ $slot }}
@@ -33,10 +33,10 @@
         role="menuitem"
         tabindex="-1"
         @click="open = false"
-        @keydown.down.prevent="const items = [...$el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=\'true\'])')]; items[(items.indexOf($el) + 1) % items.length]?.focus()"
-        @keydown.up.prevent="const items = [...$el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=\'true\'])')]; items[(items.indexOf($el) - 1 + items.length) % items.length]?.focus()"
-        @keydown.home.prevent="$el.closest('[role=menu]').querySelector('[role=menuitem]:not([aria-disabled=\'true\'])')?.focus()"
-        @keydown.end.prevent="[...$el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=\'true\'])')].at(-1)?.focus()"
+        @keydown.down.prevent="const items = Array.from($el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=&quot;true&quot;])')); items[(items.indexOf($el) + 1) % items.length]?.focus()"
+        @keydown.up.prevent="const items = Array.from($el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=&quot;true&quot;])')); items[(items.indexOf($el) - 1 + items.length) % items.length]?.focus()"
+        @keydown.home.prevent="$el.closest('[role=menu]').querySelector('[role=menuitem]:not([aria-disabled=&quot;true&quot;])')?.focus()"
+        @keydown.end.prevent="Array.from($el.closest('[role=menu]').querySelectorAll('[role=menuitem]:not([aria-disabled=&quot;true&quot;])')).at(-1)?.focus()"
         {{ $itemAttributes->class($itemClasses) }}
     >
         {{ $slot }}
