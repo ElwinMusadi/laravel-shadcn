@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 12 — Final Flux Migration & Cleanup
+Phase 13 — Documentation & Developer Handbook (Complete)
 
 ## Completed
 
@@ -19,6 +19,7 @@ Phase 12 — Final Flux Migration & Cleanup
 - Phase 10 — UI Playground
 - Phase 11 — Testing, Browser Validation & Accessibility
 - Phase 12 — Final Flux Migration & Cleanup
+- Phase 13 — Documentation & Developer Handbook
 
 ## Current Architecture
 
@@ -123,6 +124,14 @@ Phase 12 — Final Flux Migration & Cleanup
 - `x-ui.dialog` sekarang menerima event buka lokal untuk dialog yang dipicu action Livewire dan memancarkan `dialog-closed`, sehingga reset state keamanan tetap dijalankan saat pengguna menutup overlay.
 - `livewire/flux` beserta CSS, source path Tailwind, directive, view ikon/navlist yang tidak lagi dipakai, serta skill Boost terkait telah dihapus. `@laravel/passkeys`, Livewire, Fortify, Alpine, dan tema Light/Dark tetap dipertahankan.
 
+## Phase 13 Documentation
+
+- `README.md` menjadi entry point ringkas untuk stack, fitur utama, instalasi, perintah development, struktur proyek, penggunaan Starter Kit, panduan AI, dan indeks dokumentasi.
+- Handbook developer berada di `docs/`: architecture, getting started, components, forms, interactions, blocks, theming, layouts/pages, Livewire/Alpine, authentication, testing, accessibility, AI development, Starter Kit workflow, troubleshooting, dan contributing.
+- Dokumentasi menjelaskan implementasi aktual: UI primitive `x-ui.*`, komponen aplikasi `x-app.*`, password field `x-auth.password-field`, Dashboard-01, Sidebar-07, Login-04/Signup-04, UI Playground `/ui`, token Amber, dan runtime tema Light/Dark.
+- Fortify tetap didokumentasikan sebagai pemilik kontrak autentikasi; presentation Blade/Livewire/Alpine, `@laravel/passkeys`, dan toast project-owned didokumentasikan tanpa mengubah kontrak backend.
+- Panduan testing membedakan Unit/Feature, Browser Pest/Playwright Chromium, validasi otomatis, dan QA aksesibilitas manual. Panduan workflow menegaskan source-of-truth repository, Git safety, batas AI, serta pemisahan infrastruktur Starter Kit dari kode domain.
+
 ## Latest Validation
 
 - Phase 1: Pint, test suite (35 tests / 126 assertions), `npm run build`, `git diff --check`, dan audit token semantik lulus.
@@ -137,6 +146,7 @@ Phase 12 — Final Flux Migration & Cleanup
 - Phase 10: `vendor/bin/pint --dirty --format agent`, test terfokus Playground/shell/components (41 tests / 326 assertions), full Pest suite (81 tests / 528 assertions), `npm run build`, dan `git diff --check` lulus. Audit route/access policy, semua halaman kategori, komposisi component aktual, token semantic, Light/Dark root integration, dependency, Flux boundary, dan teknologi terlarang juga lulus.
 - Phase 11: `vendor/bin/pint --dirty --format agent`, Unit+Feature suite (81 tests / 529 assertions), Browser suite Playwright Chromium (13 tests / 97 assertions), `npm run build`, dan `git diff --check` lulus. Audit browser mencakup JavaScript errors pada flow representatif, interaksi keyboard/focus, responsivitas desktop/tablet/mobile, route protection/auth login, dan axe level critical/serious pada mode terang.
 - Phase 12: `vendor/bin/pint --dirty --format agent`, Unit+Feature suite (81 tests / 532 assertions), Browser suite Playwright Chromium (15 tests / 123 assertions), dan `npm run build` lulus. `composer audit` dan `npm audit --omit=dev` tidak menemukan advisory. Audit mencakup toast success/error/dismiss, Security Settings, passkey runtime, recovery codes, dialog hapus akun, tema, navigasi Livewire, dependency, dan referensi runtime Flux nol.
+- Phase 13: 17 berkas Markdown baru atau diperbarui (README dan handbook docs) telah diaudit terhadap source, component API, route, configuration, dan test aktual. Seluruh tautan Markdown diverifikasi. Unit+Feature suite (81 tests / 532 assertions), Browser suite Playwright Chromium (15 tests / 123 assertions), `npm run build`, `vendor/bin/pint --dirty --format agent`, `git diff --check`, `composer audit`, dan `npm audit --omit=dev` lulus.
 
 ## Browser Testing
 
@@ -159,4 +169,4 @@ Phase 12 — Final Flux Migration & Cleanup
 
 ## Next Phase
 
-Phase 13 — Documentation.
+Phase 14 — Release Audit.
