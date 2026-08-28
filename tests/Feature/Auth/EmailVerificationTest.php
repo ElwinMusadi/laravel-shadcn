@@ -22,6 +22,14 @@ test('email verification screen can be rendered', function () {
         ->assertSee('action="'.route('logout').'"', false);
 });
 
+test('unverified users are redirected from verified routes', function () {
+    $user = User::factory()->unverified()->create();
+
+    $this->actingAs($user)
+        ->get(route('dashboard'))
+        ->assertRedirect(route('verification.notice'));
+});
+
 test('email can be verified', function () {
     $user = User::factory()->unverified()->create();
 

@@ -58,7 +58,7 @@ Tidak ada cookie, session, database, state theme per-komponen, maupun state serv
 
 ## Font
 
-Vite mengirim font melalui plugin <code>laravel-vite-plugin/fonts</code> dan provider Bunny:
+Plugin <code>laravel-vite-plugin/fonts</code> mengambil font dari Bunny saat build; Vite lalu mengeluarkan aset font lokal untuk dikirim aplikasi:
 
 | Font | Weight yang dikonfigurasi |
 | --- | --- |

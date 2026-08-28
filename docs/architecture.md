@@ -60,4 +60,4 @@ Tidak ada dependency runtime Flux. Toast, Settings Security, pengelolaan passkey
 
 ## Asset dan font
 
-Vite memproses <code>resources/css/app.css</code>, <code>resources/js/app.js</code>, dan <code>resources/js/passkeys.js</code>. Plugin font Vite mengirim Inter, Source Serif 4, dan JetBrains Mono melalui Bunny dengan <code>optimizedFallbacks: false</code>. Lihat [Theming](theming.md).
+Vite memproses <code>resources/css/app.css</code>, <code>resources/js/app.js</code>, dan <code>resources/js/passkeys.js</code>. Plugin font Vite mengambil Inter, Source Serif 4, dan JetBrains Mono dari Bunny saat build, lalu Vite mengeluarkan aset font lokal untuk dikirim aplikasi. Konfigurasi memakai <code>optimizedFallbacks: false</code>. Lihat [Theming](theming.md).
