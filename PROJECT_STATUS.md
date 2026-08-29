@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15B: Implementasi Canonical Application Shell selesai, penyesuaian visual mengikuti referensi Dashboard-01 v4, validasi Browser menunggu runner)
+Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15B.1: Penyelesaian issue flex container pada sidebar footer & scroll navigation)
 
 ## Completed
 
@@ -157,6 +157,7 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15B: Implement
 - Inter tetap menjadi font UI default dari mekanisme Bunny/Vite yang sudah ada. Token Amber Minimal, `localStorage.theme`, `<html>.dark`, Fortify, Livewire, dan data dashboard statis tetap dipertahankan.
 - Audit visual setelah build dilakukan pada 1440×900, 1024×900, dan 390×844. Struktur sidebar, header, grid KPI, chart, tabs, tabel horizontal, serta layout mobile diperiksa; ini bukan klaim parity pixel-perfect atau sertifikasi WCAG.
 - Phase 15B menyesuaikan shell aplikasi (`x-app.shell`, `x-app.header`, `x-app.sidebar`) agar menyamai hierarki dan density dari shadcn Dashboard-01 v4. Breadcrumb sekarang diletakkan di dalam top header, dan page-header mandiri direfaktor untuk tidak lagi menampilkan breadcrumbs, sementara sidebar width dikurangi menjadi 16rem.
+- Phase 15B.1 memperbaiki issue di mana user menu & footer area bocor / overflow dari lebar sidebar. Memperbaiki container `ui.dropdown` dengan memastikan properti `min-w-0` pada trigger (sebagai flex child) digunakan untuk mencegah _text blowout_, sekaligus menerapkan `h-[calc(100svh-1rem)] sticky top-2` untuk desktop sidebar agar navigation area scrollable mandiri, dan footer tertambat stabil di bagian bawah sidebar. Di mobile, sidebar menjadi `flex-1 min-h-0` sehingga fungsionalitas `sheet` tetap sempurna.
 - Validasi lulus: Pint, build Vite, Unit+Feature (84 test / 550 assertion), Browser Theme (3 test / 20 assertion), dan Browser toggle sidebar desktop (1 test / 6 assertion). Perintah Browser penuh dimulai sesuai prosedur, tetapi runner Windows tertahan pada Playwright/accessibility teardown setelah test responsif dan tidak menghasilkan exit status; jalankan ulang pada runner bersih sebelum menutup fase atau membuat tag v1.0.0.
 
 ## Latest Validation

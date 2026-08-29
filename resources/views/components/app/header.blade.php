@@ -15,7 +15,7 @@
         </x-ui.sheet.trigger>
 
         <x-ui.sheet.content side="left" class="p-0">
-          <x-ui.sheet.header class="border-b border-border p-4">
+          <x-ui.sheet.header class="shrink-0 border-b border-border p-4">
             <div class="flex items-center justify-between gap-4">
               <x-ui.sheet.title>{{ __('Navigation') }}</x-ui.sheet.title>
               <x-ui.sheet.close />
