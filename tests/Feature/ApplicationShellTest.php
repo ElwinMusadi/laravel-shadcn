@@ -11,7 +11,8 @@ test('authenticated users receive the Blade native sidebar application shell', f
         ->assertSee('data-test="application-shell"', false)
         ->assertSee('x-data="{ sidebarExpanded: true }"', false)
         ->assertSee('--app-sidebar-expanded', false)
-        ->assertSee('--app-sidebar-collapsed', false)
+        ->assertSee('x-show="sidebarExpanded"', false)
+        ->assertSee('data-state="sidebarExpanded ? \'open\' : \'closed\'"', false)
         ->assertSee('data-test="application-sidebar"', false)
         ->assertSee('data-test="application-sidebar-header"', false)
         ->assertSee('data-test="application-sidebar-content"', false)
@@ -25,8 +26,10 @@ test('authenticated users receive the Blade native sidebar application shell', f
         ->assertSee('data-test="application-sidebar-trigger"', false)
         ->assertSee('data-test="application-navigation-trigger"', false)
         ->assertSee('aria-label="Open navigation"', false)
-        ->assertSee('aria-label="Dashboard"', false)
-        ->assertSee('!justify-center !px-0', false)
+        ->assertSee('aria-label="Toggle sidebar"', false)
+        ->assertSee('data-test="sidebar-quick-create"', false)
+        ->assertSee('data-test="sidebar-inbox"', false)
+        ->assertSee('data-test="sidebar-navigation-item-data-library"', false)
         ->assertSee('aria-haspopup="dialog"', false)
         ->assertSee('aria-haspopup="menu"', false)
         ->assertSee('x-bind:aria-expanded="open"', false)
@@ -34,7 +37,7 @@ test('authenticated users receive the Blade native sidebar application shell', f
         ->assertSee('id="main-content"', false)
         ->assertSee('data-test="application-main"', false)
         ->assertSee('Skip to main content')
-        ->assertSee('Dashboard');
+        ->assertSee('Documents');
 });
 
 test('sidebar navigation renders grouped named routes and expands an active nested route', function () {
@@ -45,9 +48,9 @@ test('sidebar navigation renders grouped named routes and expands an active nest
     $response
         ->assertSee('data-test="sidebar-navigation-item-dashboard"', false)
         ->assertSee('href="'.route('ui.playground').'"', false)
-        ->assertSee('data-test="sidebar-navigation-item-ui-playground"', false)
-        ->assertSee('data-test="sidebar-navigation-group-library"', false)
-        ->assertSee('x-data="{ open: true', false)
+        ->assertSee('data-test="sidebar-navigation-item-data-library"', false)
+        ->assertSee('id="sidebar-group-desktop-documents"', false)
+        ->assertSee('Quick Create')
         ->assertSee('aria-current="page"', false)
         ->assertSee('wire:navigate', false);
 });
@@ -85,6 +88,17 @@ test('sidebar renders custom navigation data in both desktop and mobile composit
         ->assertSee('data-test="application-navigation-mobile"', false);
 
     expect(substr_count((string) $view, 'data-test="sidebar-navigation-item-shared-entry"'))->toBe(2);
+});
+
+test('renders the local Lucide-compatible icon component with caller attributes', function () {
+    $view = $this->blade('<x-ui.icon name="panel-left" class="size-4" aria-label="Sidebar icon" />');
+
+    $view
+        ->assertSee('<svg', false)
+        ->assertSee('viewBox="0 0 24 24"', false)
+        ->assertSee('class="shrink-0 size-4"', false)
+        ->assertSee('aria-label="Sidebar icon"', false)
+        ->assertSee('<rect width="18" height="18" x="3" y="3" rx="2"', false);
 });
 
 test('page header composes title description breadcrumbs and actions', function () {

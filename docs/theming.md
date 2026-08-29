@@ -66,6 +66,6 @@ Plugin <code>laravel-vite-plugin/fonts</code> mengambil font dari Bunny saat bui
 | Source Serif 4 | 400, 600, 700 |
 | JetBrains Mono | 400, 500, 600 |
 
-Konfigurasi berada di <code>vite.config.js</code>, dengan <code>optimizedFallbacks: false</code>. Gunakan <code>font-sans</code>, <code>font-serif</code>, atau <code>font-mono</code> yang telah dipetakan token; jangan menambah mekanisme pemuatan font baru tanpa kebutuhan dan review.
+Konfigurasi berada di <code>vite.config.js</code>, dengan <code>optimizedFallbacks: false</code>. Inter adalah default UI melalui <code>font-sans</code> untuk body, navigasi, heading, button, form, shell, tabel, dan dashboard. Source Serif 4 serta JetBrains Mono tetap tersedia hanya melalui <code>font-serif</code> dan <code>font-mono</code> untuk konten khusus. Jangan menambah mekanisme pemuatan font baru tanpa kebutuhan dan review.
 
 Lihat [Accessibility](accessibility.md) untuk pemeriksaan contrast dan [Testing](testing.md#tema) untuk validasi runtime.

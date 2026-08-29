@@ -12,31 +12,31 @@ Block ini menyusun:
 - <code>chart-area.blade.php</code> untuk SVG chart dengan pilihan rentang Alpine lokal.
 - <code>data-table.blade.php</code> untuk tabel demo dan action Dropdown.
 
-Dashboard-01 menggunakan data statis lokal secara default: metrik, series chart, dan rows tabel. Ia aman direuse sebagai reference komposisi UI di dalam <code>x-layouts::app</code>, tetapi bukan analytics backend. Halaman domain atau Livewire Anda harus menyediakan data nyata, authorization, query, pagination, dan action bisnis.
+Dashboard-01 adalah block dashboard kanonis. Ia menggunakan data statis lokal secara default: empat KPI, area chart dengan tiga rentang Alpine lokal, tabs/view controls, dan tabel dokumen. Ia aman direuse sebagai reference komposisi UI di dalam <code>x-layouts::app</code>, tetapi bukan analytics backend. Halaman domain atau Livewire Anda harus menyediakan data nyata, authorization, query, pagination, dan action bisnis.
 
 ~~~blade
 <x-layouts::app
-    :title="__('Dashboard')"
-    :show-page-header="true"
+    :title="__('Documents')"
+    :show-page-header="false"
 >
     @include('blocks.dashboard.dashboard-01')
 </x-layouts::app>
 ~~~
 
-Chart memakai SVG responsif, title, description, serta alternatif teks <code>dt</code>/<code>dd</code>. Tabel dapat bergulir horizontal pada layar kecil. Gunakan block ini di bawah application shell agar header, sidebar, dan landmark tetap konsisten.
+Chart memakai SVG area responsif, grid, label sumbu, title, description, serta alternatif teks <code>dt</code>/<code>dd</code>. Tabel memiliki checkbox, status badge, action menu, pengaturan kolom, serta pagination statis dan dapat bergulir horizontal pada layar kecil. Gunakan block ini di bawah application shell agar header, sidebar, dan landmark tetap konsisten.
 
-## Sidebar-07
+## Sidebar aplikasi Dashboard-01
 
-Sidebar-07 adalah komposisi sidebar yang diimplementasikan oleh <code>x-app.shell</code>, <code>x-app.sidebar</code>, <code>x-app.navigation</code>, dan <code>x-app.workspace-switcher</code>; bukan include block tunggal di <code>resources/views/blocks/</code>.
+Sidebar Dashboard-01 adalah sidebar aplikasi kanonis dan diimplementasikan oleh <code>x-app.shell</code>, <code>x-app.sidebar</code>, <code>x-app.navigation</code>, dan <code>x-app.workspace-switcher</code>; bukan include block tunggal di <code>resources/views/blocks/</code>.
 
-- Desktop: sidebar dapat expanded atau collapsed.
+- Desktop: sidebar lebar dan persisten secara default; trigger header atau <code>Ctrl/Cmd + B</code> menyembunyikan atau menampilkan sidebar tanpa mode ikon.
 - Mobile: header membuka sidebar pada <code>x-ui.sheet</code>.
 - Data navigasi serta workspace didefinisikan sekali pada <code>x-app.shell</code>, lalu diteruskan ke desktop dan mobile.
 - Active route memakai pola <code>request()->routeIs()</code>.
-- Workspace switcher memakai data demo lokal.
-- Shortcut <code>Ctrl/Cmd + B</code> mengubah collapse desktop di luar elemen editable.
+- Workspace switcher memakai nama aplikasi dari <code>APP_NAME</code>; footer memakai user dan email terautentikasi.
+- Sheet menutup dengan Escape dan mengembalikan fokus ke trigger.
 
-Jangan menanamkan Sidebar-07 lagi di dalam halaman yang sudah memakai <code>x-layouts::app</code>. Lihat [Layouts & Pages](layouts-and-pages.md#sidebar-07).
+Sidebar-07 bukan lagi shell kanonis. Primitive yang pernah dipakai tetap dapat direuse bila sesuai, tetapi jangan menanamkan Sidebar-07 atau shell paralel di dalam halaman yang sudah memakai <code>x-layouts::app</code>.
 
 ## Login-04 dan Signup-04
 

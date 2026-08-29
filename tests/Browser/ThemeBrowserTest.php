@@ -57,7 +57,7 @@ test('preserves the selected theme across representative Livewire navigation', f
     $page
         ->click('[aria-label="Switch to dark mode"]');
 
-    $page->script('document.querySelector(\'[data-test="sidebar-navigation-item-ui-playground"]\').dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }))');
+    $page->script('document.querySelector(\'[data-test="sidebar-navigation-item-data-library"]\').dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }))');
 
     $page
         ->wait(1)

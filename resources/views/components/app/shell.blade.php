@@ -11,65 +11,32 @@
     $navigation ??= [
         [
             'key' => 'main',
-            'label' => __('Main'),
+            'quickActions' => true,
             'items' => [
-                [
-                    'key' => 'dashboard',
-                    'label' => __('Dashboard'),
-                    'icon' => 'D',
-                    'route' => 'dashboard',
-                    'active' => ['dashboard'],
-                ],
+                ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'layout-dashboard', 'route' => 'dashboard', 'active' => ['dashboard']],
+                ['key' => 'lifecycle', 'label' => __('Lifecycle'), 'icon' => 'list-todo', 'href' => '#main-content'],
+                ['key' => 'analytics', 'label' => __('Analytics'), 'icon' => 'chart-column', 'href' => '#main-content'],
+                ['key' => 'projects', 'label' => __('Projects'), 'icon' => 'folder', 'href' => '#main-content'],
+                ['key' => 'team', 'label' => __('Team'), 'icon' => 'users', 'href' => '#main-content'],
             ],
         ],
         [
-            'key' => 'resources',
-            'label' => __('Resources'),
+            'key' => 'documents',
+            'label' => __('Documents'),
             'items' => [
-                [
-                    'key' => 'library',
-                    'label' => __('Library'),
-                    'icon' => 'L',
-                    'children' => [
-                        [
-                            'key' => 'ui-playground',
-                            'label' => __('UI Playground'),
-                            'route' => 'ui.playground',
-                            'active' => ['ui.playground', 'ui.playground.*', 'ui.components'],
-                        ],
-                    ],
-                ],
+                ['key' => 'data-library', 'label' => __('Data Library'), 'icon' => 'database', 'route' => 'ui.playground', 'active' => ['ui.playground', 'ui.playground.*', 'ui.components']],
+                ['key' => 'reports', 'label' => __('Reports'), 'icon' => 'chart-no-axes-column', 'href' => '#main-content'],
+                ['key' => 'word-assistant', 'label' => __('Word Assistant'), 'icon' => 'file-text', 'href' => '#main-content'],
+                ['key' => 'more', 'label' => __('More'), 'icon' => 'ellipsis', 'href' => '#main-content'],
             ],
         ],
         [
-            'key' => 'account',
-            'label' => __('Account'),
+            'key' => 'secondary',
+            'position' => 'bottom',
             'items' => [
-                [
-                    'key' => 'settings',
-                    'label' => __('Settings'),
-                    'icon' => 'S',
-                    'children' => [
-                        [
-                            'key' => 'profile',
-                            'label' => __('Profile'),
-                            'route' => 'profile.edit',
-                            'active' => ['profile.*'],
-                        ],
-                        [
-                            'key' => 'appearance',
-                            'label' => __('Appearance'),
-                            'route' => 'appearance.edit',
-                            'active' => ['appearance.*'],
-                        ],
-                        [
-                            'key' => 'security',
-                            'label' => __('Security'),
-                            'route' => 'security.edit',
-                            'active' => ['security.*'],
-                        ],
-                    ],
-                ],
+                ['key' => 'settings', 'label' => __('Settings'), 'icon' => 'settings', 'route' => 'profile.edit', 'active' => ['profile.*', 'appearance.*', 'security.*']],
+                ['key' => 'get-help', 'label' => __('Get Help'), 'icon' => 'circle-help', 'route' => 'ui.playground.interaction', 'active' => ['ui.playground.interaction']],
+                ['key' => 'search', 'label' => __('Search'), 'icon' => 'search', 'href' => '#main-content'],
             ],
         ],
     ];
@@ -78,14 +45,7 @@
         [
             'key' => 'starter',
             'name' => config('app.name', 'Laravel'),
-            'plan' => __('Starter'),
-            'initials' => 'LS',
-        ],
-        [
-            'key' => 'studio',
-            'name' => __('Studio'),
-            'plan' => __('Demo'),
-            'initials' => 'ST',
+            'plan' => __('Starter Kit'),
         ],
     ];
 @endphp
@@ -101,17 +61,25 @@
         </a>
 
         <div
-            class="flex min-h-svh [--app-sidebar-collapsed:4.5rem] [--app-sidebar-expanded:16rem]"
+            class="flex min-h-svh [--app-sidebar-expanded:18rem] lg:gap-2 lg:bg-muted/40 lg:p-2"
             x-data="{ sidebarExpanded: true }"
             @keydown.window="if (($event.ctrlKey || $event.metaKey) && $event.key.toLowerCase() === 'b' && ! ['INPUT', 'SELECT', 'TEXTAREA'].includes($event.target.tagName) && ! $event.target.isContentEditable) { $event.preventDefault(); sidebarExpanded = ! sidebarExpanded }"
             data-test="application-shell"
         >
             <x-app.sidebar :navigation="$navigation" :workspaces="$workspaces" />
 
-            <div class="flex min-w-0 flex-1 flex-col">
-                <x-app.header :navigation="$navigation" :workspaces="$workspaces" />
+            <div class="flex min-w-0 flex-1 flex-col bg-background lg:rounded-xl lg:border lg:border-border">
+                <x-app.header :navigation="$navigation" :title="$title" :workspaces="$workspaces" />
 
-                <main id="main-content" tabindex="-1" class="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-6 outline-none sm:px-6 lg:px-8 lg:py-8" data-test="application-main">
+                <main
+                    id="main-content"
+                    tabindex="-1"
+                    @class([
+                        'flex w-full flex-1 flex-col outline-none',
+                        'gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8' => $showPageHeader,
+                    ])
+                    data-test="application-main"
+                >
                     @if ($showPageHeader)
                         <x-app.page-header :title="$title" :description="$description" :breadcrumbs="$breadcrumbs" />
                     @endif

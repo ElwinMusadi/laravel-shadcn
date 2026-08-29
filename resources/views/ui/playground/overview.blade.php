@@ -27,7 +27,7 @@
             ['route' => 'ui.playground.navigation', 'title' => __('Navigation'), 'description' => __('Breadcrumb dan Tabs yang dapat diakses.')],
             ['route' => 'ui.playground.interaction', 'title' => __('Interaction'), 'description' => __('Primitive Alpine lokal untuk overlay dan command.')],
             ['route' => 'ui.playground.application', 'title' => __('Application'), 'description' => __('Shell, sidebar, header, dan theme controller yang sedang digunakan.')],
-            ['route' => 'ui.playground.blocks', 'title' => __('Blocks'), 'description' => __('Referensi Dashboard-01, Sidebar-07, Login-04, dan Signup-04.')],
+            ['route' => 'ui.playground.blocks', 'title' => __('Blocks'), 'description' => __('Referensi Dashboard-01, sidebar aplikasi kanonis, Login-04, dan Signup-04.')],
             ['route' => 'ui.playground.authentication', 'title' => __('Authentication'), 'description' => __('Password field dan tautan aman ke flow Fortify aktual.')],
         ] as $category)
             <x-ui.card>

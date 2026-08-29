@@ -14,7 +14,7 @@
     <section class="grid gap-4 lg:grid-cols-3" aria-labelledby="block-reference-heading">
         <x-ui.heading id="block-reference-heading" variant="section" class="lg:col-span-3">{{ __('Block references') }}</x-ui.heading>
         <x-ui.card>
-            <x-ui.card.header><x-ui.card.title>Sidebar-07</x-ui.card.title><x-ui.card.description>Sidebar-07 adalah region aplikasi, bukan blok halaman mandiri.</x-ui.card.description></x-ui.card.header>
+            <x-ui.card.header><x-ui.card.title>Sidebar aplikasi Dashboard-01</x-ui.card.title><x-ui.card.description>Sidebar Dashboard-01 adalah region aplikasi kanonis, bukan blok halaman mandiri.</x-ui.card.description></x-ui.card.header>
             <x-ui.card.content><p class="text-sm leading-6 text-muted-foreground">{{ __('Sidebar aktual sudah terlihat di samping halaman ini, termasuk desktop collapse, Sheet mobile, Workspace Switcher, navigation, dan User Menu. Ia sengaja tidak di-embed ulang agar tidak membuat shell bersarang.') }}</p></x-ui.card.content>
         </x-ui.card>
         <x-ui.card>
@@ -31,7 +31,7 @@
         <x-ui.heading id="block-api-heading" variant="section">{{ __('Composition notes') }}</x-ui.heading>
         <x-ui.alert>
             <x-ui.alert.title>{{ __('No duplicate implementation') }}</x-ui.alert.title>
-            <x-ui.alert.description>{{ __('Dashboard-01 dirender sebagai blok nyata. Sidebar-07, Login-04, dan Signup-04 direferensikan melalui instans atau route produksi karena masing-masing telah memiliki shell halaman sendiri.') }}</x-ui.alert.description>
+            <x-ui.alert.description>{{ __('Dashboard-01 dirender sebagai blok nyata. Sidebar aplikasi Dashboard-01, Login-04, dan Signup-04 direferensikan melalui instans atau route produksi karena masing-masing telah memiliki shell halaman sendiri.') }}</x-ui.alert.description>
         </x-ui.alert>
     </section>
 </x-playground.layout>

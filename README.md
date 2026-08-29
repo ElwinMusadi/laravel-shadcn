@@ -7,7 +7,9 @@ Starter kit Laravel untuk membangun aplikasi web Blade-native dengan bahasa desa
 - Primitive UI generik di <code>resources/views/components/ui/</code>.
 - Komposisi aplikasi, shell, sidebar, navigasi, tema, dan toast di <code>resources/views/components/app/</code>.
 - Blok halaman reusable, termasuk Dashboard-01, berada di <code>resources/views/blocks/</code>.
+- Dashboard-01 dan sidebar Dashboard-01 adalah komposisi kanonis aplikasi; Sidebar-07 bukan lagi shell utama.
 - Tema Amber memakai token semantik, dengan Light sebagai default dan Dark sebagai pilihan eksplisit.
+- Inter adalah font UI default; ikon aplikasi memakai subset Blade-native yang kompatibel dengan Lucide.
 - Fortify tetap memiliki kontrak autentikasi; Blade, Livewire, dan Alpine menangani presentasi.
 - UI Playground terlindungi di <code>/ui</code> merender komponen produksi sebagai Living Design System.
 - Pest, Pest Browser, dan Playwright Chromium menyediakan validasi feature serta browser.
@@ -64,7 +66,7 @@ Mulailah dengan branding, navigasi, route, halaman domain, dan model aplikasi An
 - [Components](docs/components.md) — primitive UI, aplikasi, dan auth.
 - [Forms](docs/forms.md) — kontrol form, validasi, dan binding.
 - [Interactions](docs/interactions.md) — overlay dan interaksi Alpine.
-- [Blocks](docs/blocks.md) — Dashboard-01 dan Sidebar-07.
+- [Blocks](docs/blocks.md) — Dashboard-01 dan sidebar aplikasi kanonis.
 - [Theming](docs/theming.md) — token Amber dan tema Light/Dark.
 - [Layouts & Pages](docs/layouts-and-pages.md) — shell, halaman, dan Playground.
 - [Livewire & Alpine](docs/livewire-and-alpine.md) — batas state server dan klien.

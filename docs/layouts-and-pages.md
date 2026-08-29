@@ -21,15 +21,15 @@
 
 Shell mendefinisikan default navigation dan workspace demo satu kali, kemudian meneruskannya ke desktop sidebar serta Sheet mobile. Props shell <code>navigation</code> dan <code>workspaces</code> memungkinkan halaman mengganti data tersebut tanpa menduplikasi komposisi.
 
-<code>x-app.header</code> sticky di atas. Pada desktop ia memiliki trigger collapse; pada mobile ia membuka Sheet navigasi. Theme toggle selalu berada pada header. <code>x-app.sidebar</code> menempatkan workspace switcher, navigasi, dan user menu.
+<code>x-app.header</code> sticky di atas. Pada desktop ia memiliki trigger untuk menampilkan atau menyembunyikan sidebar; pada mobile ia membuka Sheet navigasi. Theme toggle selalu berada pada header. <code>x-app.sidebar</code> menempatkan workspace switcher, navigasi, dan user menu.
 
-## Sidebar-07
+## Sidebar aplikasi Dashboard-01
 
-Pada layar besar sidebar menggunakan state Alpine lokal <code>sidebarExpanded</code> dari <code>x-app.shell</code>. Saat collapsed, lebar memakai custom property <code>--app-sidebar-collapsed</code> dan label visual disembunyikan sambil mempertahankan <code>aria-label</code> serta <code>title</code>.
+Pada layar besar sidebar Dashboard-01 menggunakan state Alpine lokal <code>sidebarExpanded</code> dari <code>x-app.shell</code>. Sidebar memakai lebar <code>--app-sidebar-expanded</code>, tampil persisten secara default, dan dapat disembunyikan dari viewport dengan trigger header; tidak ada mode icon-collapse.
 
-Pada layar kecil, sidebar dirender di dalam <code>x-ui.sheet</code> dan selalu menunjukkan label lengkap. Drawer mobile serta collapse desktop adalah state terpisah. Navigasi child menggunakan <code>x-ui.collapsible</code>; item aktif memakai <code>request()->routeIs()</code> dan link aplikasi memakai <code>wire:navigate</code>.
+Pada layar kecil, sidebar dirender di dalam <code>x-ui.sheet</code> dan selalu menunjukkan label lengkap. Drawer mobile dan visibilitas desktop adalah state terpisah. Sheet mendukung Escape, focus trap ringan, serta pengembalian fokus ke trigger. Item aktif memakai <code>request()->routeIs()</code> dan link aplikasi memakai <code>wire:navigate</code>.
 
-Shortcut <code>Ctrl+B</code> atau <code>Cmd+B</code> mengubah sidebar desktop, kecuali fokus berada pada input, select, textarea, atau elemen contenteditable.
+Shortcut <code>Ctrl+B</code> atau <code>Cmd+B</code> mengubah visibilitas sidebar desktop, kecuali fokus berada pada input, select, textarea, atau elemen contenteditable. Sidebar-07 tidak lagi menjadi shell aplikasi kanonis.
 
 ## Layout autentikasi
 

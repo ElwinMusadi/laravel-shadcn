@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 14 — Final Release Audit (Complete)
+Phase 15 — Dashboard-01 & Application Shell Re-alignment (Implementasi selesai; validasi Browser penuh tertunda teardown runner Windows)
 
 ## Completed
 
@@ -29,6 +29,9 @@ Phase 14 — Final Release Audit (Complete)
 - Shell aplikasi berada di `resources/views/components/app/`; primitive tetap berada di `resources/views/components/ui/`.
 - Tidak ada runtime dependency Flux. Toast, Settings Security, passkey registration, recovery-code management, dan dialog konfirmasi memakai komponen Blade/Alpine milik proyek.
 - Dashboard terlindungi tetap berada pada route `dashboard`, dengan komposisi spesifik di `resources/views/blocks/dashboard/` agar region navigasi shell dapat diganti pada Phase 7 tanpa membangun ulang konten dashboard.
+- Dashboard-01 adalah block dashboard kanonis dan sidebar Dashboard-01 adalah shell aplikasi kanonis; Sidebar-07 hanya merupakan referensi historis, bukan shell utama.
+- Inter tetap menjadi font UI default melalui Bunny/Vite dan token `font-sans`; Source Serif 4 serta JetBrains Mono bersifat opt-in untuk konten khusus.
+- `x-ui.icon` menyediakan subset SVG Lucide-compatible Blade-native untuk shell dan dashboard tanpa dependency frontend baru.
 - UI Playground kanonis berada pada route authenticated + verified `ui.playground` (`/ui`) dengan halaman kategori di bawah `/ui/*`. Seluruh surface memakai `x-layouts::app`, komponen produksi, token semantik, serta data statis lokal.
 
 ## Component Inventory
@@ -92,7 +95,7 @@ Phase 14 — Final Release Audit (Complete)
 
 - Tema aplikasi hanya memiliki dua state: `light` dan `dark`. Saat `localStorage.theme` tidak tersedia, tidak ada, atau berisi nilai yang tidak didukung, aplikasi memilih Light dan tidak menulis ulang nilai invalid tersebut.
 - `x-app.theme-controller` berjalan sinkron di `<head>` sebelum font dan Vite. Bootstrap kecil ini hanya membaca `localStorage.theme` lalu menambah atau menghapus `dark` pada elemen `<html>`; ia tidak memakai `prefers-color-scheme`, `matchMedia`, cookie, session, database, maupun request server.
-- `x-app.theme-toggle` berada di header aplikasi dan memakai tooltip serta button UI existing. Tombol memiliki label dinamis, `aria-pressed`, status screen-reader, fokus terlihat, dan icon Moon/Sun native SVG tanpa dependency icon baru.
+- `x-app.theme-toggle` berada di header aplikasi dan memakai tooltip serta button UI existing. Tombol memiliki label dinamis, `aria-pressed`, status screen-reader, fokus terlihat, dan ikon Moon/Sun dari `x-ui.icon` Lucide-compatible tanpa dependency frontend baru.
 - Settings Appearance memakai `x-ui.radio-group` dengan pilihan Light dan Dark saja. Kontrol Settings dan header menggunakan factory Alpine yang sama; state tampilan mereka hanya merefleksikan `<html>.dark` dan sinkron melalui event DOM `theme-changed`.
 - Landing page, shell aplikasi, dan auth layout tidak lagi memaksa class `dark`, sehingga seluruh route utama, halaman authentication, sidebar, dan Dashboard-01 mengikuti root yang sama. Listener Livewire tunggal menggunakan lifecycle `livewire:navigating` dan `onSwap` untuk menerapkan ulang root sebelum script halaman baru berjalan; listener tidak diduplikasi. Token Amber Phase 1, chart tokens, dan arsitektur semantic-token tidak diubah.
 - Ownership appearance telah dipindahkan dari Flux. Inversi QR setup 2FA sekarang mengikuti class `dark` pada root melalui varian Tailwind. `@fluxScripts`, `@persist('toast')`, `flux:toast`, Settings security, passkey registration, dan recovery-code management tetap dipertahankan.
@@ -100,11 +103,11 @@ Phase 14 — Final Release Audit (Complete)
 ## Phase 10 Architecture
 
 - `ui.playground` (`/ui`) adalah titik masuk kanonis UI Playground. Halaman kategori Foundations, Components, Forms, Data Display, Navigation, Interaction, Application, Blocks, dan Authentication memakai route named sendiri di bawah middleware `auth` dan `verified`; route lama `ui.components` berevolusi menjadi halaman Components pada `/ui/components`, sehingga tidak ada showcase paralel.
-- `x-playground.layout` membungkus `x-layouts::app`, sehingga Playground mewarisi Shell, Header, Sidebar-07, Page Header, Theme Toggle, landmark, responsivitas, serta perilaku `wire:navigate` yang sama dengan aplikasi. Navigasi internal hanya memuat satu tautan UI Playground di sidebar aplikasi dan daftar kategori khusus pada konten Playground.
+- `x-playground.layout` membungkus `x-layouts::app`, sehingga Playground mewarisi Shell, Header, sidebar aplikasi Dashboard-01, Page Header, Theme Toggle, landmark, responsivitas, serta perilaku `wire:navigate` yang sama dengan aplikasi. Navigasi internal hanya memuat satu tautan UI Playground di sidebar aplikasi dan daftar kategori khusus pada konten Playground.
 - Foundations menampilkan seluruh token semantic theme (termasuk chart dan sidebar), font configured, `radius-sm` hingga `radius-xl`, dan shadow scale aktual. Tidak ada raw color, font, radius, shadow, atau token baru; Light dan Dark berasal dari controller root yang sudah ada dan tidak memiliki mode ketiga.
 - Semua preview merender `x-ui.*`, `x-app.*`, `x-auth.password-field`, atau `Dashboard-01` aktual. Forms, table, pagination, command, dan menu memakai data contoh deterministik di Blade tanpa query database, API, state server, atau business logic baru.
 - Interactive demos memakai implementasi Alpine lokal yang ada untuk Dialog, Sheet empat sisi, Dropdown, Popover, Tooltip, Collapsible, dan Command. API notes dan contoh Blade singkat merujuk pada atribut yang benar-benar didukung setiap component.
-- Blocks menampilkan `Dashboard-01` langsung. Sidebar-07 sudah merupakan shell yang mengelilingi halaman dan tidak di-embed berulang; Login-04 dan Signup-04 direferensikan melalui route Fortify dan shell auth aktual agar tidak membuat document/shell bersarang atau menjalankan operasi auth dari Playground.
+- Blocks menampilkan `Dashboard-01` langsung. Sidebar aplikasi Dashboard-01 sudah merupakan shell yang mengelilingi halaman dan tidak di-embed berulang; Login-04 dan Signup-04 direferensikan melalui route Fortify dan shell auth aktual agar tidak membuat document/shell bersarang atau menjalankan operasi auth dari Playground.
 - Accessibility Playground mencakup satu H1 dari Page Header, heading section berurutan, landmark navigation, link kategori dengan `aria-current`, preview button berlabel, table caption, serta komponen interaktif existing yang sudah menyediakan keyboard/focus semantics. Browser E2E tetap menjadi debt Phase 11.
 
 ## Phase 11 Architecture
@@ -129,7 +132,7 @@ Phase 14 — Final Release Audit (Complete)
 
 - `README.md` menjadi entry point ringkas untuk stack, fitur utama, instalasi, perintah development, struktur proyek, penggunaan Starter Kit, panduan AI, dan indeks dokumentasi.
 - Handbook developer berada di `docs/`: architecture, getting started, components, forms, interactions, blocks, theming, layouts/pages, Livewire/Alpine, authentication, testing, accessibility, AI development, Starter Kit workflow, troubleshooting, dan contributing.
-- Dokumentasi menjelaskan implementasi aktual: UI primitive `x-ui.*`, komponen aplikasi `x-app.*`, password field `x-auth.password-field`, Dashboard-01, Sidebar-07, Login-04/Signup-04, UI Playground `/ui`, token Amber, dan runtime tema Light/Dark.
+- Dokumentasi menjelaskan implementasi aktual: UI primitive `x-ui.*`, `x-ui.icon` Lucide-compatible, komponen aplikasi `x-app.*`, password field `x-auth.password-field`, Dashboard-01 dan sidebar aplikasi kanonis, Login-04/Signup-04, UI Playground `/ui`, token Amber, dan runtime tema Light/Dark.
 - Fortify tetap didokumentasikan sebagai pemilik kontrak autentikasi; presentation Blade/Livewire/Alpine, `@laravel/passkeys`, dan toast project-owned didokumentasikan tanpa mengubah kontrak backend.
 - Panduan testing membedakan Unit/Feature, Browser Pest/Playwright Chromium, validasi otomatis, dan QA aksesibilitas manual. Panduan workflow menegaskan source-of-truth repository, Git safety, batas AI, serta pemisahan infrastruktur Starter Kit dari kode domain.
 
@@ -145,6 +148,15 @@ Phase 14 — Final Release Audit (Complete)
 - Dokumentasi, aturan AI, dan reusability lulus setelah klarifikasi bahwa Bunny adalah sumber font saat build, sedangkan Vite mengirim aset font lokal. Starter dapat dikustomisasi melalui `APP_NAME`, branding/logo, data shell demo, navigasi, block, theme, route/page Livewire, dan Fortify tanpa coupling domain.
 - Klasifikasi blocker: tidak ada P0 atau P1 terbuka. P1 verifikasi email telah diperbaiki. P2 tersisa hanya penggunaan utilitas palette mentah `stone`/`zinc` pada presentasi setup 2FA/recovery code; tidak memengaruhi perilaku, keamanan, atau gate rilis. P3 mencakup touch target shell di bawah 44px pada sebagian control dan kebutuhan koneksi Bunny saat build font.
 - Status rilis akhir: **GO WITH KNOWN TECHNICAL DEBT**.
+
+## Phase 15 — Dashboard-01 & Application Shell Re-alignment
+
+- Dashboard-01 kembali menjadi block kanonis dengan empat KPI referensi, area chart SVG responsif, kontrol rentang, tabs/view controls, tabel dokumen statis, checkbox, column control, action menu, dan pagination presentasional.
+- Sidebar aplikasi sekarang mengikuti komposisi Dashboard-01: header berbasis `APP_NAME`, Quick Create, Inbox, grup Documents, utilitas bawah, dan footer user terautentikasi. Sidebar-07 tidak lagi menjadi shell kanonis; mode icon-collapse dihapus dan trigger desktop menyembunyikan atau menampilkan sidebar penuh.
+- `x-ui.icon` adalah strategi ikon reusable baru: subset SVG Lucide-compatible yang dirender di Blade dan dipakai oleh shell, dashboard, serta theme toggle. Tidak ada dependency Composer atau npm baru.
+- Inter tetap menjadi font UI default dari mekanisme Bunny/Vite yang sudah ada. Token Amber Minimal, `localStorage.theme`, `<html>.dark`, Fortify, Livewire, dan data dashboard statis tetap dipertahankan.
+- Audit visual setelah build dilakukan pada 1440×900, 1024×900, dan 390×844. Struktur sidebar, header, grid KPI, chart, tabs, tabel horizontal, serta layout mobile diperiksa; ini bukan klaim parity pixel-perfect atau sertifikasi WCAG.
+- Validasi lulus: Pint, build Vite, targeted Feature (20 test / 132 assertion), Unit+Feature (83 test / 547 assertion), Browser Theme (3 test / 20 assertion), dan Browser toggle sidebar desktop (1 test / 6 assertion). Perintah Browser penuh dimulai sesuai prosedur, tetapi runner Windows tertahan pada Playwright/accessibility teardown setelah test responsif dan tidak menghasilkan exit status; jalankan ulang pada runner bersih sebelum menutup fase atau membuat tag v1.0.0.
 
 ## Latest Validation
 

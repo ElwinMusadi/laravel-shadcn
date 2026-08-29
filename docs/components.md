@@ -20,6 +20,15 @@ Komponen di <code>resources/views/components/app/</code> adalah komposisi reusab
 
 State native seperti <code>disabled</code>, atribut <code>wire:*</code>, <code>x-*</code>, ARIA, dan atribut form diteruskan ke button.
 
+### Icon
+
+<code>x-ui.icon</code> adalah standar ikon aplikasi yang kompatibel dengan Lucide. Komponen ini menyediakan subset lokal Blade-native dari SVG Lucide yang dipakai shell dan Dashboard-01, sehingga tidak ada package React atau runtime icon library. Berikan <code>name</code>, class ukuran, dan bila perlu <code>stroke-width</code>.
+
+~~~blade
+<x-ui.icon name="panel-left" class="size-4" />
+<x-ui.icon name="trending-up" class="size-4 text-primary" />
+~~~
+
 ### Card
 
 <code>x-ui.card</code> adalah container surface. Susun isinya dengan <code>x-ui.card.header</code>, <code>x-ui.card.title</code>, <code>x-ui.card.description</code>, <code>x-ui.card.content</code>, dan <code>x-ui.card.footer</code>.
@@ -92,9 +101,9 @@ Primitive navigasi dan data tersedia sebagai <code>Breadcrumb</code>, <code>Tabs
 | Komponen | Tanggung jawab |
 | --- | --- |
 | <code>x-app.shell</code> | Shell aplikasi, data nav/workspace default, sidebar desktop, header, main landmark, toast, dan <code>@livewireScripts</code>. |
-| <code>x-app.header</code> | Header sticky, trigger Sheet mobile, collapse desktop, dan theme toggle. |
-| <code>x-app.sidebar</code> | Sidebar desktop atau mobile, workspace switcher, navigasi, dan user menu. |
-| <code>x-app.navigation</code> | Grup navigasi, active route, child navigation, dan <code>wire:navigate</code>. |
+| <code>x-app.header</code> | Header 48px, trigger sidebar desktop/mobile, konteks halaman, dan theme toggle. |
+| <code>x-app.sidebar</code> | Sidebar Dashboard-01 desktop atau mobile, workspace switcher, navigasi, dan user menu. |
+| <code>x-app.navigation</code> | Grup navigasi Dashboard-01, active route, ikon Lucide-compatible, dan <code>wire:navigate</code> untuk route aplikasi. |
 | <code>x-app.workspace-switcher</code> | Pemilih workspace demo dalam Dropdown lokal. |
 | <code>x-app.brand</code> | Tautan brand menuju dashboard. |
 | <code>x-app.user-menu</code> | Identitas user, link Settings, serta form logout POST dengan CSRF. |
@@ -116,7 +125,7 @@ Primitive navigasi dan data tersedia sebagai <code>Breadcrumb</code>, <code>Tabs
 </x-layouts::app>
 ~~~
 
-Untuk struktur shell dan Sidebar-07, lihat [Layouts & Pages](layouts-and-pages.md#application-shell) dan [Blocks](blocks.md).
+Untuk struktur shell Dashboard-01, lihat [Layouts & Pages](layouts-and-pages.md#application-shell) dan [Blocks](blocks.md).
 
 ## Komponen autentikasi
 

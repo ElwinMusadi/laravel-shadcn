@@ -25,8 +25,8 @@ Laravel menangani route, middleware, model, action, validasi, session, dan kontr
 | --- | --- |
 | <code>resources/css/theme.css</code> | Nilai token Light/Dark dan alias Tailwind melalui <code>@theme inline</code>. |
 | <code>resources/css/app.css</code> | Entry Tailwind, source scan, varian Dark, serta fallback <code>x-cloak</code>. |
-| <code>resources/views/components/ui/</code> | Primitive generik tanpa query database, business logic, atau asumsi navigasi aplikasi. |
-| <code>resources/views/components/app/</code> | Shell dan komposisi reusable khusus aplikasi: sidebar, header, navigasi, tema, toast. |
+| <code>resources/views/components/ui/</code> | Primitive generik tanpa query database, business logic, atau asumsi navigasi aplikasi, termasuk subset ikon Lucide-compatible <code>x-ui.icon</code>. |
+| <code>resources/views/components/app/</code> | Shell dan komposisi reusable khusus aplikasi: sidebar Dashboard-01, header, navigasi, tema, toast. |
 | <code>resources/views/components/auth/</code> | Presentasi kontrol autentikasi khusus, saat ini password field. |
 | <code>resources/views/blocks/</code> | Komposisi reusable skala halaman. |
 | <code>resources/views/pages/</code> | Halaman Fortify dan halaman Livewire settings. |
@@ -54,10 +54,10 @@ Jangan memindahkan query, autentikasi, atau aturan domain ke primitive UI. Lihat
 
 ## Batas teknologi
 
-Runtime frontend proyek adalah Laravel, Livewire, Blade, Alpine.js, dan Tailwind CSS 4. Bahasa desain boleh mengacu pada shadcn, tetapi API <code>x-ui.*</code> aktual adalah otoritas. Repository ini tidak menjalankan React, Vue, atau Inertia.
+Runtime frontend proyek adalah Laravel, Livewire, Blade, Alpine.js, dan Tailwind CSS 4. Bahasa desain boleh mengacu pada shadcn, tetapi API <code>x-ui.*</code> aktual adalah otoritas. Repository ini tidak menjalankan React, Vue, atau Inertia. Ikon UI memakai subset SVG Lucide yang dirender melalui Blade, bukan <code>lucide-react</code> atau library icon runtime lain.
 
 Tidak ada dependency runtime Flux. Toast, Settings Security, pengelolaan passkey, recovery code, dan overlay merupakan surface Blade/Livewire/Alpine milik proyek.
 
 ## Asset dan font
 
-Vite memproses <code>resources/css/app.css</code>, <code>resources/js/app.js</code>, dan <code>resources/js/passkeys.js</code>. Plugin font Vite mengambil Inter, Source Serif 4, dan JetBrains Mono dari Bunny saat build, lalu Vite mengeluarkan aset font lokal untuk dikirim aplikasi. Konfigurasi memakai <code>optimizedFallbacks: false</code>. Lihat [Theming](theming.md).
+Vite memproses <code>resources/css/app.css</code>, <code>resources/js/app.js</code>, dan <code>resources/js/passkeys.js</code>. Plugin font Vite mengambil Inter, Source Serif 4, dan JetBrains Mono dari Bunny saat build, lalu Vite mengeluarkan aset font lokal untuk dikirim aplikasi. Inter adalah font UI default; konfigurasi memakai <code>optimizedFallbacks: false</code>. Lihat [Theming](theming.md).

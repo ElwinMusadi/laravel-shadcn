@@ -16,8 +16,8 @@ test('authenticated users can visit the dashboard', function () {
         ->assertOk()
         ->assertSee('data-test="dashboard-01"', false)
         ->assertSee('data-test="dashboard-section-cards"', false)
-        ->assertSee('Active workspaces')
-        ->assertSee('Completed reviews')
+        ->assertSee('Total Revenue')
+        ->assertSee('Growth Rate')
         ->assertSee('data-test="dashboard-chart"', false)
         ->assertSee('<svg', false)
         ->assertSee('role="img"', false)
@@ -27,10 +27,14 @@ test('authenticated users can visit the dashboard', function () {
         ->assertSee('Selected time range')
         ->assertSee('data-test="dashboard-data-table"', false)
         ->assertSee('<table', false)
-        ->assertSee('Project brief')
-        ->assertSee('In review')
+        ->assertSee('Cover page')
+        ->assertSee('In Process')
+        ->assertSee('Section Type')
+        ->assertSee('Rows per page')
+        ->assertSee('data-test="dashboard-view-controls"', false)
+        ->assertSee('data-test="dashboard-column-controls"', false)
         ->assertSee('data-test="dashboard-row-action-1"', false)
-        ->assertSee('aria-label="Breadcrumb"', false);
+        ->assertSee('aria-label="Toggle sidebar"', false);
 });
 
 test('dashboard block renders static demo data in responsive component surfaces', function () {
@@ -41,6 +45,7 @@ test('dashboard block renders static demo data in responsive component surfaces'
         ->assertSee('xl:grid-cols-4', false)
         ->assertSee('overflow-x-auto', false)
         ->assertSee('Last 30 days')
-        ->assertSee('Planning notes')
-        ->assertSee('data-test="dashboard-table-row-4"', false);
+        ->assertSee('Advanced Algorithms and Machine Learning')
+        ->assertSee('fill-chart-1/20', false)
+        ->assertSee('data-test="dashboard-table-row-10"', false);
 });

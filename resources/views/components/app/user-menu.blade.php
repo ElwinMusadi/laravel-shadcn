@@ -6,7 +6,6 @@
 
 @php
     $user = auth()->user();
-    $collapsedControlClass = $mobile ? '{}' : "{ '!justify-center !px-0': ! sidebarExpanded }";
 @endphp
 
 @if ($user)
@@ -15,8 +14,7 @@
             <x-ui.dropdown.trigger
                 variant="ghost"
                 size="default"
-                class="w-full justify-start px-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                x-bind:class="{{ $collapsedControlClass }}"
+                class="h-auto w-full justify-start rounded-lg px-2 py-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 aria-label="{{ __('Open user menu for :name', ['name' => $user->name]) }}"
                 title="{{ $user->name }}"
                 data-test="{{ $id }}-trigger"
@@ -25,12 +23,12 @@
                     <x-ui.avatar.fallback aria-hidden="true">{{ $user->initials() }}</x-ui.avatar.fallback>
                 </x-ui.avatar>
 
-                <span @if (! $mobile) x-show="sidebarExpanded" @endif class="min-w-0 flex-1 text-left">
+                <span class="min-w-0 flex-1 text-left">
                     <span class="block truncate text-sm font-medium">{{ $user->name }}</span>
                     <span class="block truncate text-xs text-sidebar-foreground/70">{{ $user->email }}</span>
                 </span>
 
-                <span @if (! $mobile) x-show="sidebarExpanded" @endif class="text-sm text-sidebar-foreground/70" aria-hidden="true">↕</span>
+                <x-ui.icon name="ellipsis" class="size-4 text-sidebar-foreground/70" />
             </x-ui.dropdown.trigger>
         @else
             <x-ui.dropdown.trigger variant="ghost" size="icon" aria-label="{{ __('Open user menu for :name', ['name' => $user->name]) }}" data-test="{{ $id }}-trigger">
@@ -40,7 +38,7 @@
             </x-ui.dropdown.trigger>
         @endif
 
-        <x-ui.dropdown.content :align="$sidebar ? 'start' : 'end'" @class(['bottom-full mb-2 !mt-0 w-64' => $sidebar]) data-test="{{ $id }}-content">
+        <x-ui.dropdown.content :align="$sidebar ? 'start' : 'end'" @class(['bottom-full mb-2 !mt-0 min-w-56' => $sidebar]) data-test="{{ $id }}-content">
             <div class="flex items-center gap-3 px-2 py-1.5" role="presentation">
                 <x-ui.avatar class="size-9">
                     <x-ui.avatar.fallback>{{ $user->initials() }}</x-ui.avatar.fallback>
@@ -56,6 +54,7 @@
 
             <x-ui.dropdown.group>
                 <x-ui.dropdown.item href="{{ route('profile.edit') }}" wire:navigate>
+                    <x-ui.icon name="user-round" class="size-4" />
                     {{ __('Settings') }}
                 </x-ui.dropdown.item>
             </x-ui.dropdown.group>
@@ -66,6 +65,7 @@
                 @csrf
 
                 <x-ui.dropdown.item type="submit" data-test="logout-button">
+                    <x-ui.icon name="log-out" class="size-4" />
                     {{ __('Log out') }}
                 </x-ui.dropdown.item>
             </form>

@@ -1,14 +1,16 @@
 @props([
     'navigation' => [],
+    'title' => null,
     'workspaces' => [],
 ])
 
 <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80" data-test="application-header">
-    <div class="flex min-h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
+    <div class="flex h-12 items-center gap-2 px-4 lg:px-6">
         <div class="lg:hidden">
             <x-ui.sheet id="application-navigation">
-                <x-ui.sheet.trigger variant="ghost" size="sm" aria-label="{{ __('Open navigation') }}" data-test="application-navigation-trigger">
-                    {{ __('Menu') }}
+                <x-ui.sheet.trigger variant="ghost" size="icon" aria-label="{{ __('Open navigation') }}" data-test="application-navigation-trigger">
+                    <x-ui.icon name="panel-left" class="size-4" />
+                    <span class="sr-only">{{ __('Open navigation') }}</span>
                 </x-ui.sheet.trigger>
 
                 <x-ui.sheet.content side="left" class="p-0">
@@ -25,23 +27,24 @@
             </x-ui.sheet>
         </div>
 
-        <x-app.brand class="lg:hidden" />
-
-        <div class="hidden items-center gap-3 lg:flex">
+        <div class="hidden items-center gap-2 lg:flex">
             <x-ui.button
                 variant="ghost"
                 size="icon"
-                x-bind:aria-label="sidebarExpanded ? 'Collapse sidebar' : 'Expand sidebar'"
-                x-bind:title="sidebarExpanded ? 'Collapse sidebar' : 'Expand sidebar'"
+                aria-controls="application-sidebar"
+                aria-label="{{ __('Toggle sidebar') }}"
+                x-bind:aria-expanded="sidebarExpanded"
                 @click="sidebarExpanded = ! sidebarExpanded"
                 data-test="application-sidebar-trigger"
             >
-                <span aria-hidden="true" x-text="sidebarExpanded ? '‹' : '›'"></span>
+                <x-ui.icon name="panel-left" class="size-4" />
                 <span class="sr-only">{{ __('Toggle sidebar') }}</span>
             </x-ui.button>
 
-            <x-ui.separator orientation="vertical" class="h-5" />
+            <x-ui.separator orientation="vertical" class="mx-1 h-4" />
         </div>
+
+        <h1 class="text-base font-medium text-foreground">{{ $title ?? config('app.name', 'Laravel') }}</h1>
 
         <div class="ml-auto flex items-center gap-2">
             <x-app.theme-toggle />
