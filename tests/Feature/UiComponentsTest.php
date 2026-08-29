@@ -263,6 +263,50 @@ test('radio group renders native grouping, selected options, and disabled option
         ->assertSee('More content.');
 });
 
+test('button group renders horizontal and vertical orientations', function () {
+    $view = $this->blade(<<<'BLADE'
+        <x-ui.button-group orientation="horizontal" id="bg-1">
+            <x-ui.button>One</x-ui.button>
+            <x-ui.button>Two</x-ui.button>
+        </x-ui.button-group>
+        <x-ui.button-group orientation="vertical" id="bg-2">
+            <x-ui.button>Top</x-ui.button>
+            <x-ui.button>Bottom</x-ui.button>
+        </x-ui.button-group>
+        BLADE);
+
+    $view
+        ->assertSee('id="bg-1"', false)
+        ->assertSee('id="bg-2"', false)
+        ->assertSee('role="group"', false)
+        ->assertSee('One')
+        ->assertSee('Two')
+        ->assertSee('Top')
+        ->assertSee('Bottom')
+        ->assertSee('-space-x-px', false)
+        ->assertSee('-space-y-px', false)
+        ->assertSee('aria-orientation="vertical"', false);
+});
+
+test('input group composes inputs, addons, and buttons', function () {
+    $view = $this->blade(<<<'BLADE'
+        <x-ui.input-group id="ig-1">
+            <x-ui.input-group.addon data-test="addon-1">https://</x-ui.input-group.addon>
+            <x-ui.input name="website" placeholder="example.com" />
+            <x-ui.button variant="secondary">Check</x-ui.button>
+        </x-ui.input-group>
+        BLADE);
+
+    $view
+        ->assertSee('id="ig-1"', false)
+        ->assertSee('flex items-stretch', false)
+        ->assertSee('-space-x-px', false)
+        ->assertSee('data-test="addon-1"', false)
+        ->assertSee('https://')
+        ->assertSee('name="website"', false)
+        ->assertSee('Check');
+});
+
 test('table renders semantic composable sections in a responsive surface', function () {
     $view = $this->blade(<<<'BLADE'
         <x-ui.table data-table="invoices">
