@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D: Selesai, penyempurnaan keempat detail visual terakhir dari referensi resmi)
+Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.1: Selesai, perbaikan struktur scroll shell dan alignment tinggi header sidebar)
 
 ## Completed
 
@@ -160,6 +160,7 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D: Selesai, 
 - Phase 15B.1 memperbaiki issue di mana user menu & footer area bocor / overflow dari lebar sidebar. Memperbaiki container `ui.dropdown` dengan memastikan properti `min-w-0` pada trigger (sebagai flex child) digunakan untuk mencegah _text blowout_, sekaligus menerapkan `h-[calc(100svh-1rem)] sticky top-2` untuk desktop sidebar agar navigation area scrollable mandiri, dan footer tertambat stabil di bagian bawah sidebar. Di mobile, sidebar menjadi `flex-1 min-h-0` sehingga fungsionalitas `sheet` tetap sempurna.
 - Phase 15C mereproduksi hierarki, proporsi, padding, tipografi metrik, badge, dan integrasi kontainer Data Table agar selaras murni dengan desain resmi Dashboard-01. Kartu metrik sekarang merespons dari kolom tunggal ke 2 kolom lalu ke 4 kolom tanpa kekakuan ukuran. Struktur Data Table disematkan dalam wrapper `rounded-md border` dan disokong komponen overflow-x-auto, melindungi dari pemuaian horisontal pada mobile.
 - Phase 15D menyelesaikan empat isu visual spesifik untuk menyamai referensi: (1) Menyinkronkan tinggi sidebar header (via switcher `h-8`) dan main header (`h-12`) sehingga baseline-nya presisi `48px`, (2) Memperbaiki tipografi navigation label menjadi `h-8 items-center`, button label ke `text-sm`, dan memindahkan font weight reguler untuk menu inactive, (3) Memperbaiki top corner clipping pada container content Dashboard dengan `lg:overflow-clip` yang mencegah background header keluar dari lengkungan corner tanpa merusak `position: sticky` pada mobile, (4) Menyamakan komposisi pagination Data Table menggunakan primitive UI yang telah ada.
+- Phase 15D.1 memperbaiki anomali tinggi elemen dan struktur _scroll_. Memperbaiki over-expansion pada area workspace-switcher dengan pemaksaan batas tinggi `!h-8` sehingga sidebar header dan main header setara presisi (keduanya kini merender tepat di profil 49px termasuk _border_). Menyempurnakan layout shell aplikasi dengan mengganti _viewport min-height_ fleksibel (`min-h-svh`) menjadi statis (`h-svh`) dan membungkus blok _main content_ dengan konteks scroll independen (`min-h-0 overflow-y-auto`). Main header kini tetap stasioner di atas dan menolak bergeser mengikuti konten ke atas, sesuai dengan tata letak dashboard modern dan responsif.
 - Validasi lulus: Pint, build Vite, Unit+Feature (84 test / 550 assertion).
 
 ## Latest Validation
