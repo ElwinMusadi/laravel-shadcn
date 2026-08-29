@@ -9,6 +9,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('ui', 'ui.playground.overview')->name('ui.playground');
     Route::view('ui/foundations', 'ui.playground.foundations')->name('ui.playground.foundations');
     Route::view('ui/components', 'ui.playground.components')->name('ui.components');
+    Route::view('ui/components/input', 'ui.playground.components.input')->name('ui.components.input');
     Route::view('ui/forms', 'ui.playground.forms')->name('ui.playground.forms');
     Route::view('ui/data-display', 'ui.playground.data-display')->name('ui.playground.data-display');
     Route::view('ui/navigation', 'ui.playground.navigation')->name('ui.playground.navigation');
