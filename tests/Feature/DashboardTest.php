@@ -31,6 +31,9 @@ test('authenticated users can visit the dashboard', function () {
         ->assertSee('In Process')
         ->assertSee('Section Type')
         ->assertSee('Rows per page')
+        ->assertSee('data-test="dashboard-pagination-footer"', false)
+        ->assertSee('data-test="dashboard-pagination-controls"', false)
+        ->assertSee('data-test="dashboard-pagination"', false)
         ->assertSee('data-test="dashboard-view-controls"', false)
         ->assertSee('data-test="dashboard-column-controls"', false)
         ->assertSee('data-test="dashboard-row-action-1"', false)
@@ -47,5 +50,7 @@ test('dashboard block renders static demo data in responsive component surfaces'
         ->assertSee('Last 30 days')
         ->assertSee('Advanced Algorithms and Machine Learning')
         ->assertSee('fill-chart-1/20', false)
+        ->assertSee('flex flex-wrap items-center gap-3 sm:flex-nowrap sm:justify-end sm:gap-6 lg:gap-8', false)
+        ->assertSee('shrink-0 whitespace-nowrap text-sm font-medium', false)
         ->assertSee('data-test="dashboard-table-row-10"', false);
 });

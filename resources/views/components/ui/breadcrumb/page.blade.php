@@ -1,3 +1,3 @@
-<span aria-current="page" {{ $attributes->class('font-normal text-foreground') }}>
-    {{ $slot }}
+<span aria-current="page" {{ $attributes->class('font-semibold text-foreground') }}>
+  {{ $slot }}
 </span>

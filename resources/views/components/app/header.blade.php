@@ -27,7 +27,7 @@
       </x-ui.sheet>
     </div>
 
-    <div class="hidden items-center gap-2 lg:flex">
+    <div class="hidden items-center gap-1 lg:flex">
       <x-ui.button variant="ghost" size="icon" class="size-8" aria-controls="application-sidebar" aria-label="{{ __('Toggle sidebar') }}" x-bind:aria-expanded="sidebarExpanded" @click="sidebarExpanded = ! sidebarExpanded" data-test="application-sidebar-trigger">
         <x-ui.icon name="panel-left" class="size-4" />
         <span class="sr-only">{{ __('Toggle sidebar') }}</span>
@@ -55,7 +55,7 @@
         @endforeach
       </x-ui.breadcrumb>
     @else
-      <h1 class="text-sm font-medium text-foreground">{{ $title ?? config('app.name', 'Laravel') }}</h1>
+      <h1 class="text-sm font-semibold text-foreground">{{ $title ?? config('app.name', 'Laravel') }}</h1>
     @endif
 
     <div class="ml-auto flex items-center gap-2">

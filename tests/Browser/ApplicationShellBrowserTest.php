@@ -142,3 +142,48 @@ test('keeps the dashboard and navigation usable at tablet and mobile widths', fu
         ->assertNoJavaScriptErrors()
         ->assertNoAccessibilityIssues(1);
 });
+
+test('keeps the Dashboard pagination controls aligned at desktop and mobile widths', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $page = $this->visit(route('dashboard'));
+
+    foreach ([[390, 844], [1024, 900], [1440, 900]] as [$width, $height]) {
+        $page
+            ->resize($width, $height)
+            ->assertVisible('[data-test="dashboard-pagination-footer"]')
+            ->assertVisible('#dashboard-rows-per-page')
+            ->assertVisible('[data-test="dashboard-pagination"]')
+            ->assertScript('(() => {
+                const footer = document.querySelector("[data-test=\'dashboard-pagination-footer\']");
+                const controls = document.querySelector("[data-test=\'dashboard-pagination-controls\']");
+                const label = document.querySelector("label[for=\'dashboard-rows-per-page\']");
+                const select = document.querySelector("#dashboard-rows-per-page");
+                const pagination = document.querySelector("[data-test=\'dashboard-pagination\']");
+
+                if (! footer || ! controls || ! label || ! select || ! pagination) {
+                    return false;
+                }
+
+                const footerBounds = footer.getBoundingClientRect();
+                const controlsBounds = controls.getBoundingClientRect();
+                const labelBounds = label.getBoundingClientRect();
+                const selectBounds = select.getBoundingClientRect();
+                const paginationBounds = pagination.getBoundingClientRect();
+
+                return labelBounds.height <= 24
+                    && Math.abs(
+                        (labelBounds.top + (labelBounds.height / 2))
+                        - (selectBounds.top + (selectBounds.height / 2)),
+                    ) <= 1
+                    && controlsBounds.left >= footerBounds.left - 1
+                    && controlsBounds.right <= footerBounds.right + 1
+                    && paginationBounds.right <= footerBounds.right + 1
+                    && document.documentElement.scrollWidth <= window.innerWidth;
+            })()', true);
+    }
+
+    $page->assertNoJavaScriptErrors();
+});
