@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.4: Selesai, standard page container dan layout Settings responsif)
+Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.5: Selesai, Application Brand link tanpa workspace switcher)
 
 ## Completed
 
@@ -41,7 +41,7 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.4: Selesai
 - Data: Table dan Pagination.
 - Navigation: Breadcrumb dan Tabs.
 - Advanced Interaction: Dialog, Sheet, Dropdown Menu, Popover, Tooltip, Collapsible, dan Command.
-- Application Shell: Shell, Brand, Header, Sidebar, Workspace Switcher, Navigation, User Menu, dan Page Header.
+- Application Shell: Shell, Brand, Header, Sidebar, Navigation, User Menu, dan Page Header.
 - Dashboard-01: dashboard composition, section cards, chart SVG dengan kontrol Alpine lokal, dan data table demo dengan Dropdown actions.
 
 ## Phase 4 Architecture
@@ -169,6 +169,9 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.4: Selesai
 - Phase 15D.4 memperbaiki Settings mobile yang tampak flush terhadap viewport tanpa mengubah desain Settings, Dashboard, sidebar, header, atau scroll shell. Root cause-nya adalah `main` hanya memiliki gutter ketika `showPageHeader=true`; Dashboard aman karena block-nya memiliki spacing sendiri, sedangkan root Settings Livewire memakai `showPageHeader=false` dan masuk langsung ke main.
 - `x-app.page-container` menjadi kontrak tunggal halaman aplikasi terautentikasi: `box-border`, gutter responsif `px-4 sm:px-6 lg:px-8`, padding vertikal, dan gap halaman berada di dalam satu main scroll region. Shell memakai container yang sama untuk jalur kompatibilitas `showPageHeader=true`; Profile, Appearance, dan Security Settings memakainya secara eksplisit. Constraint `max-w-lg` milik form Settings tetap berada pada child, sehingga Dashboard tidak diubah atau dipersempit.
 - Dokumentasi layout/component dan aturan proyek mencatat konvensi halaman baru: satu page container per halaman, tidak boleh menjadi scroll container, dan padding page tidak diinventasikan per halaman. Browser terfokus memeriksa Profile Settings pada 390×844, 768×900, 1024×900, dan 1440×900: heading, nav, field, serta button berada di dalam content gutter; document tidak overflow secara horizontal/vertikal dan `main` tetap `overflow-y-auto`.
+- Phase 15D.5 menghapus Workspace Switcher yang hanya dipakai header Sidebar. Root cause-nya adalah komponen `x-app.workspace-switcher` masih merender `x-ui.dropdown`, state Alpine workspace, menu, dan chevron meskipun Starter Kit tidak memiliki capability perpindahan workspace.
+- Header Sidebar desktop dan Sheet mobile kini memakai `x-app.brand` dengan varian sidebar: logo dan `APP_NAME` tetap sama, seluruh area `h-8` menjadi anchor normal `wire:navigate` ke named route autentikasi `dashboard`, tanpa state, menu, chevron, atau ARIA dropdown. Header, navigation scroll, footer profil, Sheet, tema Light/Dark, tipografi Inter, dan sistem ikon tidak diubah.
+- Cakupan Feature memverifikasi anchor, route, nama aplikasi, tinggi kontrol, focus-visible, serta ketiadaan semantik/menu workspace. Cakupan Browser memverifikasi pointer dan Enter navigation, state Dashboard aktif, footer, dan Sheet mobile pada 390×844, 768×900, 1024×900, serta 1440×900. Tidak ada dependency Composer atau npm ditambah/diubah.
 
 ## Latest Validation
 
@@ -190,6 +193,7 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.4: Selesai
 - Phase 15D.2: `contain-layout` memulihkan boundary scroll shell tanpa mengubah Dashboard. Unit+Feature suite (84 tests / 550 assertions), Pint, Vite build, dan diff check lulus. Enam test Chromium deterministik (44 assertion) mencakup document/main scroll, sidebar desktop, Sheet mobile, alignment header, dan `wire:navigate`; aggregate Browser suite kembali macet pada teardown Windows setelah 120 detik sehingga tidak dinyatakan lulus.
 - Phase 15D.3: panel side Sheet menggunakan `h-dvh` untuk mengatasi fixed-position containing block dari header yang memakai backdrop blur. Pint dan Unit+Feature suite (84 tests / 550 assertions) lulus. Browser terfokus `SidebarScrollTest` (3 tests / 32 assertions) dan `DocumentScrollTest` (2 tests / 21 assertions) lulus. Percobaan aggregate dan dua file Browser lain macet tanpa keluaran pada startup/teardown Playwright Windows sehingga tidak dinyatakan lulus; proses spesifik run tersebut dihentikan setelah diverifikasi.
 - Phase 15D.4: Pint, Unit+Feature suite (85 tests / 555 assertions), dan Vite build lulus. Browser terfokus untuk page container Settings lulus (1 test / 29 assertions) pada empat breakpoint; `DocumentScrollTest` (2 tests / 21 assertions), `SidebarScrollTest` (3 tests / 32 assertions), dan `ShellAlignmentTest` (1 test / 3 assertions) juga lulus. Aggregate `SettingsBrowserTest` dan `NavigationBrowserTest` tidak dinyatakan lulus karena axe melaporkan issue shell yang sudah ada: trigger sidebar desktop memiliki `aria-controls="application-sidebar"` tanpa ID target yang sesuai; scope Phase 15D.4 melarang perubahan header/sidebar.
+- Phase 15D.5: `vendor/bin/pint --dirty --format agent`, `npm run build`, dan Unit+Feature suite (86 tests / 572 assertions) lulus. Browser terfokus Application Brand lulus (2 tests / 31 assertions) pada 390×844, 768×900, 1024×900, dan 1440×900, termasuk pointer/keyboard navigation serta `assertNoJavaScriptErrors()`. Aggregate `vendor/bin/pest tests/Browser --compact` tidak dinyatakan lulus: tidak menghasilkan output dan macet pada teardown Playwright Windows; proses run terbaru dihentikan setelah identifikasi PID/child process yang eksplisit, tanpa menghentikan proses lain yang sudah ada.
 
 ## Browser Testing
 

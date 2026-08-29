@@ -18,8 +18,13 @@ test('authenticated users receive the Blade native sidebar application shell', f
         ->assertSee('data-test="application-sidebar-content"', false)
         ->assertSee('data-test="application-sidebar-footer"', false)
         ->assertSee('data-test="application-sidebar-mobile"', false)
-        ->assertSee('data-test="application-sidebar-workspace-switcher"', false)
-        ->assertSee('data-test="application-sidebar-mobile-workspace-switcher"', false)
+        ->assertSee('data-test="application-sidebar-brand"', false)
+        ->assertSee('data-test="application-sidebar-mobile-brand"', false)
+        ->assertSee('href="'.route('dashboard').'"', false)
+        ->assertDontSee('application-sidebar-workspace-switcher', false)
+        ->assertDontSee('application-sidebar-mobile-workspace-switcher', false)
+        ->assertDontSee('Switch workspace')
+        ->assertDontSee('Workspaces')
         ->assertSee('data-test="application-header"', false)
         ->assertSee('data-test="application-navigation-desktop"', false)
         ->assertSee('data-test="application-navigation-mobile"', false)
@@ -28,7 +33,7 @@ test('authenticated users receive the Blade native sidebar application shell', f
         ->assertSee('aria-label="Open navigation"', false)
         ->assertSee('aria-label="Toggle sidebar"', false)
         ->assertSee('data-test="sidebar-quick-create"', false)
-        ->assertSee('data-test="sidebar-inbox"', false)
+        ->assertDontSee('data-test="sidebar-inbox"', false)
         ->assertSee('data-test="sidebar-navigation-item-data-library"', false)
         ->assertSee('aria-haspopup="dialog"', false)
         ->assertSee('aria-haspopup="menu"', false)
@@ -73,9 +78,6 @@ test('sidebar renders custom navigation data in both desktop and mobile composit
                     ],
                 ],
             ]"
-            :workspaces="[
-                ['key' => 'demo', 'name' => 'Demo Workspace', 'plan' => 'Demo', 'initials' => 'DW'],
-            ]"
         >
             <span>Shell content</span>
         </x-app.shell>
@@ -88,6 +90,24 @@ test('sidebar renders custom navigation data in both desktop and mobile composit
         ->assertSee('data-test="application-navigation-mobile"', false);
 
     expect(substr_count((string) $view, 'data-test="sidebar-navigation-item-shared-entry"'))->toBe(2);
+});
+
+test('sidebar application brand is a dashboard link without dropdown semantics', function () {
+    $view = $this->blade('<x-app.brand sidebar data-test="application-sidebar-brand" />');
+
+    $view
+        ->assertSee('<a', false)
+        ->assertSee('data-test="application-sidebar-brand"', false)
+        ->assertSee('href="'.route('dashboard').'"', false)
+        ->assertSee('wire:navigate', false)
+        ->assertSee('flex h-8 w-full min-w-0 items-center', false)
+        ->assertSee('focus-visible:ring-2 focus-visible:ring-sidebar-ring', false)
+        ->assertSee(config('app.name', 'Laravel'))
+        ->assertDontSee('aria-expanded=', false)
+        ->assertDontSee('aria-haspopup=', false)
+        ->assertDontSee('role="menu"', false)
+        ->assertDontSee('Switch workspace')
+        ->assertDontSee('Workspaces');
 });
 
 test('renders the local Lucide-compatible icon component with caller attributes', function () {

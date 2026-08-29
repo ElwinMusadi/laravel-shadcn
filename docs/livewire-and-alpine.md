@@ -35,7 +35,7 @@ Komponen berikut memiliki Alpine internal:
 
 - Dialog, Sheet, Dropdown, Popover, Tooltip, Collapsible, Command, dan Tabs.
 - Theme controller dan theme toggle.
-- Sidebar collapse, workspace switcher, Dashboard-01 chart range.
+- Sidebar collapse dan Dashboard-01 chart range.
 - Password visibility, two-factor challenge, recovery-code visibility, dan passkey UI.
 
 Jangan menimpa state internal seperti <code>open</code> atau <code>active</code> dari luar kecuali API component memang menyediakan event/atribut yang sesuai. Atribut caller dipertahankan pada wrapper luar agar <code>wire:*</code> dan <code>x-data</code> caller tidak berbenturan.

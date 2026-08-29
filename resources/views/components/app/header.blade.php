@@ -2,7 +2,6 @@
     'navigation' => [],
     'title' => null,
     'breadcrumbs' => [],
-    'workspaces' => [],
 ])
 
 <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80" data-test="application-header">
@@ -23,7 +22,7 @@
             <x-ui.sheet.description class="sr-only">{{ __('Application navigation') }}</x-ui.sheet.description>
           </x-ui.sheet.header>
 
-          <x-app.sidebar :navigation="$navigation" :workspaces="$workspaces" mobile />
+          <x-app.sidebar :navigation="$navigation" mobile />
         </x-ui.sheet.content>
       </x-ui.sheet>
     </div>

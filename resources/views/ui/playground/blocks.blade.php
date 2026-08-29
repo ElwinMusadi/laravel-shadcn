@@ -15,7 +15,7 @@
         <x-ui.heading id="block-reference-heading" variant="section" class="lg:col-span-3">{{ __('Block references') }}</x-ui.heading>
         <x-ui.card>
             <x-ui.card.header><x-ui.card.title>Sidebar aplikasi Dashboard-01</x-ui.card.title><x-ui.card.description>Sidebar Dashboard-01 adalah region aplikasi kanonis, bukan blok halaman mandiri.</x-ui.card.description></x-ui.card.header>
-            <x-ui.card.content><p class="text-sm leading-6 text-muted-foreground">{{ __('Sidebar aktual sudah terlihat di samping halaman ini, termasuk desktop collapse, Sheet mobile, Workspace Switcher, navigation, dan User Menu. Ia sengaja tidak di-embed ulang agar tidak membuat shell bersarang.') }}</p></x-ui.card.content>
+            <x-ui.card.content><p class="text-sm leading-6 text-muted-foreground">{{ __('Sidebar aktual sudah terlihat di samping halaman ini, termasuk desktop collapse, Sheet mobile, Application Brand, navigation, dan User Menu. Ia sengaja tidak di-embed ulang agar tidak membuat shell bersarang.') }}</p></x-ui.card.content>
         </x-ui.card>
         <x-ui.card>
             <x-ui.card.header><x-ui.card.title>Login-04</x-ui.card.title><x-ui.card.description>Surface login memakai x-layouts::auth dan halaman Fortify aktual.</x-ui.card.description></x-ui.card.header>

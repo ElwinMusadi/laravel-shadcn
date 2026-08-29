@@ -27,13 +27,13 @@ Chart memakai SVG area responsif, grid, label sumbu, title, description, serta a
 
 ## Sidebar aplikasi Dashboard-01
 
-Sidebar Dashboard-01 adalah sidebar aplikasi kanonis dan diimplementasikan oleh <code>x-app.shell</code>, <code>x-app.sidebar</code>, <code>x-app.navigation</code>, dan <code>x-app.workspace-switcher</code>; bukan include block tunggal di <code>resources/views/blocks/</code>.
+Sidebar Dashboard-01 adalah sidebar aplikasi kanonis dan diimplementasikan oleh <code>x-app.shell</code>, <code>x-app.sidebar</code>, <code>x-app.brand</code>, dan <code>x-app.navigation</code>; bukan include block tunggal di <code>resources/views/blocks/</code>.
 
 - Desktop: sidebar lebar dan persisten secara default; trigger header atau <code>Ctrl/Cmd + B</code> menyembunyikan atau menampilkan sidebar tanpa mode ikon.
 - Mobile: header membuka sidebar pada <code>x-ui.sheet</code>.
-- Data navigasi serta workspace didefinisikan sekali pada <code>x-app.shell</code>, lalu diteruskan ke desktop dan mobile.
+- Data navigasi didefinisikan sekali pada <code>x-app.shell</code>, lalu diteruskan ke desktop dan mobile.
 - Active route memakai pola <code>request()->routeIs()</code>.
-- Workspace switcher memakai nama aplikasi dari <code>APP_NAME</code>; footer memakai user dan email terautentikasi.
+- Application Brand memakai logo dan nama dari <code>APP_NAME</code>, menaut ke route <code>dashboard</code> dengan <code>wire:navigate</code>, dan tidak menyediakan perpindahan workspace; footer memakai user dan email terautentikasi.
 - Sheet menutup dengan Escape dan mengembalikan fokus ke trigger.
 
 Sidebar-07 bukan lagi shell kanonis. Primitive yang pernah dipakai tetap dapat direuse bila sesuai, tetapi jangan menanamkan Sidebar-07 atau shell paralel di dalam halaman yang sudah memakai <code>x-layouts::app</code>.

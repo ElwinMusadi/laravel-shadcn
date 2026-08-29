@@ -52,7 +52,7 @@ test('renders the mobile Sheet sidebar without Dashboard content and keeps its n
         ->assertVisible('[role="dialog"]')
         ->assertVisible('[data-test="application-sidebar-mobile"]')
         ->assertVisible('[data-test="application-navigation-mobile"] [data-test="sidebar-quick-create"]')
-        ->assertVisible('[data-test="application-navigation-mobile"] [data-test="sidebar-inbox"]');
+        ->assertMissing('[data-test="application-navigation-mobile"] [data-test="sidebar-inbox"]');
 
     expect($page->script('(() => {
         const sheet = document.querySelector(\'[role="dialog"]\');

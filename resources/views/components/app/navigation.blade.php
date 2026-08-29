@@ -21,10 +21,10 @@
               {{ __('Quick Create') }}
             </x-ui.button>
 
-            <x-ui.button variant="outline" size="icon" class="h-8 w-8 shrink-0" aria-label="{{ __('Inbox') }}" data-test="sidebar-inbox">
+            {{-- <x-ui.button variant="outline" size="icon" class="h-8 w-8 shrink-0" aria-label="{{ __('Inbox') }}" data-test="sidebar-inbox">
               <x-ui.icon name="inbox" class="size-4" />
               <span class="sr-only">{{ __('Inbox') }}</span>
-            </x-ui.button>
+            </x-ui.button> --}}
           </li>
         @endif
 

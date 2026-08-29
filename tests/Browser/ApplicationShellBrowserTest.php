@@ -2,6 +2,65 @@
 
 use App\Models\User;
 
+test('uses a normal application brand link to return from the UI Playground to Dashboard on desktop', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $page = $this->visit(route('ui.playground'))->resize(1024, 900);
+
+    foreach ([[1024, 900], [1440, 900]] as [$width, $height]) {
+        $page
+            ->resize($width, $height)
+            ->assertVisible('a[data-test="application-sidebar-brand"]')
+            ->assertAttribute('a[data-test="application-sidebar-brand"]', 'href', route('dashboard'))
+            ->assertAttributeMissing('a[data-test="application-sidebar-brand"]', 'aria-expanded')
+            ->assertAttributeMissing('a[data-test="application-sidebar-brand"]', 'aria-haspopup')
+            ->assertMissing('[data-test="application-sidebar-workspace-switcher"]');
+    }
+
+    $page
+        ->click('a[data-test="application-sidebar-brand"]')
+        ->assertPathIs('/dashboard')
+        ->assertAttribute('[data-test="application-navigation-desktop"] [data-test="sidebar-navigation-item-dashboard"]', 'aria-current', 'page')
+        ->assertVisible('[data-test="application-sidebar-footer"]')
+        ->assertNoJavaScriptErrors();
+
+    $this->visit(route('ui.playground'))
+        ->resize(1440, 900)
+        ->keys('a[data-test="application-sidebar-brand"]', 'Enter')
+        ->assertPathIs('/dashboard')
+        ->assertNoJavaScriptErrors();
+});
+
+test('keeps the mobile application brand a normal dashboard link without a workspace menu', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $page = $this->visit(route('ui.playground'));
+
+    foreach ([[390, 844], [768, 900]] as [$width, $height]) {
+        $page
+            ->resize($width, $height)
+            ->click('[aria-label="Open navigation"]')
+            ->assertVisible('a[data-test="application-sidebar-mobile-brand"]')
+            ->assertAttribute('a[data-test="application-sidebar-mobile-brand"]', 'href', route('dashboard'))
+            ->assertAttributeMissing('a[data-test="application-sidebar-mobile-brand"]', 'aria-expanded')
+            ->assertAttributeMissing('a[data-test="application-sidebar-mobile-brand"]', 'aria-haspopup')
+            ->assertMissing('[data-test="application-sidebar-mobile-workspace-switcher"]')
+            ->keys('[role="dialog"]', 'Escape')
+            ->assertMissing('[role="dialog"]');
+    }
+
+    $page
+        ->click('[aria-label="Open navigation"]')
+        ->click('a[data-test="application-sidebar-mobile-brand"]')
+        ->assertPathIs('/dashboard')
+        ->assertVisible('[data-test="dashboard-01"]')
+        ->assertNoJavaScriptErrors();
+});
+
 test('toggles the desktop Dashboard-01 sidebar and supports the Ctrl+B keyboard shortcut', function () {
     $user = User::factory()->create();
 
@@ -11,7 +70,7 @@ test('toggles the desktop Dashboard-01 sidebar and supports the Ctrl+B keyboard 
         ->resize(1440, 900)
         ->assertVisible('aside[data-test="application-sidebar"]')
         ->assertVisible('[data-test="application-navigation-desktop"] [data-test="sidebar-quick-create"]')
-        ->assertVisible('[data-test="application-navigation-desktop"] [data-test="sidebar-inbox"]')
+        ->assertMissing('[data-test="application-navigation-desktop"] [data-test="sidebar-inbox"]')
         ->click('[aria-label="Toggle sidebar"]')
         ->assertScript('document.querySelector(\'aside[data-test="application-sidebar"]\').getClientRects().length > 0', false)
         ->keys('[aria-label="Toggle sidebar"]', 'Control+B')

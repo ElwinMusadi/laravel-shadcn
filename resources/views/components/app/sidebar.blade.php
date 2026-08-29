@@ -1,6 +1,5 @@
 @props([
     'navigation' => [],
-    'workspaces' => [],
     'mobile' => false,
 ])
 
@@ -11,7 +10,7 @@
 <aside aria-label="{{ __('Application sidebar') }}" @if (!$mobile) x-cloak x-show="sidebarExpanded" x-transition.opacity x-bind:data-state="sidebarExpanded ? 'open' : 'closed'" @endif
   {{ $attributes->class(['flex shrink-0 flex-col min-h-0 border-sidebar-border bg-sidebar text-sidebar-foreground', 'hidden sticky top-2 h-[calc(100svh-1rem)] w-[var(--app-sidebar-expanded)] border lg:flex lg:rounded-xl' => !$mobile, 'flex-1 w-full' => $mobile]) }} data-test="{{ $sidebarId }}">
   <div class="flex shrink-0 flex-col border-b border-sidebar-border p-2" data-test="{{ $sidebarId }}-header">
-    <x-app.workspace-switcher :id="$sidebarId . '-workspace-switcher'" :workspaces="$workspaces" :mobile="$mobile" />
+    <x-app.brand sidebar data-test="{{ $sidebarId }}-brand" />
   </div>
 
   <div class="min-h-0 flex-1 overflow-y-auto p-2" data-test="{{ $sidebarId }}-content">

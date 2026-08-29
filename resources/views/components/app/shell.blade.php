@@ -4,7 +4,6 @@
     'breadcrumbs' => [],
     'showPageHeader' => false,
     'navigation' => null,
-    'workspaces' => null,
 ])
 
 @php
@@ -40,14 +39,6 @@
           ],
       ],
   ];
-
-  $workspaces ??= [
-      [
-          'key' => 'starter',
-          'name' => config('app.name', 'Laravel'),
-          'plan' => __('Starter Kit'),
-      ],
-  ];
 @endphp
 
 <!DOCTYPE html>
@@ -62,12 +53,12 @@
     {{ __('Skip to main content') }}
   </a>
 
-  <div class="flex h-svh [--app-sidebar-expanded:16rem] lg:gap-2 lg:bg-muted/40 lg:p-2" x-data="{ sidebarExpanded: true }"
+  <div class="flex h-svh [--app-sidebar-expanded:18rem] lg:gap-2 lg:bg-muted/40 lg:p-2" x-data="{ sidebarExpanded: true }"
     @keydown.window="if (($event.ctrlKey || $event.metaKey) && $event.key.toLowerCase() === 'b' && ! ['INPUT', 'SELECT', 'TEXTAREA'].includes($event.target.tagName) && ! $event.target.isContentEditable) { $event.preventDefault(); sidebarExpanded = ! sidebarExpanded }" data-test="application-shell">
-    <x-app.sidebar :navigation="$navigation" :workspaces="$workspaces" />
+    <x-app.sidebar :navigation="$navigation" />
 
     <div class="flex min-w-0 flex-1 flex-col min-h-0 contain-layout bg-background lg:overflow-clip lg:rounded-xl lg:border lg:border-border">
-      <x-app.header :navigation="$navigation" :title="$title" :breadcrumbs="$breadcrumbs" :workspaces="$workspaces" />
+      <x-app.header :navigation="$navigation" :title="$title" :breadcrumbs="$breadcrumbs" />
 
       <main id="main-content" tabindex="-1" class="flex w-full flex-1 flex-col min-h-0 overflow-y-auto outline-none" data-test="application-main">
         @if ($showPageHeader)

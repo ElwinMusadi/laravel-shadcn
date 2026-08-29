@@ -11,14 +11,14 @@
 @if ($user)
   <x-ui.dropdown id="{{ $id }}" class="{{ $sidebar ? 'w-full' : '' }}" data-test="{{ $id }}">
     @if ($sidebar)
-      <x-ui.dropdown.trigger variant="ghost" size="default" class="h-auto w-full min-w-0 justify-start rounded-lg px-2 py-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" aria-label="{{ __('Open user menu for :name', ['name' => $user->name]) }}"
+      <x-ui.dropdown.trigger variant="ghost" size="default" class="h-auto w-full min-w-0 justify-start rounded-lg px-0! py-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" aria-label="{{ __('Open user menu for :name', ['name' => $user->name]) }}"
         title="{{ $user->name }}" data-test="{{ $id }}-trigger">
         <x-ui.avatar class="size-8">
           <x-ui.avatar.fallback aria-hidden="true">{{ $user->initials() }}</x-ui.avatar.fallback>
         </x-ui.avatar>
 
         <span class="min-w-0 flex-1 text-left">
-          <span class="block truncate text-sm font-medium">{{ $user->name }}</span>
+          <span class="block truncate text-xs font-medium">{{ $user->name }}</span>
           <span class="block truncate text-xs text-sidebar-foreground/70">{{ $user->email }}</span>
         </span>
 
