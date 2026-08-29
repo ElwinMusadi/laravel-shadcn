@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.2: Selesai, koreksi luapan scroll document dan pengembalian fungsi scroll mandiri sidebar)
+Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.3: Selesai, perbaikan regresi Sheet sidebar mobile)
 
 ## Completed
 
@@ -164,6 +164,8 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.2: Selesai
 - Phase 15D.2 dijalankan ulang setelah verifikasi Chromium menemukan root document masih dapat tumbuh dari 900 px menjadi 937 px pada 1024×900 dan 976 px pada 768×900 ketika Dashboard panjang. `main` sendiri sudah menjadi scroll container yang benar (`min-h-0 overflow-y-auto`), tetapi main application region belum menjadi _layout containment boundary_; akibatnya overflow layout dari pasangan header dan konten dapat terpropagasi ke root document. Utility `contain-layout` pada region tersebut menghentikan propagasi ini tanpa menyembunyikan overflow secara global, sementara `lg:overflow-clip` tetap menjaga clipping sudut frame.
 - Sidebar desktop mempertahankan arsitektur mandiri: header dan footer `shrink-0`, navigasi tengah `flex-1 min-h-0 overflow-y-auto`, serta `aside` berbatas viewport. Navigasi panjang kini menggulir pada area middle tanpa menggeser header, profil, atau document. Pada mobile, Sheet tetap memakai scroll container-nya sendiri dan tidak dipaksa memakai pola desktop.
 - Validasi pengulangan: `vendor/bin/pint --dirty --format agent`, Unit+Feature (84 test / 550 assertion), build Vite, dan `git diff --check` lulus. Browser Chromium deterministik lulus untuk document/main scroll (2 test / 21 assertion), sidebar desktop dan Sheet mobile (2 test / 14 assertion), alignment header (1 test / 3 assertion), serta navigasi Livewire representatif (1 test / 6 assertion). Aggregate Browser suite dihentikan setelah 120 detik tanpa output pada teardown Playwright Windows; hasilnya tidak diklaim lulus.
+- Phase 15D.3 memperbaiki regresi Sheet sidebar mobile yang muncul setelah containment scroll Phase 15D.2. Inspeksi Chromium pada 390×844 membuktikan DOM sudah benar: sidebar mobile adalah turunan Sheet dan Dashboard bukan turunan Sheet. Root cause-nya visual: `backdrop-blur` pada header membentuk containing block untuk elemen `fixed`, sehingga `h-full` pada panel Sheet hanya menyelesaikan tinggi header 48 px dan sidebar menyusut menjadi 0 px. Overlay dan panel side Sheet kini memakai `h-dvh`, sehingga panel selalu setinggi dynamic viewport tanpa mengubah komposisi Blade, data navigasi bersama, dashboard, atau shell desktop.
+- Navigasi mobile kembali tampil penuh di bawah header Sheet dan tetap memakai `flex-1 min-h-0 overflow-y-auto` pada sidebar yang sama. Header Sheet, workspace/brand, Quick Create, Inbox, grup navigasi, dan footer profil tetap berada pada komposisi tunggal; Escape dan fokus kembali ke trigger tetap berfungsi. Cakupan Browser menegaskan `sheet.contains(sidebar)`, `!sheet.contains(dashboard)`, panel/backdrop menutupi viewport, scroll navigasi, pembukaan ulang, serta komposisi setelah pergi-pulang `wire:navigate`.
 
 ## Latest Validation
 
@@ -183,6 +185,7 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.2: Selesai
 - Phase 14: audit rilis menemukan dan memperbaiki enforcement email verification pada middleware `verified`. Unit+Feature suite (82 tests / 534 assertions), Browser suite Playwright Chromium (15 tests / 123 assertions), `npm run build`, `vendor/bin/pint --dirty --format agent`, `git diff --check`, `composer audit`, dan `npm audit --omit=dev` lulus.
 - Phase 15: Unit+Feature suite (84 tests / 550 assertions), `npm run build`, `vendor/bin/pint --dirty --format agent`, dan `git diff --check` lulus. Test browser lokal dihentikan karena bug teardown process Windows, pengujian visual manual digunakan sebagai verifikasi fallback.
 - Phase 15D.2: `contain-layout` memulihkan boundary scroll shell tanpa mengubah Dashboard. Unit+Feature suite (84 tests / 550 assertions), Pint, Vite build, dan diff check lulus. Enam test Chromium deterministik (44 assertion) mencakup document/main scroll, sidebar desktop, Sheet mobile, alignment header, dan `wire:navigate`; aggregate Browser suite kembali macet pada teardown Windows setelah 120 detik sehingga tidak dinyatakan lulus.
+- Phase 15D.3: panel side Sheet menggunakan `h-dvh` untuk mengatasi fixed-position containing block dari header yang memakai backdrop blur. Pint dan Unit+Feature suite (84 tests / 550 assertions) lulus. Browser terfokus `SidebarScrollTest` (3 tests / 32 assertions) dan `DocumentScrollTest` (2 tests / 21 assertions) lulus. Percobaan aggregate dan dua file Browser lain macet tanpa keluaran pada startup/teardown Playwright Windows sehingga tidak dinyatakan lulus; proses spesifik run tersebut dihentikan setelah diverifikasi.
 
 ## Browser Testing
 

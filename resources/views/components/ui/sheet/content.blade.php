@@ -3,13 +3,13 @@
 @php
     $positions = [
         'top' => 'inset-x-0 top-0 max-h-[calc(100dvh-2rem)] w-full',
-        'right' => 'inset-y-0 right-0 h-full w-full max-w-[calc(100vw-2rem)] sm:max-w-sm',
+        'right' => 'inset-y-0 right-0 h-dvh w-full max-w-[calc(100vw-2rem)] sm:max-w-sm',
         'bottom' => 'inset-x-0 bottom-0 max-h-[calc(100dvh-2rem)] w-full',
-        'left' => 'inset-y-0 left-0 h-full w-full max-w-[calc(100vw-2rem)] sm:max-w-sm',
+        'left' => 'inset-y-0 left-0 h-dvh w-full max-w-[calc(100vw-2rem)] sm:max-w-sm',
     ];
 @endphp
 
-<div x-cloak x-show="open" class="fixed inset-0 z-50">
+<div x-cloak x-show="open" class="fixed inset-0 z-50 h-dvh">
     <div class="absolute inset-0 bg-foreground/30 backdrop-blur-[1px]" aria-hidden="true" @click="open = false"></div>
 
     <section
