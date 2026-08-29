@@ -32,11 +32,7 @@
       [
           'key' => 'secondary',
           'position' => 'bottom',
-          'items' => [
-              ['key' => 'settings', 'label' => __('Settings'), 'icon' => 'settings', 'route' => 'profile.edit', 'active' => ['profile.*', 'appearance.*', 'security.*']],
-              ['key' => 'get-help', 'label' => __('Get Help'), 'icon' => 'circle-help', 'route' => 'ui.playground.interaction', 'active' => ['ui.playground.interaction']],
-              ['key' => 'search', 'label' => __('Search'), 'icon' => 'search', 'href' => '#main-content'],
-          ],
+          'items' => [['key' => 'settings', 'label' => __('Settings'), 'icon' => 'settings', 'route' => 'profile.edit', 'active' => ['profile.*', 'appearance.*', 'security.*']], ['key' => 'search', 'label' => __('Search'), 'icon' => 'search', 'href' => '#main-content']],
       ],
   ];
 @endphp
@@ -53,7 +49,8 @@
     {{ __('Skip to main content') }}
   </a>
 
-  <div class="flex h-svh [--app-sidebar-expanded:18rem] lg:gap-2 lg:bg-muted/40 lg:p-2" x-data="{ sidebarExpanded: true }"
+  <div class="flex h-svh [--app-sidebar-expanded:18rem] [--app-sidebar-gap:0.5rem] lg:gap-(--app-sidebar-gap) lg:transition-[gap] lg:duration-200 lg:ease-linear motion-reduce:transition-none lg:bg-muted/40 lg:p-2" x-data="{ sidebarExpanded: true }"
+    x-bind:data-sidebar-state="sidebarExpanded ? 'open' : 'closed'"
     @keydown.window="if (($event.ctrlKey || $event.metaKey) && $event.key.toLowerCase() === 'b' && ! ['INPUT', 'SELECT', 'TEXTAREA'].includes($event.target.tagName) && ! $event.target.isContentEditable) { $event.preventDefault(); sidebarExpanded = ! sidebarExpanded }" data-test="application-shell">
     <x-app.sidebar :navigation="$navigation" />
 

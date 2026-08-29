@@ -402,6 +402,10 @@ test('sheet renders directional modal panels with focus and responsive safeguard
         ->assertSee('bottom-0', false)
         ->assertSee('max-w-[calc(100vw-2rem)]', false)
         ->assertSee('max-h-[calc(100dvh-2rem)]', false)
+        ->assertSee('transition-opacity duration-200 ease-linear', false)
+        ->assertSee('transition-transform duration-200 ease-linear', false)
+        ->assertSee('x-transition:enter-start="-translate-x-full"', false)
+        ->assertSee(':data-state="open ? \'open\' : \'closed\'"', false)
         ->assertSee('bg-card', false);
 });
 

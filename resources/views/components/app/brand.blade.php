@@ -6,7 +6,7 @@
 @php
   $href ??= route('dashboard');
   $classes = $sidebar
-      ? 'flex h-8 w-full min-w-0 items-center gap-2 rounded-lg px-2 text-sidebar-foreground outline-none transition-colors'
+      ? 'flex h-9 w-full min-w-0 items-center gap-2 rounded-lg px-2 text-sidebar-foreground outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar'
       : 'inline-flex items-center gap-2 rounded-md text-sm font-semibold text-foreground outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 @endphp
 
@@ -21,7 +21,8 @@
 
   @if ($sidebar)
     <span class="min-w-0 flex-1 text-left">
-      <span class="block truncate text-base font-semibold">{{ config('app.name', 'Laravel') }}</span>
+      <span class="block truncate text-base font-semibold leading-tight">{{ config('app.name', 'Laravel') }}</span>
+      <span class="block truncate text-[10px] font-normal leading-tight"><span>Starter Kit Shadcn UI</span></span>
     </span>
   @else
     <span>{{ config('app.name', 'Laravel') }}</span>

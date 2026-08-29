@@ -66,16 +66,47 @@ test('toggles the desktop Dashboard-01 sidebar and supports the Ctrl+B keyboard 
 
     $this->actingAs($user);
 
-    $this->visit(route('dashboard'))
-        ->resize(1440, 900)
-        ->assertVisible('aside[data-test="application-sidebar"]')
-        ->assertVisible('[data-test="application-navigation-desktop"] [data-test="sidebar-quick-create"]')
-        ->assertMissing('[data-test="application-navigation-desktop"] [data-test="sidebar-inbox"]')
-        ->click('[aria-label="Toggle sidebar"]')
-        ->assertScript('document.querySelector(\'aside[data-test="application-sidebar"]\').getClientRects().length > 0', false)
-        ->keys('[aria-label="Toggle sidebar"]', 'Control+B')
-        ->assertScript('document.querySelector(\'aside[data-test="application-sidebar"]\').getClientRects().length > 0', true)
-        ->assertNoJavaScriptErrors();
+    $page = $this->visit(route('dashboard'));
+
+    foreach ([[1024, 900], [1440, 900]] as [$width, $height]) {
+        $page
+            ->resize($width, $height)
+            ->assertVisible('aside[data-test="application-sidebar"]')
+            ->assertVisible('[data-test="application-navigation-desktop"] [data-test="sidebar-quick-create"]')
+            ->assertMissing('[data-test="application-navigation-desktop"] [data-test="sidebar-inbox"]')
+            ->assertScript('(() => {
+            const sidebar = document.querySelector(\'aside[data-test="application-sidebar"]\');
+            const shell = document.querySelector(\'[data-test="application-shell"]\');
+            const sidebarStyle = getComputedStyle(sidebar);
+            const shellStyle = getComputedStyle(shell);
+
+            return sidebar.dataset.state === "open"
+                && sidebarStyle.transitionProperty.includes("width")
+                && sidebarStyle.transitionProperty.includes("transform")
+                && sidebarStyle.transitionProperty.includes("opacity")
+                && sidebarStyle.transitionDuration.includes("0.2s")
+                && sidebarStyle.transitionTimingFunction.includes("linear")
+                && shellStyle.transitionProperty.includes("gap")
+                && shellStyle.transitionDuration.includes("0.2s");
+        })()', true)
+            ->click('[aria-label="Toggle sidebar"]')
+            ->assertScript('(() => {
+            const sidebar = document.querySelector(\'aside[data-test="application-sidebar"]\');
+
+            return sidebar.dataset.state === "closed"
+                && sidebar.getAttribute("aria-hidden") === "true"
+                && sidebar.hasAttribute("inert");
+        })()', true)
+            ->keys('[aria-label="Toggle sidebar"]', 'Control+B')
+            ->assertScript('(() => {
+            const sidebar = document.querySelector(\'aside[data-test="application-sidebar"]\');
+
+            return sidebar.dataset.state === "open"
+                && sidebar.getAttribute("aria-hidden") === "false"
+                && ! sidebar.hasAttribute("inert");
+        })()', true)
+            ->assertNoJavaScriptErrors();
+    }
 });
 
 test('keeps the dashboard and navigation usable at tablet and mobile widths', function () {

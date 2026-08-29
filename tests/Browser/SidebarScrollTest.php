@@ -71,7 +71,23 @@ test('renders the mobile Sheet sidebar without Dashboard content and keeps its n
             && sheetStyle.backgroundColor !== "rgba(0, 0, 0, 0)"
             && sheetStyle.overflowY === "auto"
             && overlay.contains(document.elementFromPoint(window.innerWidth - 8, 300))
-            && sheet.contains(document.elementFromPoint(195, 300));
+            && sheetRect.left <= 0
+            && sheetRect.right <= window.innerWidth;
+    })()'))->toBeTrue();
+
+    expect($page->script('(() => {
+        const sheet = document.querySelector(\'[role="dialog"]\');
+        const backdrop = sheet.previousElementSibling;
+        const sheetStyle = getComputedStyle(sheet);
+        const backdropStyle = getComputedStyle(backdrop);
+
+        return sheet.dataset.state === "open"
+            && sheetStyle.transitionProperty.includes("transform")
+            && sheetStyle.transitionDuration.includes("0.2s")
+            && sheetStyle.transitionTimingFunction.includes("linear")
+            && backdropStyle.transitionProperty.includes("opacity")
+            && backdropStyle.transitionDuration.includes("0.2s")
+            && backdropStyle.transitionTimingFunction.includes("linear");
     })()'))->toBeTrue();
 
     $page->script('
