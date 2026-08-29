@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.1: Selesai, perbaikan struktur scroll shell dan alignment tinggi header sidebar)
+Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.2: Selesai, koreksi luapan scroll document dan pengembalian fungsi scroll mandiri sidebar)
 
 ## Completed
 
@@ -161,7 +161,9 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.1: Selesai
 - Phase 15C mereproduksi hierarki, proporsi, padding, tipografi metrik, badge, dan integrasi kontainer Data Table agar selaras murni dengan desain resmi Dashboard-01. Kartu metrik sekarang merespons dari kolom tunggal ke 2 kolom lalu ke 4 kolom tanpa kekakuan ukuran. Struktur Data Table disematkan dalam wrapper `rounded-md border` dan disokong komponen overflow-x-auto, melindungi dari pemuaian horisontal pada mobile.
 - Phase 15D menyelesaikan empat isu visual spesifik untuk menyamai referensi: (1) Menyinkronkan tinggi sidebar header (via switcher `h-8`) dan main header (`h-12`) sehingga baseline-nya presisi `48px`, (2) Memperbaiki tipografi navigation label menjadi `h-8 items-center`, button label ke `text-sm`, dan memindahkan font weight reguler untuk menu inactive, (3) Memperbaiki top corner clipping pada container content Dashboard dengan `lg:overflow-clip` yang mencegah background header keluar dari lengkungan corner tanpa merusak `position: sticky` pada mobile, (4) Menyamakan komposisi pagination Data Table menggunakan primitive UI yang telah ada.
 - Phase 15D.1 memperbaiki anomali tinggi elemen dan struktur _scroll_. Memperbaiki over-expansion pada area workspace-switcher dengan pemaksaan batas tinggi `!h-8` sehingga sidebar header dan main header setara presisi (keduanya kini merender tepat di profil 49px termasuk _border_). Menyempurnakan layout shell aplikasi dengan mengganti _viewport min-height_ fleksibel (`min-h-svh`) menjadi statis (`h-svh`) dan membungkus blok _main content_ dengan konteks scroll independen (`min-h-0 overflow-y-auto`). Main header kini tetap stasioner di atas dan menolak bergeser mengikuti konten ke atas, sesuai dengan tata letak dashboard modern dan responsif.
-- Validasi lulus: Pint, build Vite, Unit+Feature (84 test / 550 assertion).
+- Phase 15D.2 dijalankan ulang setelah verifikasi Chromium menemukan root document masih dapat tumbuh dari 900 px menjadi 937 px pada 1024×900 dan 976 px pada 768×900 ketika Dashboard panjang. `main` sendiri sudah menjadi scroll container yang benar (`min-h-0 overflow-y-auto`), tetapi main application region belum menjadi _layout containment boundary_; akibatnya overflow layout dari pasangan header dan konten dapat terpropagasi ke root document. Utility `contain-layout` pada region tersebut menghentikan propagasi ini tanpa menyembunyikan overflow secara global, sementara `lg:overflow-clip` tetap menjaga clipping sudut frame.
+- Sidebar desktop mempertahankan arsitektur mandiri: header dan footer `shrink-0`, navigasi tengah `flex-1 min-h-0 overflow-y-auto`, serta `aside` berbatas viewport. Navigasi panjang kini menggulir pada area middle tanpa menggeser header, profil, atau document. Pada mobile, Sheet tetap memakai scroll container-nya sendiri dan tidak dipaksa memakai pola desktop.
+- Validasi pengulangan: `vendor/bin/pint --dirty --format agent`, Unit+Feature (84 test / 550 assertion), build Vite, dan `git diff --check` lulus. Browser Chromium deterministik lulus untuk document/main scroll (2 test / 21 assertion), sidebar desktop dan Sheet mobile (2 test / 14 assertion), alignment header (1 test / 3 assertion), serta navigasi Livewire representatif (1 test / 6 assertion). Aggregate Browser suite dihentikan setelah 120 detik tanpa output pada teardown Playwright Windows; hasilnya tidak diklaim lulus.
 
 ## Latest Validation
 
@@ -180,6 +182,7 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D.1: Selesai
 - Phase 13: 17 berkas Markdown baru atau diperbarui (README dan handbook docs) telah diaudit terhadap source, component API, route, configuration, dan test aktual. Seluruh tautan Markdown diverifikasi. Unit+Feature suite (81 tests / 532 assertions), Browser suite Playwright Chromium (15 tests / 123 assertions), `npm run build`, `vendor/bin/pint --dirty --format agent`, `git diff --check`, `composer audit`, dan `npm audit --omit=dev` lulus.
 - Phase 14: audit rilis menemukan dan memperbaiki enforcement email verification pada middleware `verified`. Unit+Feature suite (82 tests / 534 assertions), Browser suite Playwright Chromium (15 tests / 123 assertions), `npm run build`, `vendor/bin/pint --dirty --format agent`, `git diff --check`, `composer audit`, dan `npm audit --omit=dev` lulus.
 - Phase 15: Unit+Feature suite (84 tests / 550 assertions), `npm run build`, `vendor/bin/pint --dirty --format agent`, dan `git diff --check` lulus. Test browser lokal dihentikan karena bug teardown process Windows, pengujian visual manual digunakan sebagai verifikasi fallback.
+- Phase 15D.2: `contain-layout` memulihkan boundary scroll shell tanpa mengubah Dashboard. Unit+Feature suite (84 tests / 550 assertions), Pint, Vite build, dan diff check lulus. Enam test Chromium deterministik (44 assertion) mencakup document/main scroll, sidebar desktop, Sheet mobile, alignment header, dan `wire:navigate`; aggregate Browser suite kembali macet pada teardown Windows setelah 120 detik sehingga tidak dinyatakan lulus.
 
 ## Browser Testing
 
