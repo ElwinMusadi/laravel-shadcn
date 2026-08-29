@@ -117,19 +117,21 @@
   <div class="flex flex-col gap-3 px-4 pb-2 sm:flex-row sm:items-center sm:justify-between lg:px-6">
     <p class="text-sm text-muted-foreground">{{ __('Page 1 of 7') }}</p>
 
-    <div class="flex items-center gap-3">
-      <label for="dashboard-rows-per-page" class="text-sm text-muted-foreground">{{ __('Rows per page') }}</label>
-      <x-ui.select id="dashboard-rows-per-page" class="w-18" aria-label="{{ __('Rows per page') }}">
-        <option selected>10</option>
-        <option>20</option>
-        <option>30</option>
-      </x-ui.select>
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6 lg:gap-8">
+      <div class="flex items-center gap-2">
+        <label for="dashboard-rows-per-page" class="text-sm font-medium">{{ __('Rows per page') }}</label>
+        <x-ui.select id="dashboard-rows-per-page" class="!h-8 w-[70px]" aria-label="{{ __('Rows per page') }}">
+          <option selected>10</option>
+          <option>20</option>
+          <option>30</option>
+        </x-ui.select>
+      </div>
 
       <x-ui.pagination class="w-auto" label="{{ __('Dashboard table pagination') }}">
-        <x-ui.pagination.previous disabled>
+        <x-ui.pagination.previous disabled class="!size-8 border border-input shadow-xs">
           <x-ui.icon name="chevron-left" class="size-4" />
         </x-ui.pagination.previous>
-        <x-ui.pagination.next>
+        <x-ui.pagination.next class="!size-8 border border-input shadow-xs bg-background">
           <x-ui.icon name="chevron-right" class="size-4" />
         </x-ui.pagination.next>
       </x-ui.pagination>

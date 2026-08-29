@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15C: Selesai, keselarasan visual Dashboard konten dengan referensi Dashboard-01 v4)
+Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15D: Selesai, penyempurnaan keempat detail visual terakhir dari referensi resmi)
 
 ## Completed
 
@@ -159,7 +159,8 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15C: Selesai, 
 - Phase 15B menyesuaikan shell aplikasi (`x-app.shell`, `x-app.header`, `x-app.sidebar`) agar menyamai hierarki dan density dari shadcn Dashboard-01 v4. Breadcrumb sekarang diletakkan di dalam top header, dan page-header mandiri direfaktor untuk tidak lagi menampilkan breadcrumbs, sementara sidebar width dikurangi menjadi 16rem.
 - Phase 15B.1 memperbaiki issue di mana user menu & footer area bocor / overflow dari lebar sidebar. Memperbaiki container `ui.dropdown` dengan memastikan properti `min-w-0` pada trigger (sebagai flex child) digunakan untuk mencegah _text blowout_, sekaligus menerapkan `h-[calc(100svh-1rem)] sticky top-2` untuk desktop sidebar agar navigation area scrollable mandiri, dan footer tertambat stabil di bagian bawah sidebar. Di mobile, sidebar menjadi `flex-1 min-h-0` sehingga fungsionalitas `sheet` tetap sempurna.
 - Phase 15C mereproduksi hierarki, proporsi, padding, tipografi metrik, badge, dan integrasi kontainer Data Table agar selaras murni dengan desain resmi Dashboard-01. Kartu metrik sekarang merespons dari kolom tunggal ke 2 kolom lalu ke 4 kolom tanpa kekakuan ukuran. Struktur Data Table disematkan dalam wrapper `rounded-md border` dan disokong komponen overflow-x-auto, melindungi dari pemuaian horisontal pada mobile.
-- Validasi lulus: Pint, build Vite, Unit+Feature (84 test / 550 assertion). Perintah Browser penuh berjalan pada CI/runner dengan kelulusan visual (test lokal dihentikan karena masalah teardown Playwright pada runner Windows lokal).
+- Phase 15D menyelesaikan empat isu visual spesifik untuk menyamai referensi: (1) Menyinkronkan tinggi sidebar header (via switcher `h-8`) dan main header (`h-12`) sehingga baseline-nya presisi `48px`, (2) Memperbaiki tipografi navigation label menjadi `h-8 items-center`, button label ke `text-sm`, dan memindahkan font weight reguler untuk menu inactive, (3) Memperbaiki top corner clipping pada container content Dashboard dengan `lg:overflow-clip` yang mencegah background header keluar dari lengkungan corner tanpa merusak `position: sticky` pada mobile, (4) Menyamakan komposisi pagination Data Table menggunakan primitive UI yang telah ada.
+- Validasi lulus: Pint, build Vite, Unit+Feature (84 test / 550 assertion).
 
 ## Latest Validation
 
@@ -177,6 +178,7 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15C: Selesai, 
 - Phase 12: `vendor/bin/pint --dirty --format agent`, Unit+Feature suite (81 tests / 532 assertions), Browser suite Playwright Chromium (15 tests / 123 assertions), dan `npm run build` lulus. `composer audit` dan `npm audit --omit=dev` tidak menemukan advisory. Audit mencakup toast success/error/dismiss, Security Settings, passkey runtime, recovery codes, dialog hapus akun, tema, navigasi Livewire, dependency, dan referensi runtime Flux nol.
 - Phase 13: 17 berkas Markdown baru atau diperbarui (README dan handbook docs) telah diaudit terhadap source, component API, route, configuration, dan test aktual. Seluruh tautan Markdown diverifikasi. Unit+Feature suite (81 tests / 532 assertions), Browser suite Playwright Chromium (15 tests / 123 assertions), `npm run build`, `vendor/bin/pint --dirty --format agent`, `git diff --check`, `composer audit`, dan `npm audit --omit=dev` lulus.
 - Phase 14: audit rilis menemukan dan memperbaiki enforcement email verification pada middleware `verified`. Unit+Feature suite (82 tests / 534 assertions), Browser suite Playwright Chromium (15 tests / 123 assertions), `npm run build`, `vendor/bin/pint --dirty --format agent`, `git diff --check`, `composer audit`, dan `npm audit --omit=dev` lulus.
+- Phase 15: Unit+Feature suite (84 tests / 550 assertions), `npm run build`, `vendor/bin/pint --dirty --format agent`, dan `git diff --check` lulus. Test browser lokal dihentikan karena bug teardown process Windows, pengujian visual manual digunakan sebagai verifikasi fallback.
 
 ## Browser Testing
 
@@ -200,4 +202,4 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15C: Selesai, 
 ## Next Phase
 
 Tindak lanjut berikutnya:
-Phase 15C — Dashboard-01 Content Alignment (Penyempurnaan arsitektur kartu metrik, chart, dan tabel data).
+Menunggu instruksi pengguna untuk transisi ke fase/pengembangan fitur selanjutnya.

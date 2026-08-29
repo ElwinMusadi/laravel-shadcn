@@ -66,7 +66,7 @@
     @keydown.window="if (($event.ctrlKey || $event.metaKey) && $event.key.toLowerCase() === 'b' && ! ['INPUT', 'SELECT', 'TEXTAREA'].includes($event.target.tagName) && ! $event.target.isContentEditable) { $event.preventDefault(); sidebarExpanded = ! sidebarExpanded }" data-test="application-shell">
     <x-app.sidebar :navigation="$navigation" :workspaces="$workspaces" />
 
-    <div class="flex min-w-0 flex-1 flex-col bg-background lg:rounded-xl lg:border lg:border-border">
+    <div class="flex min-w-0 flex-1 flex-col bg-background lg:overflow-clip lg:rounded-xl lg:border lg:border-border">
       <x-app.header :navigation="$navigation" :title="$title" :breadcrumbs="$breadcrumbs" :workspaces="$workspaces" />
 
       <main id="main-content" tabindex="-1" @class([

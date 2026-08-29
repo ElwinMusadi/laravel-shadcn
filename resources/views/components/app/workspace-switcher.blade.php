@@ -11,7 +11,7 @@
 @if ($activeWorkspace)
   <div x-data="{ activeWorkspace: @js($activeWorkspace), workspaces: @js(array_values($workspaces)) }">
     <x-ui.dropdown id="{{ $id }}" class="w-full" data-test="{{ $id }}">
-      <x-ui.dropdown.trigger variant="ghost" size="default" class="h-10 w-full min-w-0 justify-start rounded-lg px-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" aria-label="{{ __('Switch workspace') }}" data-test="{{ $id }}-trigger">
+      <x-ui.dropdown.trigger variant="ghost" size="default" class="h-8 w-full min-w-0 justify-start rounded-lg px-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" aria-label="{{ __('Switch workspace') }}" data-test="{{ $id }}-trigger">
         <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground" aria-hidden="true">
           <x-app-logo-icon class="size-4 fill-current" />
         </span>

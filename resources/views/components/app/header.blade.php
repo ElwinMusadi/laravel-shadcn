@@ -6,7 +6,7 @@
 ])
 
 <header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80" data-test="application-header">
-  <div class="flex h-14 items-center gap-2 px-4 lg:px-6">
+  <div class="flex h-12 items-center gap-2 px-4 lg:px-6">
     <div class="lg:hidden">
       <x-ui.sheet id="application-navigation">
         <x-ui.sheet.trigger variant="ghost" size="icon" aria-label="{{ __('Open navigation') }}" data-test="application-navigation-trigger">
