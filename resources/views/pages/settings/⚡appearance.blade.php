@@ -7,6 +7,7 @@ new #[Title('Appearance settings')] class extends Component {
     //
 }; ?>
 
+<x-app.page-container data-test="settings-page-container">
 <section class="w-full">
     @include('partials.settings-heading')
 
@@ -42,3 +43,4 @@ new #[Title('Appearance settings')] class extends Component {
         </x-ui.radio-group>
     </x-pages::settings.layout>
 </section>
+</x-app.page-container>

@@ -102,12 +102,13 @@ Primitive navigasi dan data tersedia sebagai <code>Breadcrumb</code>, <code>Tabs
 | --- | --- |
 | <code>x-app.shell</code> | Shell aplikasi, data nav/workspace default, sidebar desktop, header, main landmark, toast, dan <code>@livewireScripts</code>. |
 | <code>x-app.header</code> | Header 48px, trigger sidebar desktop/mobile, konteks halaman, dan theme toggle. |
+| <code>x-app.page-container</code> | Gutter, spacing vertikal, dan alignment responsif untuk satu halaman aplikasi di dalam main scroll region. |
 | <code>x-app.sidebar</code> | Sidebar Dashboard-01 desktop atau mobile, workspace switcher, navigasi, dan user menu. |
 | <code>x-app.navigation</code> | Grup navigasi Dashboard-01, active route, ikon Lucide-compatible, dan <code>wire:navigate</code> untuk route aplikasi. |
 | <code>x-app.workspace-switcher</code> | Pemilih workspace demo dalam Dropdown lokal. |
 | <code>x-app.brand</code> | Tautan brand menuju dashboard. |
 | <code>x-app.user-menu</code> | Identitas user, link Settings, serta form logout POST dengan CSRF. |
-| <code>x-app.page-header</code> | Breadcrumb, title, description, dan slot <code>actions</code>. |
+| <code>x-app.page-header</code> | Title, description, dan slot <code>actions</code>; breadcrumb tetap milik header aplikasi. |
 | <code>x-app.theme-controller</code> | Bootstrap dan factory tema Light/Dark pada root. |
 | <code>x-app.theme-toggle</code> | Toggle tema dengan tooltip dan status aksesibel. |
 | <code>x-app.toast</code> | Region toast persistent yang mendengar event <code>toast</code>. |

@@ -69,15 +69,16 @@
     <div class="flex min-w-0 flex-1 flex-col min-h-0 contain-layout bg-background lg:overflow-clip lg:rounded-xl lg:border lg:border-border">
       <x-app.header :navigation="$navigation" :title="$title" :breadcrumbs="$breadcrumbs" :workspaces="$workspaces" />
 
-      <main id="main-content" tabindex="-1" @class([
-          'flex w-full flex-1 flex-col outline-none min-h-0 overflow-y-auto',
-          'gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8' => $showPageHeader,
-      ]) data-test="application-main">
+      <main id="main-content" tabindex="-1" class="flex w-full flex-1 flex-col min-h-0 overflow-y-auto outline-none" data-test="application-main">
         @if ($showPageHeader)
-          <x-app.page-header :title="$title" :description="$description" />
-        @endif
+          <x-app.page-container>
+            <x-app.page-header :title="$title" :description="$description" />
 
-        {{ $slot }}
+            {{ $slot }}
+          </x-app.page-container>
+        @else
+          {{ $slot }}
+        @endif
       </main>
     </div>
   </div>

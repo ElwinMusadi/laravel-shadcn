@@ -183,6 +183,7 @@ new #[Title('Security settings')] class extends Component {
     /* @end-chisel-2fa */
 }; ?>
 
+<x-app.page-container data-test="settings-page-container">
 <section class="w-full">
     @include('partials.settings-heading')
 
@@ -360,3 +361,4 @@ new #[Title('Security settings')] class extends Component {
     </x-ui.dialog>
     {{-- @end-chisel-passkeys --}}
 </section>
+</x-app.page-container>

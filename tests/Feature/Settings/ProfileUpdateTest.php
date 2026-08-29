@@ -3,10 +3,12 @@
 use App\Models\User;
 use Livewire\Livewire;
 
-test('profile page is displayed', function () {
+test('profile page is displayed within the standard page container', function () {
     $this->actingAs($user = User::factory()->create());
 
-    $this->get(route('profile.edit'))->assertOk();
+    $this->get(route('profile.edit'))
+        ->assertOk()
+        ->assertSee('data-test="settings-page-container"', false);
 });
 
 test('profile information can be updated', function () {

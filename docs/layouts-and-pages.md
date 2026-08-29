@@ -2,7 +2,7 @@
 
 ## Layout aplikasi
 
-<code>x-layouts::app</code> meneruskan <code>title</code>, <code>description</code>, <code>breadcrumbs</code>, dan <code>showPageHeader</code> ke <code>x-app.shell</code>. Shell menyusun skip link, sidebar, header, landmark <code>main</code>, page header opsional, toast, dan Livewire scripts.
+<code>x-layouts::app</code> meneruskan <code>title</code>, <code>description</code>, <code>breadcrumbs</code>, dan <code>showPageHeader</code> ke <code>x-app.shell</code>. Shell menyusun skip link, sidebar, header, landmark <code>main</code> yang menjadi satu-satunya scroll region konten, toast, dan Livewire scripts.
 
 ~~~blade
 <x-layouts::app
@@ -15,7 +15,28 @@
 </x-layouts::app>
 ~~~
 
-<code>x-app.page-header</code> mendukung slot bernama <code>actions</code>. Breadcrumb item berisi <code>label</code>, serta dapat berisi <code>route</code> dan <code>parameters</code>.
+<code>x-app.page-header</code> mendukung slot bernama <code>actions</code>. Breadcrumb berada pada <code>x-app.header</code>; itemnya berisi <code>label</code>, serta dapat berisi <code>route</code> dan <code>parameters</code>.
+
+## Standard Page Container
+
+<code>x-app.page-container</code> adalah kontrak layout untuk halaman aplikasi terautentikasi. Komponen ini harus menjadi child langsung dari slot <code>x-layouts::app</code> atau root halaman Livewire yang sudah memakai shell. Ia memberi gutter responsif <code>px-4</code>, <code>sm:px-6</code>, dan <code>lg:px-8</code>, padding vertikal, serta gap halaman yang konsisten tanpa membentuk scroll region baru.
+
+~~~blade
+<x-layouts::app :title="__('Projects')">
+    <x-app.page-container>
+        <x-app.page-header
+            :title="__('Projects')"
+            :description="__('All active projects')"
+        />
+
+        <div class="max-w-3xl">
+            ...
+        </div>
+    </x-app.page-container>
+</x-layouts::app>
+~~~
+
+Gunakan satu page container per halaman. Jangan menambahkan padding viewport acak pada content page, dan jangan menaruh <code>overflow-y-auto</code> pada container ini. Halaman dapat memakai constraint lebar internal sesuai kebutuhan—misalnya form Settings memakai <code>max-w-lg</code>—tanpa mempersempit Dashboard atau halaman lain secara global. Untuk kompatibilitas, ketika <code>showPageHeader=true</code>, shell membungkus page header dan slot ke dalam container yang sama.
 
 ## Application shell
 
@@ -41,9 +62,9 @@ Halaman auth memakai route Fortify dan bukan application shell. Lihat [Authentic
 
 - Dashboard view memakai <code>x-layouts::app</code> dan include Dashboard-01.
 - Settings Profile, Appearance, dan Security adalah halaman Livewire 4 di <code>resources/views/pages/settings/</code>.
-- Layout settings memiliki nav Profile, Security, dan Appearance dengan <code>wire:navigate</code>.
+- Settings memakai <code>x-app.page-container</code> di atas heading, nav, dan content, lalu layout settings menyediakan nav Profile, Security, dan Appearance dengan <code>wire:navigate</code>.
 
-Bangun halaman domain baru sebagai Blade page atau Livewire page sesuai kebutuhan server state. Letakkan business logic, query, authorization, dan validasi di lapisan aplikasi, bukan di komponen UI.
+Bangun halaman domain baru sebagai Blade page atau Livewire page sesuai kebutuhan server state dan selalu mulai dari <code>x-app.page-container</code>. Letakkan business logic, query, authorization, dan validasi di lapisan aplikasi, bukan di komponen UI.
 
 ## Navigation dan data
 

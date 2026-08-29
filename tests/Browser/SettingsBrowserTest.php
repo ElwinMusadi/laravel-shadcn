@@ -83,3 +83,64 @@ test('renders passkey integration, recovery codes, and account deletion confirma
         ->assertMissing('[role="dialog"][aria-labelledby="confirm-user-deletion-title"]')
         ->assertNoJavaScriptErrors();
 });
+
+test('keeps Settings content within the standard page container at every application breakpoint', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $page = $this->visit(route('profile.edit'));
+
+    foreach ([[390, 844], [768, 900], [1024, 900], [1440, 900]] as [$width, $height]) {
+        $page
+            ->resize($width, $height)
+            ->assertVisible('[data-test="settings-page-container"]')
+            ->assertVisible('[data-test="settings-nav-profile"]')
+            ->assertVisible('#profile-name')
+            ->assertVisible('#profile-email')
+            ->assertVisible('[data-test="update-profile-button"]');
+
+        expect($page->script('(() => {
+            const container = document.querySelector(\'[data-test="settings-page-container"]\');
+            const main = document.querySelector(\'[data-test="application-main"]\');
+            const navigation = document.querySelector(\'[data-test="settings-nav-profile"]\');
+            const heading = container.querySelector(\'h1\');
+            const controls = [
+                navigation,
+                document.querySelector(\'#profile-name\'),
+                document.querySelector(\'#profile-email\'),
+                document.querySelector(\'[data-test="update-profile-button"]\'),
+            ];
+            const containerRect = container.getBoundingClientRect();
+            const mainStyle = getComputedStyle(main);
+            const styles = getComputedStyle(container);
+            const left = containerRect.left + parseFloat(styles.paddingLeft);
+            const right = containerRect.right - parseFloat(styles.paddingRight);
+
+            return heading
+                && navigation.getAttribute(\'aria-current\') === \'page\'
+                && left > containerRect.left
+                && right < containerRect.right
+                && [heading, ...controls].every((element) => {
+                    const rect = element.getBoundingClientRect();
+
+                    return rect.left >= left && rect.right <= right;
+                })
+                && mainStyle.overflowY === \'auto\'
+                && window.scrollY === 0
+                && document.documentElement.scrollHeight <= document.documentElement.clientHeight
+                && document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+        })()'))->toBeTrue();
+    }
+
+    $page
+        ->resize(1440, 900)
+        ->assertPathIs('/settings/profile')
+        ->assertNoJavaScriptErrors();
+
+    $this->visit(route('dashboard'))
+        ->resize(1440, 900)
+        ->assertVisible('[data-test="dashboard-01"]')
+        ->assertMissing('[data-test="settings-page-container"]')
+        ->assertNoJavaScriptErrors();
+});

@@ -121,6 +121,28 @@ test('page header composes title description and actions', function () {
         ->assertSee('Save changes');
 });
 
+test('shell wraps optional page headers in the standard page container', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $view = $this->blade(<<<'BLADE'
+        <x-app.shell
+            title="Orders"
+            description="Recent orders"
+            :show-page-header="true"
+        >
+            <span>Orders content</span>
+        </x-app.shell>
+        BLADE);
+
+    $view
+        ->assertSee('class="box-border flex w-full min-w-0 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8"', false)
+        ->assertSee('Orders')
+        ->assertSee('Recent orders')
+        ->assertSee('Orders content');
+});
+
 test('header composes breadcrumbs or fallback title', function () {
     $viewWithBreadcrumbs = $this->blade(<<<'BLADE'
         <x-app.header

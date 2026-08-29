@@ -79,6 +79,7 @@ new #[Title('Profile settings')] class extends Component {
     /* @end-chisel-email-verification */
 }; ?>
 
+<x-app.page-container data-test="settings-page-container">
 <section class="w-full">
     @include('partials.settings-heading')
 
@@ -137,3 +138,4 @@ new #[Title('Profile settings')] class extends Component {
         {{-- @end-chisel-email-verification --}}
     </x-pages::settings.layout>
 </section>
+</x-app.page-container>
