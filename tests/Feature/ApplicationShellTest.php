@@ -101,15 +101,11 @@ test('renders the local Lucide-compatible icon component with caller attributes'
         ->assertSee('<rect width="18" height="18" x="3" y="3" rx="2"', false);
 });
 
-test('page header composes title description breadcrumbs and actions', function () {
+test('page header composes title description and actions', function () {
     $view = $this->blade(<<<'BLADE'
         <x-app.page-header
             title="Settings"
             description="Manage your account preferences."
-            :breadcrumbs="[
-                ['label' => 'Dashboard', 'route' => 'dashboard'],
-                ['label' => 'Settings'],
-            ]"
         >
             <x-slot:actions>
                 <x-ui.button>Save changes</x-ui.button>
@@ -121,10 +117,29 @@ test('page header composes title description breadcrumbs and actions', function 
         ->assertSee('<h1', false)
         ->assertSee('Settings')
         ->assertSee('Manage your account preferences.')
+        ->assertDontSee('aria-label="Breadcrumb"', false)
+        ->assertSee('Save changes');
+});
+
+test('header composes breadcrumbs or fallback title', function () {
+    $viewWithBreadcrumbs = $this->blade(<<<'BLADE'
+        <x-app.header
+            :breadcrumbs="[
+                ['label' => 'Dashboard', 'route' => 'dashboard'],
+                ['label' => 'Settings'],
+            ]"
+        />
+        BLADE);
+
+    $viewWithBreadcrumbs
         ->assertSee('aria-label="Breadcrumb"', false)
         ->assertSee('href="'.route('dashboard').'"', false)
-        ->assertSee('aria-current="page"', false)
-        ->assertSee('Save changes');
+        ->assertSee('aria-current="page"', false);
+
+    $viewWithTitle = $this->blade('<x-app.header title="Custom Title" />');
+    $viewWithTitle
+        ->assertDontSee('aria-label="Breadcrumb"', false)
+        ->assertSee('Custom Title');
 });
 
 test('sidebar user menu exposes identity settings and the protected logout form', function () {

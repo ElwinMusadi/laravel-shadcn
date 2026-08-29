@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 15 — Dashboard-01 & Application Shell Re-alignment (Implementasi selesai; validasi Browser penuh tertunda teardown runner Windows)
+Phase 15 — Dashboard-01 & Application Shell Re-alignment (Phase 15B: Implementasi Canonical Application Shell selesai, penyesuaian visual mengikuti referensi Dashboard-01 v4, validasi Browser menunggu runner)
 
 ## Completed
 
@@ -156,7 +156,8 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Implementasi selesai
 - `x-ui.icon` adalah strategi ikon reusable baru: subset SVG Lucide-compatible yang dirender di Blade dan dipakai oleh shell, dashboard, serta theme toggle. Tidak ada dependency Composer atau npm baru.
 - Inter tetap menjadi font UI default dari mekanisme Bunny/Vite yang sudah ada. Token Amber Minimal, `localStorage.theme`, `<html>.dark`, Fortify, Livewire, dan data dashboard statis tetap dipertahankan.
 - Audit visual setelah build dilakukan pada 1440×900, 1024×900, dan 390×844. Struktur sidebar, header, grid KPI, chart, tabs, tabel horizontal, serta layout mobile diperiksa; ini bukan klaim parity pixel-perfect atau sertifikasi WCAG.
-- Validasi lulus: Pint, build Vite, targeted Feature (20 test / 132 assertion), Unit+Feature (83 test / 547 assertion), Browser Theme (3 test / 20 assertion), dan Browser toggle sidebar desktop (1 test / 6 assertion). Perintah Browser penuh dimulai sesuai prosedur, tetapi runner Windows tertahan pada Playwright/accessibility teardown setelah test responsif dan tidak menghasilkan exit status; jalankan ulang pada runner bersih sebelum menutup fase atau membuat tag v1.0.0.
+- Phase 15B menyesuaikan shell aplikasi (`x-app.shell`, `x-app.header`, `x-app.sidebar`) agar menyamai hierarki dan density dari shadcn Dashboard-01 v4. Breadcrumb sekarang diletakkan di dalam top header, dan page-header mandiri direfaktor untuk tidak lagi menampilkan breadcrumbs, sementara sidebar width dikurangi menjadi 16rem.
+- Validasi lulus: Pint, build Vite, Unit+Feature (84 test / 550 assertion), Browser Theme (3 test / 20 assertion), dan Browser toggle sidebar desktop (1 test / 6 assertion). Perintah Browser penuh dimulai sesuai prosedur, tetapi runner Windows tertahan pada Playwright/accessibility teardown setelah test responsif dan tidak menghasilkan exit status; jalankan ulang pada runner bersih sebelum menutup fase atau membuat tag v1.0.0.
 
 ## Latest Validation
 
@@ -196,4 +197,5 @@ Phase 15 — Dashboard-01 & Application Shell Re-alignment (Implementasi selesai
 
 ## Next Phase
 
-Tidak ada fase implementasi berikutnya yang dijadwalkan. Tindak lanjut bersifat opsional: selesaikan debt P2/P3 hanya melalui scope perubahan yang disetujui developer.
+Tindak lanjut berikutnya:
+Phase 15C — Dashboard-01 Content Alignment (Penyempurnaan arsitektur kartu metrik, chart, dan tabel data).
