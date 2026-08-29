@@ -177,6 +177,7 @@ test('field composes labels, descriptions, and error messages', function () {
 test('input and textarea preserve native, Livewire, and Alpine attributes', function () {
     $view = $this->blade(<<<'BLADE'
         <x-ui.input type="email" name="email" autocomplete="email" required readonly min="1" max="10" step="1" pattern=".+@.+" wire:model.live="form.email" x-model="email" />
+        <x-ui.input type="file" />
         <x-ui.textarea name="notes" rows="6" maxlength="500" minlength="3" required disabled wire:model.blur="form.notes" x-model="notes">Initial note</x-ui.textarea>
         BLADE);
 
@@ -187,6 +188,8 @@ test('input and textarea preserve native, Livewire, and Alpine attributes', func
         ->assertSee('pattern=".+@.+"', false)
         ->assertSee('wire:model.live="form.email"', false)
         ->assertSee('x-model="email"', false)
+        ->assertSee('type="file"', false)
+        ->assertSee('file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground', false)
         ->assertSee('rows="6"', false)
         ->assertSee('maxlength="500"', false)
         ->assertSee('wire:model.blur="form.notes"', false)
@@ -215,7 +218,9 @@ test('select renders placeholder and native option composition', function () {
         ->assertSee('Choose published status')
         ->assertSee('<optgroup label="Availability">', false)
         ->assertSee('<option value="active" selected>', false)
-        ->assertSee('border-input', false);
+        ->assertSee('border-input', false)
+        ->assertSee('text-base', false)
+        ->assertSee('md:text-sm', false);
 });
 
 test('checkbox and switch preserve checked disabled and model attributes', function () {

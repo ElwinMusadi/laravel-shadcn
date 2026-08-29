@@ -6,7 +6,7 @@
 @php
   $href ??= route('dashboard');
   $classes = $sidebar
-      ? 'flex h-9 w-full min-w-0 items-center gap-2 rounded-lg px-2 text-sidebar-foreground outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar'
+      ? 'flex h-8 w-full min-w-0 items-center gap-2 rounded-lg px-2 text-sidebar-foreground outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar'
       : 'inline-flex items-center gap-2 rounded-md text-sm font-semibold text-foreground outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 @endphp
 
