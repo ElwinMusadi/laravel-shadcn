@@ -67,6 +67,32 @@ Semua form primitive memakai elemen HTML native dan token semantik. Susun label,
 </x-ui.radio-group>
 ~~~
 
+## Input Group dan Button Group
+
+<code>x-ui.input-group</code> mengomposisikan input dengan elemen lain seperti addon (text/icon) atau button tanpa menggunakan JavaScript. Komponen ini mengatur border radius dan styling <code>focus-within</code> secara otomatis.
+<code>x-ui.input-group.addon</code> menyediakan styling standard untuk teks atau ikon awalan/akhiran.
+
+~~~blade
+<x-ui.input-group>
+    <x-ui.input-group.addon aria-hidden="true">
+        <x-ui.icon name="search" class="size-4" />
+    </x-ui.input-group.addon>
+    <x-ui.input type="search" placeholder="Search..." />
+    <x-ui.button variant="secondary">Go</x-ui.button>
+</x-ui.input-group>
+~~~
+
+<code>x-ui.button-group</code> mengomposisikan beberapa button berdampingan. Prop <code>orientation="horizontal"</code> (default) atau <code>orientation="vertical"</code> mengatur arah pengelompokan. Atribut <code>role="group"</code> dan radius sisi luar ditangani secara otomatis.
+
+~~~blade
+<x-ui.button-group>
+    <x-ui.button variant="outline">Left</x-ui.button>
+    <x-ui.button variant="outline">Center</x-ui.button>
+    <x-ui.button variant="outline">Right</x-ui.button>
+</x-ui.button-group>
+~~~
+
+
 ## Livewire dan validasi
 
 Karena atribut caller diteruskan, gunakan directive Livewire pada kontrol native yang tepat, misalnya <code>wire:model</code>, <code>wire:model.live</code>, <code>wire:model.blur</code>, <code>wire:click</code>, atau <code>wire:submit</code>. Contoh Profile settings menggunakan <code>wire:model</code> dan <code>wire:submit</code>; gunakan modifier hanya jika kebutuhan state Livewire mengharuskannya.
